@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  address: {
+    type: String,
+    default: null
+  },
   password: {
     type: String,
     required: true
@@ -23,8 +27,9 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  avatar: {
-    type: String
+  userAvatar: {
+    type: String,
+    default: null
   },
   isAdmin: {
     type: Boolean,

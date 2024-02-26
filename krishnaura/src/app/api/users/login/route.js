@@ -1,11 +1,12 @@
-import { connectDB } from "@/dbConfig/dbConfig.js"
 import User from "@/models/user.model.js"
 import bcrypt from "bcrypt"
 import asyncHandler from "express-async-handler"
 import { NextResponse } from "next/server"
 import jwt from "jsonwebtoken"
+import { connectDB } from "@/DBConfig/connectDB.js"
 
 connectDB()
+
 export const POST = asyncHandler(async (req) => {
 
     try {
@@ -13,10 +14,11 @@ export const POST = asyncHandler(async (req) => {
 
         const { credentials, password } = body
 
-        if (!(credentials || password)) {
+        if ((!credentials || !credentials.trim()) || (!password || !password.trim())) {
             return NextResponse.json(
                 { error: "Both fields are required" },
-                { status: 400 })
+                { status: 400 }
+            );
         }
 
         const user = await User.findOne({
@@ -43,17 +45,19 @@ export const POST = asyncHandler(async (req) => {
             username: user?.username,
         }
 
-        const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, { expiresIn: "10d" })
+        const token =  jwt.sign(tokenData, process.env.TOKEN_SECRET, { expiresIn: "10d" })
 
-        const response = NextResponse.json({
-            message: "Login successfull",
+        // Set cookie only when user exists and password is valid
+        
+        const response =  NextResponse.json({
+            message: "Login successful",
             success: true,
             user
         })
 
         response.cookies.set("token", token, {
             httpOnly: true,
-            secure: true,
+            // secure: true,
             sameSite: "Strict",  
             maxAge: 10 * 24 * 60 * 60 * 1000
         })

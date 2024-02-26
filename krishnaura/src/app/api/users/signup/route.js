@@ -3,14 +3,13 @@ import asyncHandler from "express-async-handler";
 import { NextResponse } from "next/server";
 import User from "@/models/user.model.js";
 import { connectDB } from "@/DBConfig/connectDB";
+import jwt from "jsonwebtoken"
 
 connectDB()
 
-export const GET = asyncHandler(async (req) => {
+export const POST = asyncHandler(async (req) => {
     const body = await req.json()
-    console.log(body)
     const { fullName, phoneNumber, email, password } = body;
-    console.log(fullName)
 
     // Check if any required field is missing or empty
     if (![fullName, phoneNumber, email, password].every(Boolean)) {
@@ -18,6 +17,16 @@ export const GET = asyncHandler(async (req) => {
             { error: "All fields are required" },
             { status: 400 }
         );
+    }
+
+    const checkUser = await User.findOne({
+        $or : [{ email: email}, { phoneNumber: phoneNumber}]
+    })
+
+    if (checkUser) {
+        return NextResponse.json(
+            {error: "user with these details already exist"},
+            {status: 400})
     }
 
     // Validate email format
@@ -39,12 +48,29 @@ export const GET = asyncHandler(async (req) => {
             password: hashedPassword,
         });
 
-        // Return success response
-        return NextResponse.json({
-            message: "User created successfully",
+        const tokenData = {
+            _id: newUser?._id,
+            username: newUser?.username,
+        }
+
+        const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, { expiresIn: "10d" })
+
+        const response = NextResponse.json({
+            message: "Signup successfull",
             success: true,
-            newUser,
-        });
+            newUser
+        })
+
+        response.cookies.set("token", token, {
+            httpOnly: true,
+            // secure: true,
+            sameSite: "Strict",  
+            maxAge: 10 * 24 * 60 * 60 * 1000
+        })
+
+        return response
+
+    
 
     } catch (error) {
         return NextResponse.json(
