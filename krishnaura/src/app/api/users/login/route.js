@@ -42,7 +42,7 @@ export const POST = asyncHandler(async (req) => {
 
         const tokenData = {
             _id: user?._id,
-            username: user?.username,
+            fullName: user?.fullName,
         }
 
         const token =  jwt.sign(tokenData, process.env.TOKEN_SECRET, { expiresIn: "10d" })
