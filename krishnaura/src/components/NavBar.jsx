@@ -55,26 +55,25 @@ export default function NavBar() {
                         </NavbarItem>
                     </NavbarContent>
                     <NavbarContent justify="end">
-                        <NavbarItem className="hidden lg:flex">
-                            <Link href={'/auth'} className="text-[1.3rem]">
-                                {<FaRegUser />}
+                        <div className="hidden lg:flex">
+                            <Link href="/auth" className="text-[1.3rem]">
+                                <FaRegUser />
                             </Link>
-                        </NavbarItem>
-                        <NavbarItem className="mx-4">
-                            <Button className="text-[1.3rem] bg-transparent">
-                                <Sheet>
-                                    <SheetTrigger className="text-[1.3rem]">{<BsBasket3 />}</SheetTrigger>
-                                    <SheetContent>
-                                        <ScrollShadow className="w-full h-full">
-                                            <Cart />
-                                        </ScrollShadow>
-                                    </SheetContent>
-                                </Sheet>
-
-                            </Button>
-
-                        </NavbarItem>
+                        </div>
+                        <div className="mx-4 mt-1.5">
+                            <Sheet>
+                                <SheetTrigger className="text-[1.3rem]">
+                                    <BsBasket3 />
+                                </SheetTrigger>
+                                <SheetContent>
+                                    <ScrollShadow className="w-full h-full">
+                                        <Cart />
+                                    </ScrollShadow>
+                                </SheetContent>
+                            </Sheet>
+                        </div>
                     </NavbarContent>
+
                 </Navbar>
             </div>
         </>

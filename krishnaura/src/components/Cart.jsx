@@ -1,5 +1,6 @@
 "use client"
 import React from 'react'
+import Link from "next/link";  
 // import { Trash, Heart } from 'lucide-react'
 
 const products = [
@@ -97,12 +98,14 @@ export function Cart() {
         >
           Back to shop
         </button>
-        <button
-          type="button"
+        <Link
+          // as={Link}
+          href='/checkout'
+          // type="button"
           className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
           >
           Checkout
-        </button>
+        </Link>
       </div>
     </div>
           </>
