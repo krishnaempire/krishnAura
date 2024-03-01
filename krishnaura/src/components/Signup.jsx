@@ -109,9 +109,20 @@ const Signup = () => {
   return (
     <>
       <div className='w-[25rem]'>
+        <div className='w-full text-center mb-4 text-[1.8rem] font-semibold'>
+          <div>
+
+          Hello! 
+          <div>
+
+          Please Sign up here
+          </div>
+          </div>
+          </div>
         <Input
           type='text'
           value={userData.fullName}
+          variant='underlined'
           placeholder='Enter your Full Name'
           radius='sm'
           onChange={(e) => setUserData({ ...userData, fullName: e.target.value })}
@@ -120,6 +131,7 @@ const Signup = () => {
           type='email'
           className='mt-5'
           value={userData.email}
+          variant='underlined'
           placeholder='Enter your email'
           radius='sm'
           onChange={(e) => setUserData({ ...userData, email: e.target.value })}
@@ -129,6 +141,7 @@ const Signup = () => {
           value={userData.phoneNumber}
           type='text'
           placeholder='Enter your phone number'
+          variant='underlined'
           radius='sm'
           onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
         />
@@ -137,15 +150,16 @@ const Signup = () => {
           value={userData.password}
           placeholder='Enter your password'
           radius='sm'
+          variant='underlined'
           onChange={(e) => setUserData({ ...userData, password: e.target.value })}
           endContent={
-            <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+            <button className='focus:outline-none' type='button'  onClick={toggleVisibility}>
               {isVisible ? 'Hide' : 'Show'}
             </button>
           }
           type={isVisible ? 'text' : 'password'}
         />
-        <Button className='mt-3 h-10 w-full' color='primary' onClick={handleOTP}>
+        <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-[#292827]'  onClick={handleOTP}>
           Send OTP
         </Button>
       </div>
