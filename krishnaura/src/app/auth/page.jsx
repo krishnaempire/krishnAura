@@ -9,7 +9,7 @@ const Auth = () => {
   const [selected, setSelected] = useState("login");
   return (
     <>
-      <div className={`h-screen mt-[10rem] flex flex-col justify-center items-center`}>
+      <div className={`h-screen mt-[9rem] flex flex-col justify-center items-center`}>
         <div className='max-w-full w-[27rem] h-[45rem]'>
           <Tabs
             size="md"

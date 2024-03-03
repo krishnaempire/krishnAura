@@ -20,11 +20,9 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <ReduxProvider>
           <Providers>
-              <NavBar />
-              <main >{children}
-
+            <NavBar />
+            {children}
             <Footer />
-              </main>
           </Providers>
         </ReduxProvider>
         <Toaster />

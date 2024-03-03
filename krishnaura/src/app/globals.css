@@ -74,3 +74,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* For Webkit-based browsers */
+/* For Webkit-based browsers */
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+  border-radius: 10px; /* Border radius of the scrollbar track */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the thumb */
+  border-radius: 10px; /* Border radius of the scrollbar thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the thumb on hover */
+}
