@@ -4,7 +4,7 @@ import React from 'react'
 
 const Checkout_page = () => {
   return (
-    <div>
+    <div className='mt-[8rem]'>
         <Checkout />
     </div>
   )

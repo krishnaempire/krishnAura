@@ -24,7 +24,7 @@ export default function NavBar() {
     // console.log(userData)
     return (
         <>
-            <Navbar shouldHideOnScroll maxWidth="full" height={"8rem"} >
+            <Navbar shouldHideOnScroll  maxWidth="full" height={"8rem"} className="z-10 fixed top-0" >
                 <NavbarBrand className="relative left-[3rem]">
                     {/* <AcmeLogo /> */}
                     <Link href="/" className="font-bold Link-inherit">

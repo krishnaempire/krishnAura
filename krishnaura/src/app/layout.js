@@ -4,6 +4,8 @@ import { Providers } from "./providers";
 import { Toaster } from "@/components/ui/toaster.jsx"
 import NavBar from "@/components/NavBar";
 import ReduxProvider from "./reduxProvider";
+import Footer from "@/components/Footer";
+// import styles from './RootLayout.module.css';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +20,11 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <ReduxProvider>
           <Providers>
-            <NavBar />
-            {children}
+              <NavBar />
+              <main >{children}
+
+            <Footer />
+              </main>
           </Providers>
         </ReduxProvider>
         <Toaster />
