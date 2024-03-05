@@ -22,7 +22,7 @@ export default function page() {
   )
   return (
     <>
-      <div className="w-full mt-[7rem] grid place-items-center">
+      <div className="w-full mt-[6rem] grid place-items-center">
 
         <Carousel
           plugins={[plugin.current]}
