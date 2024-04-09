@@ -11,7 +11,6 @@ export const POST = asyncHandler(async (req) => {
 
     try {
         const body = await req.json()
-
         const { credentials, password } = body
 
         if ((!credentials || !credentials.trim()) || (!password || !password.trim())) {
@@ -45,11 +44,11 @@ export const POST = asyncHandler(async (req) => {
             fullName: user?.fullName,
         }
 
-        const token =  jwt.sign(tokenData, process.env.TOKEN_SECRET, { expiresIn: "10d" })
+        const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, { expiresIn: "10d" })
 
         // Set cookie only when user exists and password is valid
-        
-        const response =  NextResponse.json({
+
+        const response = NextResponse.json({
             message: "Login successful",
             success: true,
             user
@@ -58,7 +57,7 @@ export const POST = asyncHandler(async (req) => {
         response.cookies.set("token", token, {
             httpOnly: true,
             // secure: true,
-            sameSite: "Strict",  
+            sameSite: "Strict",
             maxAge: 10 * 24 * 60 * 60 * 1000
         })
 

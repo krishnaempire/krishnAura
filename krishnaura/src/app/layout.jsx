@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster.jsx"
 import NavBar from "@/components/NavBar";
 import ReduxProvider from "./reduxProvider";
 import Footer from "@/components/Footer";
-// import styles from './RootLayout.module.css';
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,17 +16,20 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ReduxProvider>
-          <Providers>
-            <NavBar />
-            {children}
-            <Footer />
-          </Providers>
-        </ReduxProvider>
-        <Toaster />
-      </body>
-    </html>
+    <>
+      <html lang="en">
+        <body className={inter.className}>
+          <ReduxProvider>
+            <Providers>
+              <NavBar />
+              {children}
+              <Footer />
+            </Providers>
+          </ReduxProvider>
+          <Toaster />
+        </body>
+      </html>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+    </>
   );
 }

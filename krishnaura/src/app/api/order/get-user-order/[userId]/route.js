@@ -10,12 +10,10 @@ export const GET = asyncHandler(async (req, { params }) => {
     try {
         const { userId } = params;
 
-        // Check if userId is a valid ObjectId
         if (!isValidObjectId(userId)) {
             return NextResponse.json({ error: "Please provide a valid userId" }, { status: 400 });
         }
 
-        // Find orders by userId
         const orders = await Order.find({ userId });
 
         if (!orders || orders.length === 0) {

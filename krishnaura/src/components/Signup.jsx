@@ -3,11 +3,10 @@ import { Button, Input } from '@nextui-org/react';
 import { Modal, ModalContent, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { useToast } from '@/components/ui/use-toast';
 import useUserApi from '@/api/userApi/useUserApi';
-import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 const Signup = () => {
-  const data = useSelector(state => state.user.userData)
-
+  const router = useRouter()
   const { signup } = useUserApi();
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(false);
@@ -75,6 +74,7 @@ const Signup = () => {
       } else {
         showSuccessToast('Signup successful');
         setUserData({ email: '', phoneNumber: '', password: '' });
+        router.push("/")
       }
     } catch (err) {
       showErrorToast(err.message);

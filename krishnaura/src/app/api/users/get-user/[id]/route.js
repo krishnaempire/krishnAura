@@ -6,15 +6,15 @@ import { NextResponse } from "next/server";
 connectDB()
 
 export const GET = asyncHandler(async (req, { params }) => {
-    const { fullName } = params;
+    const { id } = params;
     
-    if (!fullName) {
+    if (!id) {
         return NextResponse.json(
-            {error: "Username not given"},
+            {error: "id not given"},
             {status: 400})
     }
 
-    const user = await User.findOne({ fullName: fullName }).select("-password -updatedAt -createdAt -verifyTokenExpiry -verifyToken")
+    const user = await User.findById(id).select("-password -updatedAt -createdAt -verifyTokenExpiry -verifyToken")
 
     if (!user) {
         return NextResponse.json(

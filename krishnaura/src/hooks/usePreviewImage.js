@@ -1,13 +1,23 @@
 "use client"
+import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 
 const usePreviewImg = () => {
+  const { toast } = useToast()
   const [imgUrl, setImgUrl] = useState([]);
-  console.log(imgUrl.length)
+  
+  
 
   const handleImageChange = (e) => {
+    if (imgUrl?.length === 4) {
+      toast({
+        description: "Only 4 images allowed"
+      })
+      return 
+      
+    }
     const file = e.target.files[0];
-    if (!file) return; // No file selected
+    if (!file) return; 
 
     if (!file.type.startsWith("image/")) {
       console.log("Invalid file type", "Please select an image file", "error");

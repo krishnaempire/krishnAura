@@ -9,15 +9,15 @@ connectDB()
 export const POST = asyncHandler(async (req) => {
     try {
         const body = await req.json()
-        const { userId, productId } = body;
+        const { userId, productId, orderId, paymentId  } = body;
 
-        if (!isValidObjectId(userId) || !isValidObjectId(productId)) {
+        if (!isValidObjectId(userId) || !isValidObjectId(productId) || !orderId || !paymentId) {
             return NextResponse.json(
                 { error: "Please provide valid userId and productId" }, 
                 { status: 400 });
         }
 
-        const newOrder = await Order.create({ userId, productId });
+        const newOrder = await Order.create({ userId, productId, orderId, paymentId });
 
         return NextResponse.json(newOrder, { status: 201 });
 

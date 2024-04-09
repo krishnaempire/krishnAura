@@ -9,9 +9,8 @@ connectDB()
 export const PATCH = asyncHandler(async (req, { params }) => {
     try {
         const { userId } = params;
-        const { fullName, email, userAvatar, address } = await req.json();
+        const { fullName, email, phoneNumber, address } = await req.json();
 
-        // Check if userId is a valid ObjectId
         if (!isValidObjectId(userId)) {
             return NextResponse.json({ error: "Please provide a valid userId" }, { status: 400 });
         }
@@ -31,13 +30,12 @@ export const PATCH = asyncHandler(async (req, { params }) => {
         if (email) {
             updateValue.email = email;
         }
-        if (userAvatar) {
-            updateValue.userAvatar = userAvatar;
+        if (phoneNumber) {
+            updateValue.phoneNumber = phoneNumber;
         }
         if (address) {
             updateValue.address = address;
         }
-        console.log(updateValue);
 
 
         const updatedUser = await User.findByIdAndUpdate(
@@ -51,7 +49,6 @@ export const PATCH = asyncHandler(async (req, { params }) => {
                 {error: 'something went wrong while updating user'},
                 {status: 500})
         }
-
         return NextResponse.json(updatedUser);
     } catch (error) {
         return NextResponse.json({ error: "Something went wrong while updating the user" }, { status: 500 });

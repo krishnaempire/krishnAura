@@ -13,6 +13,23 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0 
   },
+  off: {
+    type: String
+  },
+  
+  offPrice: {
+    type: String,
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+
+  description: {
+    type: String,
+    required: true
+  },
+
   size: [{
     name: {
       type: String,
@@ -32,7 +49,11 @@ const productSchema = new mongoose.Schema({
       type: Boolean,
       default: true 
     }
-  }]
+  }],
+  type: {
+    type: String,
+    required: true
+  }
 });
 
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
