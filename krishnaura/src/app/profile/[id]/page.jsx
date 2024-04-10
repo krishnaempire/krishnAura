@@ -59,7 +59,9 @@ const Profile = () => {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-            <Button as={Link} href={`/add-product/${id}`} variant={"bordered"} >Add Product</Button>
+            {user.isAdmin && (
+              <Button as={Link} href={`/add-product/${id}`} variant={"bordered"} >Add Product</Button>
+            )}
           </div>
         </div>
       </div>

@@ -51,10 +51,10 @@ export default function NavBar() {
                             </DropdownTrigger>
                             <DropdownMenu variant="faded" aria-label="Static Actions">
                                     <DropdownItem key="new">
-                                        <Link href={"#dress"}>Clothes</Link>
+                                        <Link href={"/#dress"}>Clothes</Link>
                                     </DropdownItem>
                                     <DropdownItem key="copy">
-                                        <Link href={"#jewellery"}>Jewellery</Link>
+                                        <Link href={"/#jewellery"}>Jewellery</Link>
                                     </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>

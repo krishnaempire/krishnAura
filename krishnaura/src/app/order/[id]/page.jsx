@@ -1,6 +1,6 @@
 "use client"
 import useProductApi from '@/api/useProductApi'
-import OrderCard from '@/components/orderCard'
+import OrderCard from '@/components/OrderCard'
 import { useToast } from '@/components/ui/use-toast'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -35,7 +35,7 @@ const Order = () => {
 
   return (
     <>
-      <div className='w-[70%] m-auto mt-[9rem] grid grid-cols-3 gap-[2rem]'>
+      <div className='w-full place-items-center mt-[9rem] grid grid-cols-3 mb-[9rem] '>
         {orders && orders.map((order, index) => (
           <OrderCard order={order} product={product[index]} key={index} />
         ))}
