@@ -3,9 +3,12 @@ import useProductApi from '@/api/useProductApi'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from "react-redux"
+
 
 
 export default function ProductPage() {
+  const user = useSelector(state => state.user.userData)
   const router = useRouter()
   const { getProduct } = useProductApi()
   const { id } = useParams()
@@ -37,6 +40,10 @@ export default function ProductPage() {
   };
 
   const handleCheckOut = () => {
+    if (!user?._id) {
+      router.push("/auth")
+      return
+    }
     if (product && selectedSize && selectedColor) {
 
       const queryString = `checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}`;
