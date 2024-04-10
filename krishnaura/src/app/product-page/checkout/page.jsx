@@ -1,11 +1,13 @@
-"use client"
-import React, { useEffect, useState, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation';
+'use client'
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router';
 import { Button }  from '@nextui-org/react'
 import useProductApi from '@/api/useProductApi';
 import { Checkout } from '@/components/Checkout'
 
-const CheckoutPage = () => {
+function CheckoutPage() {
     const router = useRouter()
     const searchParams = useSearchParams();
     const [product, setProduct] = useState()
@@ -17,10 +19,16 @@ const CheckoutPage = () => {
     const color = searchParams.get('color');
 
     useEffect(() => {
-        (async () => {
-            const data = await getProduct(id)
-            setProduct(data)
-        })()
+        const fetchData = async () => {
+            try {
+                const data = await getProduct(id)
+                setProduct(data)
+            } catch (error) {
+                console.error("Error fetching product data:", error);
+            }
+        };
+
+        fetchData();
     }, [])
 
     const handleBack = () => {
