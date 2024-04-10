@@ -55,11 +55,11 @@ export default function Cart() {
         {products.map((product) => (
           <li key={product.id} className="flex flex-col py-6 sm:flex-row sm:justify-between">
             <div className="flex w-full space-x-2 sm:space-x-4">
-              <img
+              {/* <img
                 className="h-20 w-20 flex-shrink-0 rounded object-contain outline-none dark:border-transparent sm:h-32 sm:w-32"
                 src={product.imageSrc}
                 alt={product.name}
-              />
+              /> */}
               <div className="flex w-full flex-col justify-between pb-4">
                 <div className="flex w-full justify-between space-x-2 pb-2">
                   <div className="space-y-1">

@@ -17,23 +17,24 @@ const Img = [
   "https://images.pexels.com/photos/1563355/pexels-photo-1563355.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
 ]
 
-export default function page() {
+export default function Page() {
   const { getProduct } = useProductApi()
   const [product, setProduct] = useState()
 
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getProduct();
-        setProduct(data);
-      } catch (error) {
-        console.error("Error fetching product data:", error);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const data = await getProduct();
+      setProduct(data);
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
 
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
+
 
 
   const plugin = useRef(

@@ -22,7 +22,7 @@ export default function ProductPage() {
       const data = await getProduct(id)
       setProduct(data)
     })()
-  }, [])
+  }, [id]) 
 
   useEffect(()=> {
       setSelectedColor(product?.color[0].name)
@@ -76,7 +76,7 @@ export default function ProductPage() {
                     src={url}
                     width={320}
                     height={240}
-                    alt="Nike Air Max 95 By You--0"
+                    alt="product image"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -167,47 +167,6 @@ export default function ProductPage() {
                   Checkout
                 </button>
               </div>
-              {/* <div className="py-6 ">
-                <ul className="space-y-5 pb-1 text-sm">
-                  <li>
-                    <span className="text-heading inline-block pr-2 font-semibold">SKU:</span>
-                    N/A
-                  </li>
-                  <li>
-                    <span className="text-heading inline-block pr-2 font-semibold">Category:</span>
-                    <a className="hover:text-heading transition hover:underline" href="#">
-                      kids
-                    </a>
-                  </li>
-                  <li className="productTags">
-                    <span className="text-heading inline-block pr-2 font-semibold">Tags:</span>
-                    <a
-                      className="hover:text-heading inline-block pr-1.5 transition last:pr-0 hover:underline"
-                      href="#"
-                    >
-                      Sneakers
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="shadow-sm ">
-                <header className="flex cursor-pointer items-center justify-between border-t border-gray-300 py-5 transition-colors md:py-6">
-                  <h2 className="text-heading pr-2 text-sm font-semibold leading-relaxed md:text-base lg:text-lg">
-                    Product Details
-                  </h2>
-                  <div className="relative flex h-4 w-4 flex-shrink-0 items-center justify-center">
-                    <div className="bg-heading h-0.5 w-full rounded-sm" />
-                    <div className="bg-heading absolute bottom-0 h-full w-0.5 origin-bottom scale-0 transform rounded-sm transition-transform duration-500 ease-in-out" />
-                  </div>
-                </header>
-                <div>
-                  <div className="pb-6 text-sm leading-7 text-gray-600 md:pb-7">
-                    Our Customer Experience Team is available 7 days a week and we offer 2 ways to get
-                    in contact.Email and Chat . We try to reply quickly, so you need not to wait too
-                    long for a response!.
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
