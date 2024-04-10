@@ -1,23 +1,23 @@
 'use client'
-import { useSearchParams } from 'next/navigation'
+// import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { Button }  from '@nextui-org/react'
 import useProductApi from '@/api/useProductApi';
-import { Checkout } from '@/components/Checkout'
+// import { Checkout } from '@/components/Checkout'
 import {Spinner} from "@nextui-org/react"
 
 function CheckoutPage() {
     const router = useRouter()
-    const searchParams = useSearchParams();
-    const [product, setProduct] = useState()
+    // const searchParams = useSearchParams();
+    const [product, setProduct] = useState([])
     const { getProduct } = useProductApi()
 
-    const id = searchParams.get('id');
-    const quantity = searchParams.get('quantity');
-    const size = searchParams.get('size');
-    const color = searchParams.get('color');
+    // const id = searchParams.get('id');
+    // const quantity = searchParams.get('quantity');
+    // const size = searchParams.get('size');
+    // const color = searchParams.get('color');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,7 +36,7 @@ function CheckoutPage() {
         router.push(`/product-page/${id}`)
     }
 
-    if (!product) {
+    if (product.length === 0) {
         return (
             <div className='w-full h-screen flex justify-center items-center'>
                 <Spinner size='lg' />
@@ -57,9 +57,9 @@ function CheckoutPage() {
                 >
                     Back
                 </Button>
-                {product?._id && (
+                {/* {product?._id && (
                     <Checkout product={product} color={color} size={size} quantity={quantity} />
-                )}
+                )} */}
             </div>
         </Suspense>
     )

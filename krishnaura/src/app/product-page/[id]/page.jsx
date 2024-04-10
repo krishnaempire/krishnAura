@@ -2,7 +2,7 @@
 import useProductApi from '@/api/useProductApi'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useSelector } from "react-redux"
 import {Spinner} from "@nextui-org/react"
 
@@ -74,7 +74,7 @@ export default function ProductPage() {
 
 
   return (
-    <>
+    <Suspense>
       
 
         <div className="mx-auto mt-[7rem] max-w-7xl px-4 md:px-8 2xl:px-16">
@@ -180,6 +180,6 @@ export default function ProductPage() {
             </div>
           </div>
         </div>
-    </>
+    </Suspense>
   )
 }
