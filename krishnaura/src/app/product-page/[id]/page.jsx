@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from "react-redux"
+import {Spinner} from "@nextui-org/react"
 
 
 
@@ -59,6 +60,15 @@ export default function ProductPage() {
   const handleColorClick = (color) => {
     setSelectedColor(color);
   };
+
+  if (!product) {
+    return (
+        <div className='w-full h-screen flex justify-center items-center'>
+            <Spinner size='lg' />
+        </div>
+    );
+
+}
 
 
 

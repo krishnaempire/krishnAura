@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button }  from '@nextui-org/react'
 import useProductApi from '@/api/useProductApi';
 import { Checkout } from '@/components/Checkout'
+import {Spinner} from "@nextui-org/react"
 
 function CheckoutPage() {
     const router = useRouter()
@@ -35,8 +36,18 @@ function CheckoutPage() {
         router.push(`/product-page/${id}`)
     }
 
+    if (!product) {
+        return (
+            <div className='w-full h-screen flex justify-center items-center'>
+                <Spinner size='lg' />
+            </div>
+        );
+
+    }
+
+
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense>
             <div className='mt-[6rem] flex '>
                 <Button
                     variant={"bordered"}
