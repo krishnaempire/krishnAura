@@ -2,7 +2,7 @@
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Button }  from '@nextui-org/react'
 import useProductApi from '@/api/useProductApi';
 import { Checkout } from '@/components/Checkout'
