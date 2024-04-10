@@ -9,7 +9,7 @@ import {Spinner} from "@nextui-org/react"
 
 function CheckoutPage() {
     const router = useRouter()
-    const searchParams = useSearchParams();
+    const [searchParamsReady, setSearchParamsReady] = useState(false);
     const [product, setProduct] = useState()
     const { getProduct } = useProductApi()
 
@@ -31,11 +31,17 @@ function CheckoutPage() {
         fetchData();
     }, [])
 
+    useEffect(() => {
+        if (id !== null && quantity !== null && size !== null && color !== null) {
+            setSearchParamsReady(true);
+        }
+    }, [id, quantity, size, color]);
+
     const handleBack = () => {
         router.push(`/product-page/${id}`)
     }
 
-    if (!product) {
+    if (!searchParamsReady || !product) {
         return (
             <div className='w-full h-screen flex justify-center items-center'>
                 <Spinner size='lg' />
@@ -43,7 +49,6 @@ function CheckoutPage() {
         );
 
     }
-
 
     return (
         <Suspense fallback={<p>Loading feed...</p>}>
