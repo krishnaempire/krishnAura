@@ -14,12 +14,12 @@ import { ScrollShadow } from "@nextui-org/react";
 import Cart from "./Cart";
 import KA from "../../public/KA.png"
 import Image from "next/image";
-import getUser from "@/api/getUser";
+import useGetUser from "@/api/getUser";
 
 
 
 export default function NavBar() {
-    const { updateSession } = getUser()
+    const { updateSession } = useGetUser()
     const user = useSelector(state => state.user.userData)
 
     useEffect(() => {

@@ -4,10 +4,10 @@ import { Input, Button, Spinner } from "@nextui-org/react";
 import { useSelector } from 'react-redux';
 import useUserApi from '@/api/userApi/useUserApi';
 import { useToast } from '@/components/ui/use-toast';
-import getUser from '@/api/getUser';
+import useGetUser from '@/api/getUser';
 
 const UpdateProfile = () => {
-    const { updateSession } = getUser()
+    const { updateSession } = useGetUser()
     const { toast } = useToast()
     const { update } = useUserApi();
     const [updating, setUpdating] = useState(false)

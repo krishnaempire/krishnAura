@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import useUserApi from "./userApi/useUserApi";
 
-const getUser = () => {
+const useGetUser = () => {
   const { getUser } = useUserApi();
   const dispatch = useDispatch();
 
@@ -43,4 +43,4 @@ const getUser = () => {
   };
 }
 
-export default getUser;
+export default useGetUser;
