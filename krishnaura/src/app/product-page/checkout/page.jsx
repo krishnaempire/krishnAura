@@ -8,6 +8,7 @@ import { Checkout } from '@/components/Checkout'
 import {Spinner} from "@nextui-org/react"
 
 function CheckoutPage() {
+    const searchParams = useSearchParams()
     const router = useRouter()
     const [searchParamsReady, setSearchParamsReady] = useState(false);
     const [product, setProduct] = useState()
