@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button }  from '@nextui-org/react'
 import useProductApi from '@/api/useProductApi';
@@ -27,9 +27,8 @@ const CheckoutPage = () => {
         router.push(`/product-page/${id}`)
     }
 
-
     return (
-        <>
+        <Suspense fallback={<div>Loading...</div>}>
             <div className='mt-[6rem] flex '>
                 <Button
                     variant={"bordered"}
@@ -43,7 +42,7 @@ const CheckoutPage = () => {
                     <Checkout product={product} color={color} size={size} quantity={quantity} />
                 )}
             </div>
-        </>
+        </Suspense>
     )
 }
 
