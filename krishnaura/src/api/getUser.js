@@ -1,11 +1,12 @@
 import { setUser } from "@/redux/userSlice";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import useUserApi from "./userApi/useUserApi";
 
 const getUser = () => {
-  const { getUser } = useUserApi()
+  const { getUser } = useUserApi();
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
   const updateSession = async () => {
     try {
       const res = await fetch('/api/get-user', { cache: 'no-store' }, {
@@ -32,9 +33,14 @@ const getUser = () => {
     }
   }
 
+  useEffect(() => {
+    updateSession(); // Call the function when the component mounts
+
+  }, [updateSession]); // Add updateSession as dependency to useEffect
+
   return {
-    updateSession
-  }
+    updateSession // Include updateSession in the return object
+  };
 }
 
 export default getUser;
