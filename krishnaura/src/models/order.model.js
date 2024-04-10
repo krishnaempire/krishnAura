@@ -15,9 +15,21 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  address: {
+    type: String,
+    required: true
+  },
+  phoneNumber: {
+    type: Number,
+    required: true
+  },
   paymentId: {
     type: String,
     required: true
+  },
+  isDone: {
+    type: Boolean,
+    default: false
   }
 });
 

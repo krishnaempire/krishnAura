@@ -1,17 +1,16 @@
 "use client"
-import React, { useState } from 'react';
-import { Input, Button } from "@nextui-org/react";
+import React, { useEffect, useState } from 'react';
+import { Input, Button, Spinner } from "@nextui-org/react";
 import { useSelector } from 'react-redux';
 import useUserApi from '@/api/userApi/useUserApi';
 import { useToast } from '@/components/ui/use-toast';
-import { useDispatch } from 'react-redux';
 import getUser from '@/api/getUser';
 
 const UpdateProfile = () => {
     const { updateSession } = getUser()
     const { toast } = useToast()
     const { update } = useUserApi();
-    const [ updating, setUpdating ] = useState(false)
+    const [updating, setUpdating] = useState(false)
     const user = useSelector(state => state.user.userData);
     const id = user?._id
     const [userData, setUserData] = useState({
@@ -45,7 +44,7 @@ const UpdateProfile = () => {
             toast({
                 description: 'Profile updated successfully!'
             })
-            return 
+            return
         } catch (error) {
 
             console.error('Error updating profile:', error);
@@ -56,6 +55,31 @@ const UpdateProfile = () => {
             setUpdating(false)
         }
     };
+
+    useEffect(() => {
+        (async () => {
+            await updateSession()
+        })()
+    }, [])
+
+    useEffect(() => {
+        setUserData(prevUserData => ({
+            ...prevUserData,
+            email: user?.email || "",
+            fullName: user?.fullName || "",
+            phoneNumber: user?.phoneNumber || "",
+            address: user?.address || ""
+        }));
+    }, [user]);
+
+    if (!user?._id) {
+        return (
+            <div className='w-full h-screen flex justify-center items-center'>
+                <Spinner size='lg' />
+            </div>
+        );
+
+    }
 
     return (
         <div className='mt-[8rem] h-[20rem] mb-[10rem] w-full flex justify-center z-0'>

@@ -76,55 +76,10 @@ const useProductApi = () => {
         }
     }
 
-    const addOrder = async (orderData) => {
-        try {
-            const response = await fetch("/api/order/add-order", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(orderData)
-            });
-    
-            if (!response.ok) {
-                toast({
-                    description: "Failed to add order"
-                })
-            }
-
-        } catch (error) {
-            console.error("Error adding order:", error);
-            toast({
-                description: error.message
-            })
-        }
-    };
-    
-    const getUserOrder = async (id) => {
-        try {
-            const response = await fetch(`/api/order/get-user-order/${id}`)
-
-            if (!response.ok) {
-                toast({
-                    description: "Failed to get orders"
-                })
-            }
-            const data = await response.json()
-            return data
-
-        } catch (error) {
-            console.error("Error getting orders:", error);
-            toast({
-                description: error.message
-            })
-        }
-    };
     
     return {
         addProduct,
         getProduct,
-        addOrder,
-        getUserOrder
     };
 };
 

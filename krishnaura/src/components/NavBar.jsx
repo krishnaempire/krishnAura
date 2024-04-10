@@ -6,7 +6,7 @@ import {
     SheetContent,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux"
 import Link from "next/link";
 import { FaRegUser } from "react-icons/fa6";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
@@ -60,15 +60,15 @@ export default function NavBar() {
                         </Dropdown>
                     </NavbarItem>
                     <NavbarItem isActive>
-                        <Button as={Link} href={`/order/${user?._id}`} color="foreground" className="font-semibold">
+                        <Button as={Link} href={user?._id ? `/order/${user?._id}` : "/auth"} color="foreground" className="font-semibold">
                             Orders
                         </Button>
                     </NavbarItem>
-                    <NavbarItem>
+                    {/* <NavbarItem>
                         <Button color="foreground" className="font-semibold" >
                             Integrations
                         </Button>
-                    </NavbarItem>
+                    </NavbarItem> */}
                 </NavbarContent>
                 <NavbarContent justify="end">
                     <div className="hidden lg:flex">

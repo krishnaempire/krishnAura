@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux'
 import { useToast } from './ui/use-toast'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
-import useProductApi from '@/api/useProductApi'
+import useOrderApi from '@/api/useOrderApi'
 
 export function Checkout({ product, size, color, quantity }) {
-  const {addOrder} = useProductApi()
+  const {addOrder} = useOrderApi()
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [phoneVerified, setPhoneVerified] = useState(false)
@@ -108,7 +108,13 @@ export function Checkout({ product, size, color, quantity }) {
             description: "Payment Invalid"
           });
         }
-        const orderData = payment.orderData
+        let orderData = payment.orderData
+
+        orderData = {
+          ...orderData,
+          address: userData.address,
+          phoneNumber: userData.phoneNumber
+        }
         await addOrder(orderData)
         
         onOpen()
