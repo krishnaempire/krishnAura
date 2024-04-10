@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useToast } from './ui/use-toast'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox } from '@nextui-org/react'
@@ -138,7 +138,7 @@ export function Checkout({ product, size, color, quantity }) {
   }
 
   return (
-    <>
+    <Suspense fallback={<p>Loading feed...</p>}>
       {product && (
 
         < div className="mx-auto my-4 max-w-4xl md:my-6">
@@ -354,6 +354,6 @@ export function Checkout({ product, size, color, quantity }) {
           )}
         </ModalContent>
       </Modal>
-    </>
+    </Suspense>
   )
 }

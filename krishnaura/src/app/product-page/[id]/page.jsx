@@ -74,7 +74,7 @@ export default function ProductPage() {
 
 
   return (
-    <Suspense>
+    <Suspense fallback={<p>Loading feed...</p>}>
       
 
         <div className="mx-auto mt-[7rem] max-w-7xl px-4 md:px-8 2xl:px-16">

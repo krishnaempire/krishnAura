@@ -46,7 +46,7 @@ function CheckoutPage() {
 
 
     return (
-        <Suspense>
+        <Suspense fallback={<p>Loading feed...</p>}>
             <div className='mt-[6rem] flex '>
                 <Button
                     variant={"bordered"}
