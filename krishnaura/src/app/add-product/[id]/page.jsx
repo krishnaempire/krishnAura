@@ -81,7 +81,7 @@ const AddProduct = () => {
 
   const handleSumbit = async () => {
 
-    if (!productValue.name || !productValue.type || !productValue.stock || productValue.color.length === 0 || productValue.size.length === 0) {
+    if (!productValue.name || !productValue.type || !productValue.stock || productValue.color.length !== 3 || productValue.size.length === 0) {
       toast({
         description: "All fields are required"
       })
