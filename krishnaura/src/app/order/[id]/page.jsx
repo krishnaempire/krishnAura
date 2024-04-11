@@ -42,6 +42,7 @@ const Order = () => {
       try {
 
         const orderData = await getAllOrder()
+        console.log(orderData)
         setOrders(orderData)
 
         const productArray = await Promise.all(orderData.map(async order => {
