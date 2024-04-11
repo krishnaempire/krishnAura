@@ -14,7 +14,7 @@ function Search() {
 }
 
 function Searchbar() {
-    const { id, quantity, size, color } = Search();
+    // const { id, quantity, size, color } = Search();
     return (
         <Suspense>
             <div className='mt-[10rem]'>hello</div>
