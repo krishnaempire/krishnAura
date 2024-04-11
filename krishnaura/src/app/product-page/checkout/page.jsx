@@ -9,7 +9,7 @@ function Search() {
   return <input placeholder="Search..." />
 }
  
-export function CheckoutPage() {
+function CheckoutPage() {
   return (
     // You could have a loading skeleton as the `fallback` too
     <Suspense>
@@ -17,3 +17,5 @@ export function CheckoutPage() {
     </Suspense>
   )
 }
+
+export default CheckoutPage
