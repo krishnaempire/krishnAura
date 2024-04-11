@@ -9,7 +9,7 @@ import { Spinner } from "@nextui-org/react"
 
 function CheckoutPage() {
     const router = useRouter()
-    const searchParams = useSearchParams()
+    // const searchParams = useSearchParams()
     const [searchParamsReady, setSearchParamsReady] = useState(false);
     const [product, setProduct] = useState()
     const { getProduct } = useProductApi()
