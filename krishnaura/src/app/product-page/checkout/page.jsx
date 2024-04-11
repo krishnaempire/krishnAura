@@ -1,19 +1,20 @@
 'use client'
  
+import { Checkout } from '@/components/Checkout'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
  
 function Search() {
-    
-    return <input placeholder="Search..." />
+  const searchParams = useSearchParams()
+ 
+  
 }
-
+ 
 function CheckoutPage() {
-    const searchParams = useSearchParams()
   return (
     // You could have a loading skeleton as the `fallback` too
     <Suspense>
-      <Search />
+      <Checkout />
     </Suspense>
   )
 }
