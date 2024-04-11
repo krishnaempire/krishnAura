@@ -13,7 +13,7 @@ function Search() {
     return { id, quantity, size, color };
 }
 
-export function Searchbar() {
+function Searchbar() {
     const { id, quantity, size, color } = useSearchParams();
     return (
         <Suspense>
@@ -21,3 +21,5 @@ export function Searchbar() {
         </Suspense>
     )
 }
+
+export default Searchbar
