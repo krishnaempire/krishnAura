@@ -5,19 +5,18 @@ import React, { useEffect, useState } from 'react'
 import { Button }  from '@nextui-org/react'
 import useProductApi from '@/api/useProductApi';
 import { Checkout } from '@/components/Checkout'
-import {Spinner} from "@nextui-org/react"
+import { Spinner } from "@nextui-org/react"
 
 function CheckoutPage() {
-    const searchParams = useSearchParams()
     const router = useRouter()
     const [searchParamsReady, setSearchParamsReady] = useState(false);
     const [product, setProduct] = useState()
     const { getProduct } = useProductApi()
 
-    const id = searchParams.get('id');
-    const quantity = searchParams.get('quantity');
-    const size = searchParams.get('size');
-    const color = searchParams.get('color');
+    const id = useSearchParams.get('id');
+    const quantity = useSearchParams.get('quantity');
+    const size = useSearchParams.get('size');
+    const color = useSearchParams.get('color');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +27,6 @@ function CheckoutPage() {
                 console.error("Error fetching product data:", error);
             }
         };
-
         fetchData();
     }, [])
 
@@ -48,26 +46,24 @@ function CheckoutPage() {
                 <Spinner size='lg' />
             </div>
         );
-
     }
 
     return (
-        <Suspense fallback={<p>Loading feed...</p>}>
-            <div className='mt-[6rem] flex '>
-                <Button
-                    variant={"bordered"}
-                    className='relative top-4 left-2'
-                    onClick={handleBack}
-                    disabled={!product?._id}
-                >
-                    Back
-                </Button>
-                {product?._id && (
+        <div className='mt-[6rem] flex '>
+            <Button
+                variant={"bordered"}
+                className='relative top-4 left-2'
+                onClick={handleBack}
+                disabled={!product?._id}
+            >
+                Back
+            </Button>
+            {product?._id && (
+                <Suspense fallback={<p>Loading checkout...</p>}>
                     <Checkout product={product} color={color} size={size} quantity={quantity} />
-                )}
-            </div>
-        </Suspense>
+                </Suspense>
+            )}
+        </div>
     )
 }
-
 export default CheckoutPage
