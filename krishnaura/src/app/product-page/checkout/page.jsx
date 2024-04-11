@@ -14,10 +14,10 @@ function CheckoutPage() {
     const [product, setProduct] = useState()
     const { getProduct } = useProductApi()
 
-    const id = searchParams.get('id');
-    const quantity = searchParams.get('quantity');
-    const size = searchParams.get('size');
-    const color = searchParams.get('color');
+    // const id = searchParams.get('id');
+    // const quantity = searchParams.get('quantity');
+    // const size = searchParams.get('size');
+    // const color = searchParams.get('color');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,13 +41,15 @@ function CheckoutPage() {
         router.push(`/product-page/${id}`)
     }
 
-    if (!searchParamsReady || !product) {
-        return (
-            <div className='w-full h-screen flex justify-center items-center'>
-                <Spinner size='lg' />
-            </div>
-        );
-    }
+    // if (!searchParamsReady || !product) {
+    //     return (
+    //         <div className='w-full h-screen flex justify-center items-center'>
+    //             <Spinner size='lg' />
+    //         </div>
+    //     );
+    // }
+
+    
 
     return (
         <div className='mt-[6rem] flex '>
