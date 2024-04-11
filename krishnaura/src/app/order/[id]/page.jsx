@@ -65,7 +65,7 @@ const Order = () => {
       fetchOrders();
     }
     
-  }, [id])
+  }, [])
 
   if (!fetching && !orders[0]?._id) {
     return (
