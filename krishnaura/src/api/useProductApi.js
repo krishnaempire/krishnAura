@@ -32,7 +32,7 @@ const useProductApi = () => {
             })
         } catch (error) {
             toast({
-                description: error.message
+                description: "Please try again"
             })
         }
     }

@@ -29,7 +29,7 @@ const useOrderApi = () => {
     
     const getUserOrder = async (id) => {
         try {
-            const response = await fetch(`/api/order/get-user-order/${id}`)
+            const response = await fetch(`/api/order/get-user-order/${id}`, { cache: 'no-store' })
 
             if (!response.ok) {
                 toast({
@@ -74,7 +74,7 @@ const useOrderApi = () => {
 
     const getAllOrder = async () => {
         try {
-            const response = await fetch(`/api/order/get-all-order`)
+            const response = await fetch(`/api/order/get-all-order`, { cache: 'no-store' })
 
             if (!response.ok) {
                 toast({

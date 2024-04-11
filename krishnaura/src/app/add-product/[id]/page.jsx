@@ -80,7 +80,6 @@ const AddProduct = () => {
   };
 
   const handleSumbit = async () => {
-  console.log(productValue.name)
 
     if (!productValue.name || !productValue.type || !productValue.stock || productValue.color.length === 0 || productValue.size.length === 0) {
       toast({
@@ -88,7 +87,24 @@ const AddProduct = () => {
       })
       return
     }
-    await addProduct(productValue, imgUrl)
+    try {
+      await addProduct(productValue, imgUrl)
+      setProductValue({
+        name: "",
+        type: "",
+        stock: "",
+        price: "",
+        description: "",
+        off: "",
+        offPrice: "",
+        size: [],
+        color: [],
+      });
+      setImgUrl("");
+      
+    } catch (error) {
+      
+    }
   }
 
   return (
