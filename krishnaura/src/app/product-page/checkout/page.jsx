@@ -9,14 +9,15 @@ import { Spinner } from "@nextui-org/react"
 
 function CheckoutPage() {
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [searchParamsReady, setSearchParamsReady] = useState(false);
     const [product, setProduct] = useState()
     const { getProduct } = useProductApi()
 
-    const id = useSearchParams.get('id');
-    const quantity = useSearchParams.get('quantity');
-    const size = useSearchParams.get('size');
-    const color = useSearchParams.get('color');
+    const id = searchParams.get('id');
+    const quantity = searchParams.get('quantity');
+    const size = searchParams.get('size');
+    const color = searchParams.get('color');
 
     useEffect(() => {
         const fetchData = async () => {
