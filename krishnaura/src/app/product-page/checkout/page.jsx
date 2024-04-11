@@ -19,6 +19,9 @@ function CheckoutPage() {
     // const size = searchParams.get('size');
     // const color = searchParams.get('color');
     const id = 123
+    const quantity = 1
+    const size = "xl"
+    const color = "green"
     useEffect(() => {
         const fetchData = async () => {
             try {
