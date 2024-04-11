@@ -7,7 +7,7 @@ import useProductApi from '@/api/useProductApi';
 import { Checkout } from '@/components/Checkout'
 import {Spinner} from "@nextui-org/react"
 
-function getParams() {
+function GetParams() {
     const searchParams = useSearchParams()
     const id = searchParams.get('id');
     const quantity = searchParams.get('quantity');
@@ -18,7 +18,7 @@ function getParams() {
 
 function CheckoutPage() {
     const router = useRouter()
-    const { id, quantity, size, color } = getParams();
+    const { id, quantity, size, color } = GetParams();
     const [searchParamsReady, setSearchParamsReady] = useState(false);
     const [product, setProduct] = useState()
     const { getProduct } = useProductApi()
