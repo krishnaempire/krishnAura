@@ -20,7 +20,8 @@ export function Checkout({ product, size, color, quantity }) {
   const [userData, setUserData] = useState({
     fullName: user?.fullName || "",
     phoneNumber: user?.phoneNumber || "",
-    address: user?.address || ""
+    address: user?.address || "",
+    postalCode: ""
   })
   const price = product?.price * quantity
   const userId = user?._id
@@ -64,7 +65,7 @@ export function Checkout({ product, size, color, quantity }) {
       })
       return
     }
-    if (!userData.phoneNumber || !userData.address) {
+    if (!userData.phoneNumber || !userData.address || !userData.postalCode) {
       return toast({
         description: "Fill all the fields"
       })
@@ -92,9 +93,7 @@ export function Checkout({ product, size, color, quantity }) {
         const value = {
           ...response,
           userId,
-          productId,
-          color,
-          quantity
+          productId
         }
         const res = await fetch("/api/payment/payment-verification", {
           method: "POST",
@@ -115,7 +114,10 @@ export function Checkout({ product, size, color, quantity }) {
         orderData = {
           ...orderData,
           address: userData.address,
-          phoneNumber: userData.phoneNumber
+          phoneNumber: userData.phoneNumber,
+          color,
+          quantity,
+          postalCode: userData.postalCode
         }
         await addOrder(orderData)
         
@@ -236,8 +238,9 @@ export function Checkout({ product, size, color, quantity }) {
                                 <div className="mt-1">
                                   <input
                                     type="text"
-                                    id="postal-code"
-                                    name="postal-code"
+                                    name="postalCode"
+                                    value={userData.postalCode}
+                                    onChange={handleInputChange}
                                     autoComplete="postal-code"
                                     className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                                   />

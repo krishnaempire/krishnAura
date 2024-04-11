@@ -52,7 +52,7 @@ const Order = () => {
         
       } catch (error) {
         toast({
-          description: "Error fetching orders"
+          description: "No Orders"
         })
       } finally {
         setFetching(false)
@@ -67,7 +67,7 @@ const Order = () => {
     
   }, [id])
 
-  if (!fetching) {
+  if (!fetching && !orders[0]?._id) {
     return (
       <div className='w-full h-screen flex justify-center items-center text-[1.3rem] font-medium'>
           No Orders

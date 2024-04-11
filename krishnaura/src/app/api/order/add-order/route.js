@@ -9,15 +9,15 @@ connectDB()
 export const POST = asyncHandler(async (req) => {
     try {
         const body = await req.json()
-        const { userId, productId, orderId, paymentId, address, phoneNumber, color, quantity } = body;
+        const { userId, productId, orderId, paymentId, address, phoneNumber, color, quantity, postalCode } = body;
 
-        if (!isValidObjectId(userId) || !isValidObjectId(productId) || !orderId || !paymentId || !address || !phoneNumber || !color || !quantity) {
+        if (!isValidObjectId(userId) || !isValidObjectId(productId) || !orderId || !paymentId || !address || !phoneNumber || !color || !quantity || !postalCode) {
             return NextResponse.json(
-                { error: "All fields are required"}, 
+                { error: "All fields are required"},
                 { status: 400 });
         }
 
-        const newOrder = await Order.create({ userId, productId, orderId, paymentId, address, phoneNumber, color, quantity });
+        const newOrder = await Order.create({ userId, productId, orderId, paymentId, address, phoneNumber, color, quantity, postalCode });
 
         return NextResponse.json(newOrder, { status: 201 });
 
