@@ -92,7 +92,9 @@ export function Checkout({ product, size, color, quantity }) {
         const value = {
           ...response,
           userId,
-          productId
+          productId,
+          color,
+          quantity
         }
         const res = await fetch("/api/payment/payment-verification", {
           method: "POST",

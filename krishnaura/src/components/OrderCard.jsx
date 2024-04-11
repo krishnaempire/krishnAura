@@ -16,7 +16,7 @@ const OrderCard = ({ order, product, isAdmin }) => {
 
   return (
     <div className="h-screen">
-      <div className={`w-[18rem] h-[23rem] ${isAdmin ? "h-[10rem]" : "h-[8rem]"} rounded-[1.5rem] border-1 border-gray-300 ${isDone && "bg-gray-100"}`}>
+      <div className={`w-[18rem] h-[26rem] ${isAdmin ? "h-[26rem]" : "h-[24rem]"} rounded-[1.5rem] border-1 border-gray-300 ${isDone && "bg-gray-100"}`}>
         <div className="flex flex-col w-[95%] h-full m-auto items-center gap-2 justify-center ">
           <div className="flex flex-col w-[90%] items-center gap-2 ">
 
@@ -35,6 +35,14 @@ const OrderCard = ({ order, product, isAdmin }) => {
               </div>
               <div className="flex gap-2 items-center">
                 <p className="text-[.9rem]">phone Number:</p>
+                <p className="text-[.8rem]">{order.phoneNumber}</p>
+              </div>
+              <div className="flex gap-2 items-center">
+                <p className="text-[.9rem]">Color:</p>
+                <p className="text-[.8rem]">{order.phoneNumber}</p>
+              </div>
+              <div className="flex gap-2 items-center">
+                <p className="text-[.9rem]">Quantity:</p>
                 <p className="text-[.8rem]">{order.phoneNumber}</p>
               </div>
               <div className="flex gap-2 ">

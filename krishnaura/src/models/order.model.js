@@ -27,6 +27,14 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  color: {
+    type: String,
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true
+  },
   isDone: {
     type: Boolean,
     default: false
