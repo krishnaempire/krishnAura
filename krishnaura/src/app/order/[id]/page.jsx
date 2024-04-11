@@ -15,7 +15,7 @@ const Order = () => {
   const { getUserOrder, getAllOrder } = useOrderApi()
   const { getProduct } = useProductApi() 
   const { id } = useParams()
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState()
   const [fetching, setFetching] = useState(true)
 
 
@@ -67,7 +67,7 @@ const Order = () => {
     
   }, [id])
 
-  if (!fetching &&  orders.length === 0) {
+  if (!fetching) {
     return (
       <div className='w-full h-screen flex justify-center items-center text-[1.3rem] font-medium'>
           No Orders
@@ -75,7 +75,7 @@ const Order = () => {
   );
   }
 
-  if (orders.length === 0) {
+  if (!orders) {
     return (
         <div className='w-full h-screen flex justify-center items-center'>
             <Spinner size='lg' />

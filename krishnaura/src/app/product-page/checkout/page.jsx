@@ -9,7 +9,7 @@ function CheckoutComponent() {
     const router = useRouter();
     const { getProduct } = useProductApi();
     const [product, setProduct] = useState();
-    const [searchParamsReady, setSearchParamsReady] = useState(true);
+    const [searchParamsReady, setSearchParamsReady] = useState(false);
 
     const searchParams = useSearchParams()
     const id = searchParams.get('id');
@@ -19,15 +19,12 @@ function CheckoutComponent() {
 
     useEffect(() => {
         const fetchData = async () => {
-            setSearchParamsReady(true)
             try {
                 const data = await getProduct(id)
                 setProduct(data)
                 setSearchParamsReady(true);
             } catch (error) {
                 console.error("Error fetching product data:", error);
-            } finally {
-                setSearchParamsReady(false)
             }
         };
         fetchData();
@@ -37,15 +34,7 @@ function CheckoutComponent() {
         router.push(`/product-page/${id}`);
     }
 
-    if (!searchParamsReady && !product) {
-        return (
-            <div className='w-full h-screen flex justify-center items-center'>
-                <div className='text-[1.3rem] font-medium'>No Orders</div>
-            </div>
-        );
-    }
-
-    if (searchParamsReady || !product) {
+    if (!searchParamsReady || !product) {
         return (
             <div className='w-full h-screen flex justify-center items-center'>
                 <Spinner size='lg' />
