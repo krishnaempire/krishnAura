@@ -108,8 +108,10 @@ export default function NavBar() {
               <SheetTrigger
                 className="text-[1.4rem] hover:scale-125 transform duration-300 border-none"
                 onClick={handleCartClick}
-              >
+                disabled={!user?._id}
+                >
                 <HiOutlineShoppingBag
+
 
                 />
               </SheetTrigger>
