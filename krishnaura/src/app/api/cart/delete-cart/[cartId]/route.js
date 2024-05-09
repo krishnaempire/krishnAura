@@ -9,19 +9,19 @@ connectDB()
 export const DELETE = asyncHandler(async (req, { params }) => {
     try {
         const { cartId } = params;
-
+        console.log(cartId)
         // Check if cartItemId is a valid ObjectId
-        if (!isValidObjectId(cartItemId)) {
+        if (!isValidObjectId(cartId)) {
             return NextResponse.json({ error: "Please provide a valid cartItemId" }, { status: 400 });
         }
 
         // Find the cart item by cartItemId
         const cartItem = await Cart.findById(cartId);
-
+        
         if (!cartItem) {
             return NextResponse.json({ message: "Cart item not found" }, { status: 404 });
         }
-
+        
         // Delete the cart item
         await Cart.findByIdAndDelete(cartId);
 

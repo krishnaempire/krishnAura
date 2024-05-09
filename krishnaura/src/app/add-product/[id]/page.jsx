@@ -1,6 +1,6 @@
 "use client"
 import React, { useRef, useState } from 'react';
-import { Button, Input, Radio, RadioGroup, ScrollShadow } from '@nextui-org/react';
+import { Button, Input, Radio, RadioGroup, ScrollShadow, Textarea } from '@nextui-org/react';
 import usePreviewImg from '@/hooks/usePreviewImage';
 import useProductApi from '@/api/useProductApi';
 import { useToast } from '@/components/ui/use-toast';
@@ -13,7 +13,6 @@ const AddProduct = () => {
     name: "",
     type: "",
     stock: "",
-    price: "",
     description: "",
     off: "",
     offPrice: "",
@@ -21,7 +20,7 @@ const AddProduct = () => {
     color: []
   });
 
-  const [newSize, setNewSize] = useState({ name: "", available: true });
+  const [newSize, setNewSize] = useState({ name: "", available: true, price: "" });
   const [newColor, setNewColor] = useState({ name: "", available: true });
   const imageRef = useRef(null);
 
@@ -46,15 +45,20 @@ const AddProduct = () => {
   };
 
   const handleAddSize = () => {
-    if (newSize.name.trim() !== "") {
-      setProductValue(prevState => ({
+    if (newSize.name.trim() !== "" && newSize.price.trim() !== "") {
+      setProductValue((prevState) => ({
         ...prevState,
-        size: [...prevState.size, newSize]
+        size: [...prevState.size, newSize],
       }));
-      setNewSize({ name: "", available: true });
+      setNewSize({ name: "", available: true, price: "" });
+    } else {
+      toast({
+        description: "Both size name and price are required",
+      });
     }
   };
-
+  
+  
   const handleAddColor = () => {
     if (newColor.name.trim() !== "") {
       setProductValue(prevState => ({
@@ -81,7 +85,7 @@ const AddProduct = () => {
 
   const handleSumbit = async () => {
 
-    if (!productValue.name || !productValue.type || !productValue.stock || productValue.color.length !== 3 || productValue.size.length === 0) {
+    if (!productValue.name || !productValue.type || !productValue.stock || productValue.color.length === 0 || productValue.size.length === 0) {
       toast({
         description: "All fields are required"
       })
@@ -93,7 +97,6 @@ const AddProduct = () => {
         name: "",
         type: "",
         stock: "",
-        price: "",
         description: "",
         off: "",
         offPrice: "",
@@ -101,21 +104,21 @@ const AddProduct = () => {
         color: [],
       });
       setImgUrl("");
-      
+
     } catch (error) {
-      
+
     }
   }
 
   return (
     <>
       <div className='w-[70%] m-auto flex justify-evenly mt-[8rem] mb-[10rem] '>
-        <div className='flex flex-col gap-3'>
+        <div className='flex flex-col gap-3 mr-2'>
           <div>
             <Button onClick={() => imageRef.current.click()} variant={"bordered"}>Add Image</Button>
-            <input type="file" hidden ref={imageRef} onChange={handleImageChange}/>
+            <input type="file" hidden ref={imageRef} onChange={handleImageChange} />
           </div>
-          <div className='flex flex-wrap justify-evenly border-1 w-[20rem] h-[47rem] p-[1rem] rounded-lg'>
+          <div className='flex flex-wrap justify-evenly border-1 w-[20rem] h-[47rem] p-[1rem] rounded-lg '>
             {imgUrl && imgUrl.map((url, index) => (
               <div key={index} className='w-[15rem] h-[10rem] overflow-hidden'>
                 <img src={url} alt={`Selected image ${index + 1}`} className='rounded-sm' />
@@ -131,6 +134,8 @@ const AddProduct = () => {
           <Button variant={"ghost"} onClick={handleSumbit}>Add Product</Button>
         </div>
         <div className='flex flex-col gap-3'>
+          <div className='w-[20rem] flex flex-col gap-3'>
+
           <Input
             type='text'
             variant={"bordered"}
@@ -161,14 +166,6 @@ const AddProduct = () => {
           <Input
             type='text'
             variant={"bordered"}
-            name='price'
-            placeholder='Price of product'
-            value={productValue.price}
-            onChange={handleInputChange}
-          />
-          <Input
-            type='text'
-            variant={"bordered"}
             name='off'
             placeholder='off percentage'
             value={productValue.off}
@@ -182,36 +179,46 @@ const AddProduct = () => {
             value={productValue.offPrice}
             onChange={handleInputChange}
           />
-          <Input
-            type='text'
-            variant={"bordered"}
-            name='description'
+          <Textarea className='w-full rounded-[.7rem] mt-[1rem]'
             placeholder='write about product...'
-            value={productValue.description}
+            name='description'
+            variant={"bordered"}
+            maxRows={5}
             onChange={handleInputChange}
+            value={productValue.description}
           />
+          </div>
           <div className='flex flex-col gap-2'>
             <div className='flex gap-2'>
-              <div className='flex items-center gap-1'>
+              <div className="flex items-center gap-1">
                 <input
-                  type='text'
-                  name="size"
+                  type="text"
+                  name="sizeName"
                   value={newSize.name}
-                  onChange={handleInputChange}
-                  placeholder='add size'
-                  className='py-[.8rem] px-[1rem] w-[20rem] rounded-[1rem] outline-none border-2 border-gray-200'
+                  onChange={(e) => setNewSize((prev) => ({ ...prev, name: e.target.value }))}
+                  placeholder="Add size"
+                  className="py-[.8rem] px-[1rem] w-[20rem] rounded-[1rem] outline-none border-2 border-gray-200"
                 />
-                <Button variant={"bordered"} className='font-medium py-[1.5rem] outline-none' onClick={handleAddSize}>
+                <input
+                  type="text"
+                  name="sizePrice"
+                  value={newSize.price}
+                  onChange={(e) => setNewSize((prev) => ({ ...prev, price: e.target.value }))}
+                  placeholder="Price for size"
+                  className="py-[.8rem] px-[1rem] w-[20rem] rounded-[1rem] outline-none border-2 border-gray-200"
+                />
+                <Button variant="bordered" onClick={handleAddSize}>
                   Add
                 </Button>
               </div>
+
             </div>
             <ScrollShadow className='w-full h-[6rem] border-2 border-gray-200 rounded-[.7rem] mt-[1rem]'>
               <div className='flex gap-2 w-full flex-wrap'>
                 {productValue?.size?.map((item, index) => (
                   <div key={index} className='flex gap-2 mt-2 bg-gray-300/50 rounded-[1rem] py-[.2em] px-[.5rem]'>
                     <div className='border-1 border-gray-300 text-black text-center py-[.2rem] px-[1rem] rounded-[1rem]'>
-                      <p className='text-center w-full h-full'>{item.name}</p>
+                      <p className='text-center w-full h-full'>{item.name} | {item.price}</p>
                     </div>
                     <button className='bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent' onClick={() => removeSize(index)}>
                       X

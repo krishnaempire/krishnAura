@@ -47,6 +47,26 @@ const useOrderApi = () => {
         }
     };
     
+    const getOrder = async (orderId) => {
+        try {
+            const response = await fetch(`/api/order/get-order/${orderId}`, { cache: 'no-store' })
+
+            if (!response.ok) {
+                toast({
+                    description: "Failed to get orders"
+                })
+            }
+            const data = await response.json()
+            return data
+
+        } catch (error) {
+            console.error("Error getting orders:", error);
+            toast({
+                description: error.message
+            })
+        }
+    };
+    
     const updateOrder = async (orderId) => {
         try {
             const response = await fetch(`/api/order/update-order/${orderId}`, {
@@ -97,7 +117,8 @@ const useOrderApi = () => {
         addOrder,
         getUserOrder,
         updateOrder,
-        getAllOrder
+        getAllOrder,
+        getOrder
     }
 }
 

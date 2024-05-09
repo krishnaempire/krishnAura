@@ -6,11 +6,13 @@ const orderSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  productId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
-    required: true
-  },
+  productId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+      required: true
+    }
+  ],
   orderId: {
     type: String,
     required: true
@@ -39,6 +41,14 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  size: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: String,
+    required: true
+  },
   isDone: {
     type: Boolean,
     default: false
@@ -48,3 +58,4 @@ const orderSchema = new mongoose.Schema({
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 
 export default Order;
+

@@ -1,8 +1,9 @@
 "use client"
 import Image from "next/image";
 import React, { useState } from 'react'
-import { Checkbox } from "@nextui-org/react";
+import { Button, Checkbox } from "@nextui-org/react";
 import useOrderApi from "@/api/useOrderApi";
+import Link from "next/link";
 
 const OrderCard = ({ order, product, isAdmin }) => {
   const { updateOrder } = useOrderApi()
@@ -12,6 +13,8 @@ const OrderCard = ({ order, product, isAdmin }) => {
   const handleIsDone = async() => {
     await updateOrder(orderId)
   }
+
+  const address = order?.address.slice(0, 20) + "..";
 
 
   return (
@@ -51,10 +54,13 @@ const OrderCard = ({ order, product, isAdmin }) => {
               </div>
               <div className="flex gap-2 ">
                 <p className="text-[.9rem]">address:</p>
-                <p className="text-[.8rem]">{order.address}</p>
+                <p className="text-[.8rem]">{address}</p>
               </div>
 
             </div>
+          </div>
+          <div>
+            <Button as={Link} href={`order/${order?._id}`} className="bg-[#d4a72c] text-white">View Order</Button>
           </div>
           {isAdmin && (
             <Checkbox isSelected={isDone} onValueChange={setisDone} onClick={handleIsDone}>

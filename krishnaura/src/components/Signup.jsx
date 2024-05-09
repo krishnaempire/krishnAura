@@ -159,7 +159,7 @@ const Signup = () => {
           }
           type={isVisible ? 'text' : 'password'}
         />
-        <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-[#292827]'  onClick={handleOTP}>
+        <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-white'  onClick={handleOTP}>
           Send OTP
         </Button>
       </div>

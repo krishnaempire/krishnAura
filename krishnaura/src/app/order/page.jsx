@@ -8,21 +8,21 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Spinner } from "@nextui-org/react"
 
-const Order = () => {
+const Orders = () => {
   const user = useSelector(state => state.user.userData)
   const [product, setProduct] = useState([])
   const { toast } = useToast()
   const { getUserOrder, getAllOrder } = useOrderApi()
   const { getProduct } = useProductApi() 
-  const { id } = useParams()
   const [orders, setOrders] = useState()
   const [fetching, setFetching] = useState(true)
 
+  
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const orderData = await getUserOrder(id)
+        const orderData = await getUserOrder(user?._id)
         setOrders(orderData)
 
         const productArray = await Promise.all(orderData.map(async order => {
@@ -39,14 +39,13 @@ const Order = () => {
       }
     }
     const fecthAllOrder = async () => {
-      try {
 
+      try {
         const orderData = await getAllOrder()
-        console.log(orderData)
         setOrders(orderData)
 
         const productArray = await Promise.all(orderData.map(async order => {
-          const product = await getProduct(order.productId)
+          const product = await getProduct(order.productId[0])
           return product
         }))
         setProduct(productArray)
@@ -68,7 +67,7 @@ const Order = () => {
     
   }, [])
 
-  if (!fetching && !orders[0]?._id) {
+  if (!fetching && !orders[0]?._id ) {
     return (
       <div className='w-full h-screen flex justify-center items-center text-[1.3rem] font-medium'>
           No Orders
@@ -76,7 +75,7 @@ const Order = () => {
   );
   }
 
-  if (!orders) {
+  if (!orders && !user?._id) {
     return (
         <div className='w-full h-screen flex justify-center items-center'>
             <Spinner size='lg' />
@@ -96,4 +95,4 @@ const Order = () => {
   )
 }
 
-export default Order
+export default Orders

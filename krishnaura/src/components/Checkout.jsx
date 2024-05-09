@@ -6,26 +6,85 @@ import { useToast } from './ui/use-toast'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import useOrderApi from '@/api/useOrderApi'
+import useCartApi from '@/api/useCartApi'
+
+function extractCartIds(products) {
+  return products.map((product) => product.cartId || null);
+}
+
+function extractProductIds(products) {
+  return products.map((product) => product._id || null);
+}
+function extractColor(products) {
+  return products.map((product) => product.color[0].name || null).flat().join(" ");
+}
+function extractSize(products) {
+  return products.map((product) => product.size[0].name || null).flat().join(" ");
+}
 
 export function Checkout({ product, size, color, quantity }) {
-  const {addOrder} = useOrderApi()
+
+  const { addOrder } = useOrderApi()
+  const { deleteCartItems } = useCartApi()
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [phoneVerified, setPhoneVerified] = useState(false)
   const [addressVerified, setAddressVerified] = useState(false)
   const { toast } = useToast()
   const user = useSelector(state => state.user.userData)
+  const [cartIds, setCartId] = useState()
   const [countdown, setCountdown] = useState(5);
   const [redirect, setRedirect] = useState("")
+  const [price, setPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [productId, setProductId] = useState();
+  const [sizes, setSizes] = useState();
+  const [colors, setColors] = useState();
   const [userData, setUserData] = useState({
     fullName: user?.fullName || "",
     phoneNumber: user?.phoneNumber || "",
     address: user?.address || "",
     postalCode: ""
   })
-  const price = product?.price * quantity
+
+  
   const userId = user?._id
-  const productId = product?._id
+  
+
+  useEffect(() => {
+
+    sessionStorage.setItem("checkoutData", false)
+
+    setProductId(product[0]?._id)
+    if (product[0]?.cartId) {
+      const cartId = extractCartIds(product);
+      const productIds = extractProductIds(product);
+      const colors = extractColor(product)
+      const sizes = extractSize(product)
+      setColors(colors)
+      setSizes(sizes)
+      setProductId(productIds)
+      setCartId(cartId)
+    }
+
+    const getPriceForSize = (products, size) => {
+      if (!products[0].cartId) {
+        const sizeForPrice = products[0].size.find((s) => s.name === size);
+        return sizeForPrice ? sizeForPrice.price : 0;
+
+      } else {
+        return products.reduce((total, product) => {
+          const sizePrice = product.size[0]?.price || 0;
+          return total + sizePrice;
+        }, 0);
+      }
+    };
+
+    const newPrice = getPriceForSize(product, size);
+    setTotalPrice(quantity * newPrice || 1 * newPrice)
+    setPrice(newPrice);
+  }, []);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -70,13 +129,12 @@ export function Checkout({ product, size, color, quantity }) {
         description: "Fill all the fields"
       })
     }
-
     const res = await fetch("/api/payment/create-order", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ price })
+      body: JSON.stringify({ totalPrice })
     })
 
     const data = await res.json()
@@ -93,7 +151,7 @@ export function Checkout({ product, size, color, quantity }) {
         const value = {
           ...response,
           userId,
-          productId
+          productId: productId?.length ? productId : [productId]
         }
         const res = await fetch("/api/payment/payment-verification", {
           method: "POST",
@@ -111,16 +169,30 @@ export function Checkout({ product, size, color, quantity }) {
         }
         let orderData = payment.orderData
 
+        if (!orderData.color) {
+          orderData.color = color || colors;
+        }
+        if (!orderData.size) {
+          orderData.size = size || sizes;
+        }
+        if (!orderData.quantity) {
+          orderData.quantity = quantity || 1;
+        }
+
         orderData = {
           ...orderData,
+          totalPrice,
           address: userData.address,
           phoneNumber: userData.phoneNumber,
-          color,
-          quantity,
           postalCode: userData.postalCode
         }
+        console.log(orderData)
+
         await addOrder(orderData)
-        
+        if (cartIds) {
+          deleteCartItems(cartIds)
+        }
+
         onOpen()
         setRedirect(true)
       },
@@ -133,7 +205,7 @@ export function Checkout({ product, size, color, quantity }) {
         "address": "Razorpay Corporate Office"
       },
       "theme": {
-        "color": "#3399cc"
+        "color": "#212120"
       }
     };
     const razor = new window.Razorpay(options);
@@ -142,7 +214,7 @@ export function Checkout({ product, size, color, quantity }) {
   }
 
   return (
-    <Suspense fallback={<p>Loading feed...</p>}>
+    <>
       {product && (
 
         < div className="mx-auto my-4 max-w-4xl md:my-6">
@@ -259,43 +331,46 @@ export function Checkout({ product, size, color, quantity }) {
               <div className="bg-gray-100 px-5 py-6 md:px-8">
                 <div className="flow-root">
                   <ul className="-my-7 divide-y divide-gray-200">
-                    <li
-                      key={product.id}
-                      className="flex items-stretch justify-between space-x-5 py-7"
-                    >
-                      <div className="flex flex-1 items-stretch">
-                        <div className="flex-shrink-0">
-                          {/* <img
+                    {product.map((product, index) => (
+
+                      <li
+                        key={index}
+                        className="flex items-stretch justify-between space-x-5 py-7"
+                      >
+                        <div className="flex flex-1 items-stretch">
+                          <div className="flex-shrink-0">
+                            {/* <img
                           className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-contain"
                           src={product.imageSrc}
                           alt={product.imageSrc}
                         /> */}
-                          <Image src={product?.productImages[0]} alt="" width={352} height={288} className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-cover" />
-                        </div>
-                        <div className="ml-5 flex flex-col justify-between">
-                          <div className="flex-1">
-                            <p className="text-sm font-bold">{product.name}</p>
-                            <p className="mt-1.5 text-sm font-medium text-gray-500">
-                              {color}
-                            </p>
-                            <p className="mt-1.5 text-sm font-medium text-gray-500">
-                              {size}
-                            </p>
+                            <Image src={product?.productImages[0]} alt="" width={352} height={288} className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-cover" />
                           </div>
-                          <p className="mt-4 text-xs font-medium ">x {quantity}</p>
+                          <div className="ml-5 flex flex-col justify-between">
+                            <div className="flex-1">
+                              <p className="text-sm font-bold">{product.name}</p>
+                              <p className="mt-1.5 text-sm font-medium text-gray-500">
+                                {color || product.color[0].name}
+                              </p>
+                              <p className="mt-1.5 text-sm font-medium text-gray-500">
+                                {size || product.size[0].name}
+                              </p>
+                            </div>
+                            <p className="mt-4 text-xs font-medium ">x {quantity || 1}</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="ml-auto flex flex-col items-end justify-between">
-                        <p className="text-right text-sm font-bold text-gray-900">Rs: {product.price}</p>
-                        <button
-                          type="button"
-                          className="-m-2 inline-flex rounded p-2 text-gray-400 transition-all duration-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-                        >
-                          <span className="sr-only">Remove</span>
-                          {/* <X className="h-5 w-5" /> */}
-                        </button>
-                      </div>
-                    </li>
+                        <div className="ml-auto flex flex-col items-end justify-between">
+                          <p className="text-right text-sm font-bold text-gray-900">Rs: {!product[0]?.cartId ? price : product.size[0].price}</p>
+                          <button
+                            type="button"
+                            className="-m-2 inline-flex rounded p-2 text-gray-400 transition-all duration-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+                          >
+                            <span className="sr-only">Remove</span>
+                            {/* <X className="h-5 w-5" /> */}
+                          </button>
+                        </div>
+                      </li>
+                    ))}
 
                   </ul>
                 </div>
@@ -323,11 +398,11 @@ export function Checkout({ product, size, color, quantity }) {
                 <ul className="mt-6 space-y-3">
                   <li className="flex items-center justify-between text-gray-600">
                     <p className="text-sm font-medium">Sub total</p>
-                    <p className="text-sm font-medium">{quantity} x {product.price}</p>
+                    <p className="text-sm font-medium">{quantity} x {price}</p>
                   </li>
                   <li className="flex items-center justify-between text-gray-900">
                     <p className="text-sm font-medium ">Total</p>
-                    <p className="text-sm font-bold ">{quantity * product.price}</p>
+                    <p className="text-sm font-bold ">{totalPrice}</p>
                   </li>
                 </ul>
               </div>
@@ -359,6 +434,6 @@ export function Checkout({ product, size, color, quantity }) {
           )}
         </ModalContent>
       </Modal>
-    </Suspense>
+    </>
   )
 }

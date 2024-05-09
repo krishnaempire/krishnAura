@@ -16,22 +16,34 @@ function CheckoutComponent() {
     const quantity = searchParams.get('quantity');
     const size = searchParams.get('size');
     const color = searchParams.get('color');
-
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await getProduct(id)
-                setProduct(data)
-                setSearchParamsReady(true);
-            } catch (error) {
-                console.error("Error fetching product data:", error);
-            }
-        };
-        fetchData();
-    }, [getProduct, id])
+
+        const sessionData = JSON.parse(sessionStorage.getItem("checkoutData"));
+        if (sessionData) {
+            setProduct(sessionData.products);
+            setSearchParamsReady(true);
+        } else {
+            // If no session storage data, fetch from the server
+            const fetchData = async () => {
+                try {
+                    let data = await getProduct(id);
+                    data = [data]
+                    setProduct(data);
+                    setSearchParamsReady(true);
+                } catch (error) {
+                    console.error("Error fetching product data:", error);
+                }
+            };
+            fetchData();
+        }
+    }, []);
 
     const handleBack = () => {
+        if (!id) {
+            router.push("/")
+        }
         router.push(`/product-page/${id}`);
+
     }
 
     if (!searchParamsReady || !product) {
@@ -48,11 +60,11 @@ function CheckoutComponent() {
                 variant={"bordered"}
                 className='relative top-4 left-2'
                 onClick={handleBack}
-                disabled={!product?._id}
+                disabled={!product[0]?._id}
             >
                 Back
             </Button>
-            {product?._id && (
+            {product.length > 0 && (
                 <Checkout product={product} color={color} size={size} quantity={quantity} />
             )}
         </div>
