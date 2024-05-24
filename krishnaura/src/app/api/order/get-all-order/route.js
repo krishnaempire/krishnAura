@@ -4,43 +4,25 @@ import Order from "@/models/order.model";
 
 
 export const GET = async (req) => {
-    connectDB();
+    connectDB()
     try {
         const order = await Order.aggregate([
-            { $match: {} }
+            { $project: {_id: 0} }
         ]);
 
         if (!order || order.length === 0) {
             return NextResponse.json(
-                { message: "No order found" },
-                {
-                    status: 404,
-                    headers: {
-                        'Cache-Control': 'no-store, max-age=0'
-                    }
-                }
-            );
+                { message: "No order found" }, 
+                { status: 404 });
         }
 
-        return NextResponse.json(
-            order,
-            {
-                status: 200,
-                headers: {
-                    'Cache-Control': 'no-store, max-age=0'
-                }
-            }
-        );
+        return NextResponse.json(order);
         
     } catch (error) {
         return NextResponse.json(
-            { error: "Something went wrong while fetching order" },
-            {
-                status: 500,
-                headers: {
-                    'Cache-Control': 'no-store, max-age=0'
-                }
-            }
-        );
+            { error: "Something went wrong while fetching order" }, 
+            { status: 500 });
     }
 };
+
+
