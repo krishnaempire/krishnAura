@@ -94,7 +94,7 @@ const useOrderApi = () => {
 
     const getAllOrder = async () => {
         try {
-            const response = await fetch(`/api/order/get-all-order`, { cache: 'no-store' })
+            const response = await fetch(`/api/order/get-all-order`, {next: {revalidate: 0}})
 
             if (!response.ok) {
                 toast({

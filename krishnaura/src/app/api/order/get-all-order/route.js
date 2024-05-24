@@ -5,8 +5,7 @@ import Order from "@/models/order.model";
 export const GET = async (req) => {
     connectDB();
     try {
-        // Fetch orders where isDone is either true or false
-        const order = await Order.find({ isDone: { $in: [true, false] } });
+        const order = await Order.find({});
 
         if (!order || order.length === 0) {
             return NextResponse.json(
