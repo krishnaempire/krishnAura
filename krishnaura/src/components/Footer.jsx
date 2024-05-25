@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="w-auto p-8">
 
             <Link href="/" className="font-bold Link-inherit">
-              <Image src={KA} alt="" className="w-[12rem] h-[12rem]" />
+              <Image src={KA} alt="" className="md:w-[12rem] md:h-[5rem] w-[9rem] h-[4rem]" />
             </Link>
           </div>
           <div className="w-auto p-8">

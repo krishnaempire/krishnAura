@@ -7,9 +7,9 @@ import User from "@/models/user.model.js";
 import Order from "@/models/order.model.js";
 import { connectDB } from "@/DBConfig/connectDB.js";
 
-connectDB()
 
 export const POST = asyncHandler(async (req) => {
+    connectDB()
     try {
         const body = await req.json();
         const { userId, productId, content, rating } = body;

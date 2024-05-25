@@ -57,7 +57,7 @@ export default function NavBar() {
       handleCartClick();
     }
   }, [refreshCart]);
-  
+
   useEffect(() => {
     (async () => {
       if (user?._id) {
@@ -70,9 +70,9 @@ export default function NavBar() {
   return (
     <>
       <Navbar shouldHideOnScroll maxWidth="full" height={"7rem"} className="z-10 fixed top-0">
-        <NavbarBrand className="relative left-[3rem]">
+        <NavbarBrand className="relative left-[1rem]">
           <Link href="/" className="font-bold Link-inherit">
-            <Image src={KA} alt="" className="w-[12rem] h-[12rem]" />
+            <Image src={KA} alt="" className="md:w-[12rem] md:h-[5rem] w-[9rem] h-[4rem]" />
           </Link>
         </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-10" justify="center">
@@ -98,25 +98,54 @@ export default function NavBar() {
           </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
-          <div className="hidden lg:flex">
+          <div className="hidden sm:flex">
             <Link href={user?._id ? `/profile/${user?._id}` : "/auth"} className="text-[1.3rem] hover:scale-125 transform duration-300">
               <FaRegUser />
             </Link>
           </div>
-          <div className="mx-4 mt-1.5">
+          <div className="sm:hidden">
+          <Dropdown>
+                <DropdownTrigger>
+                  <Button
+                    className="capitalize bg-[#d4a72c] text-white rounded-[1rem] py-[1.5rem] w-[7.3rem] font-medium"
+                  >
+                    Menu
+                  </Button>
+                </DropdownTrigger>
+              <DropdownMenu variant="faded" aria-label="Menu">
+                <DropdownItem key="Profile">
+                  <Link href={user?._id ? `/profile/${user?._id}` : "/auth"} className="font-semibold">
+                    Profile
+                  </Link>
+                </DropdownItem>
+                <DropdownItem key="Order">
+                  <Link href={user?._id ? `/order` : "/auth"} color="foreground" className="font-semibold">
+                    Orders
+                  </Link>
+                </DropdownItem>
+                <DropdownItem key="dress">
+                  <Link href={"/#dress"} className="font-semibold">Clothes</Link>
+                </DropdownItem>
+                <DropdownItem key="jewelry">
+                  <Link href={"/#jewellery"} className="font-semibold">Jewellery</Link>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <div className="mx-4 ">
             <Sheet>
               <SheetTrigger
                 className="text-[1.4rem] hover:scale-125 transform duration-300 border-none"
                 onClick={handleCartClick}
                 disabled={!user?._id}
-                >
+              >
                 <HiOutlineShoppingBag
 
 
                 />
               </SheetTrigger>
               <SheetContent>
-                <ScrollShadow className="w-full h-full border-none">
+                <ScrollShadow className=" w-full h-full border-none">
                   <Cart products={products} setRefreshCart={setRefreshCart} />
                 </ScrollShadow>
               </SheetContent>

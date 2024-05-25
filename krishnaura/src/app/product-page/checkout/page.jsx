@@ -55,7 +55,7 @@ function CheckoutComponent() {
     }
 
     return (
-        <div className='mt-[6rem] flex '>
+        <div className='mt-[6rem] md:flex '>
             <Button
                 variant={"bordered"}
                 className='relative top-4 left-2'

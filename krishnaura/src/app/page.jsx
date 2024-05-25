@@ -40,32 +40,32 @@ export default function Page() {
     <div className="w-full mt-[7rem] grid place-items-center">
       <Carousel
         plugins={[plugin.current]}
-        className="w-full  h-[30rem] bg-slate-200 overflow-hidden"
+        className="w-full h-[15rem]  md:h-[30rem]  bg-slate-200 overflow-hidden"
       >
         <CarouselContent>
           {Img.map((src, index) => (
             <CarouselItem key={index}>
-              <Image src={src} alt="" width={1000} height={100} className="w-full" />
+              <Image src={src} alt="" width={1000} height={100} className="w-full " />
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
       <div className="my-[4rem] font-bold text-[2rem] flex justify-center">
-        <div className="w-[60rem] text-center opacity-30">
+        <div className="lg:w-[60rem] text-wrap text-center opacity-30">
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, quis Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
         </div>
       </div>
-      <div id="dress" className="grid grid-cols-3 gap-x-[6rem]">
+      <div id="dress" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
         {filterProductsByType("Dress").map((product, index) => (
           <Card product={product} key={index} />
         ))}
       </div>
       <div className="my-[4rem] font-bold text-[2rem] flex justify-center">
-        <div className="w-[60rem] text-center opacity-30">
+        <div className=" text-center opacity-30">
           <p>JEWELLERY</p>
         </div>
       </div>
-      <div id="jewellery" className="grid grid-cols-3 gap-x-[6rem]">
+      <div id="jewellery" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
         {filterProductsByType("Jewellery").map((product, index) => (
           <Card product={product} key={index} />
         ))}

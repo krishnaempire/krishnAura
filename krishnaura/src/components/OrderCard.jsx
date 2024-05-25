@@ -18,7 +18,7 @@ const OrderCard = ({ order, product, isAdmin }) => {
 
 
   return (
-    <div className="h-screen">
+    <div className="w-[18rem]">
       <div className={`w-[18rem] ${isAdmin ? "h-[27rem]" : "h-[26rem]"} rounded-[1.5rem] border-1 border-gray-300 ${isDone && "bg-gray-100"}`}>
         <div className="flex flex-col w-[95%] h-full m-auto items-center gap-2 justify-center ">
           <div className="flex flex-col w-[90%] items-center gap-2 ">

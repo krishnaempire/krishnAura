@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { shallowEqual, useSelector } from 'react-redux';
 import { Spinner } from '@nextui-org/react';
 import Image from 'next/image';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 export default function ProductPage() {
   const user = useSelector(
@@ -33,7 +34,7 @@ export default function ProductPage() {
     if (product) {
       setSelectedColor(product.color[0]?.name || '');
       setSelectedSize(product.size[0]?.name || '');
-      
+
       // Set default price based on the first available size
       if (product.size.length > 0) {
         setPrice(product.size[0].price);
@@ -87,7 +88,7 @@ export default function ProductPage() {
     <div className="mx-auto mt-[7rem] max-w-7xl px-4 md:px-8 2xl:px-16">
       <div className="block grid-cols-9 items-start gap-x-10 pb-10 pt-7 lg:grid lg:pb-14 xl:gap-x-14 2xl:pb-20">
         {/* Images */}
-        <div className="col-span-5 grid grid-cols-2 gap-2.5">
+        <div className="hidden  col-span-5 md:grid grid-cols-2 gap-2.5">
           {product?.productImages?.map((url, index) => (
             <div key={index} className="w-[20rem] h-[15rem] transition duration-150 ease-in hover:opacity-90">
               <Image
@@ -100,7 +101,24 @@ export default function ProductPage() {
             </div>
           ))}
         </div>
-        
+        <Carousel className="w-full max-w-xs m-auto">
+          <CarouselContent>
+            {product?.productImages?.map((url, index) => (
+              <CarouselItem key={index}>
+                <Image
+                src={url}
+                width={320}
+                height={240}
+                alt="product image"
+                className="w-full h-full object-cover"
+              />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+
         {/* Product Information */}
         <div className="col-span-4 pt-8 lg:pt-0">
           {/* Product Details */}
@@ -111,7 +129,7 @@ export default function ProductPage() {
             <p className="text-body text-sm leading-6 lg:text-base lg:leading-8">
               {product?.description}
             </p>
-            
+
             {/* Price Section */}
             <div className="mt-5 flex items-center">
               <div className="text-heading pr-2 text-base font-bold md:pr-0 md:text-xl lg:pr-2 lg:text-2xl 2xl:pr-0 2xl:text-4xl">
@@ -122,7 +140,7 @@ export default function ProductPage() {
               </span>
             </div>
           </div>
-          
+
           {/* Size and Color Selection */}
           <div className="border-b border-gray-300 pb-3">
             {/* Size Selection */}
@@ -137,7 +155,7 @@ export default function ProductPage() {
                     className="text-heading mb-2 mr-2 flex h-9 w-9 cursor-pointer items-center justify-center rounded border border-gray-100 p-1 text-xs font-semibold uppercase transition duration-200 ease-in-out hover:border-black md:mb-3 md:mr-3 md:h-11 md:w-11 md:text-sm"
                     onClick={() => handleSizeClick(size.name)}
                     style={{
-                      border: `1px solid ${size.name === selectedSize ? "black": "transparent" }` 
+                      border: `1px solid ${size.name === selectedSize ? "black" : "transparent"}`
                     }}
                   >
                     {size.name}
@@ -145,7 +163,7 @@ export default function ProductPage() {
                 ))}
               </ul>
             </div>
-            
+
             {/* Color Selection */}
             <div className="mb-4">
               <h3 className="text-heading mb-2.5 text-base font-semibold capitalize md:text-lg">
@@ -158,7 +176,7 @@ export default function ProductPage() {
                     className="text-heading mb-2 mr-2 flex h-9 w-9 cursor-pointer items-center justify-center rounded p-1 text-xs font-semibold uppercase transition duration-200 ease-in-out hover:border-black md:mb-3 md:mr-3 md:h-11 md:w-11 md:text-sm"
                     onClick={() => handleColorClick(color.name)}
                     style={{
-                      border: `1px solid ${color.name === selectedColor ? "black": "transparent" }` 
+                      border: `1px solid ${color.name === selectedColor ? "black" : "transparent"}`
                     }}
                   >
                     <span className={`block h-full w-full rounded-full`}
@@ -169,7 +187,7 @@ export default function ProductPage() {
               </ul>
             </div>
           </div>
-          
+
           {/* Quantity and Checkout */}
           <div className="space-s-4 3xl:pr-48 flex items-center gap-2 border-b border-gray-300 py-8  md:pr-32 lg:pr-12 2xl:pr-32">
             <div className="group flex h-11 flex-shrink-0 items-center justify-between overflow-hidden rounded-md border border-gray-300 md:h-12">
@@ -190,7 +208,7 @@ export default function ProductPage() {
                 +
               </button>
             </div>
-            
+
             {/* Checkout Button */}
             <button
               type="button"

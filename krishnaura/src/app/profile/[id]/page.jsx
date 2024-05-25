@@ -30,15 +30,20 @@ const Profile = () => {
   return (
     <>
       <div className='w-[50%] m-auto h-screen flex justify-center items-center'>
-        <div className='flex gap-2 items-center'>
-
+        <div className='md:flex flex-col gap-2 items-center '>
+          
           <Image src={profile} alt='profile' width={80} height={80} className='w-[5rem] h-[5rem] rounded-full' />
           <div>
             <p className='text-[1.5rem] font-medium'>{user?.fullName}</p>
             <p className='text-[1.5rem] font-medium'>{user?.email}</p>
           </div>
-          <div className='flex items-center gap-[3rem]'>
+          <div className='flex  justify-center  items-center gap-[3rem]'>
+            <div>
+
             <div className='w-[1.5px] bg-gray-300 h-[4rem] ml-3'></div>
+            </div>
+            <div className='flex flex-wrap justify-center  items-center md:gap-[3rem] gap-[1rem]'>
+
             <Dropdown>
               <DropdownTrigger>
                 <Button
@@ -62,6 +67,7 @@ const Profile = () => {
             {user.isAdmin && (
               <Button as={Link} href={`/add-product/${id}`} variant={"bordered"} >Add Product</Button>
             )}
+            </div>
           </div>
         </div>
       </div>

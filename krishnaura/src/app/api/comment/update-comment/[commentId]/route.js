@@ -4,9 +4,9 @@ import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/DBConfig/connectDB.js";
 
-connectDB()
 
 export const PATCH = asyncHandler(async (req, { params }) => {
+    connectDB()
     try {
         const { commentId } = params;
         const { content, rating } = await req.json();

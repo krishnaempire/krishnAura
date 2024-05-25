@@ -86,7 +86,7 @@ const Orders = () => {
 
   return (
     <>
-      <div className='w-full h-screen place-items-center mt-[9rem] grid grid-cols-3 mb-[9rem] '>
+      <div className='w-full flex flex-wrap md:gap-[6rem] gap-[2rem] justify-center mb-[9rem] mt-[7rem] '>
         {orders && orders.map((order, index) => (
           <OrderCard order={order} product={product[index]} key={index} isAdmin={user?.isAdmin} />
         ))}

@@ -4,9 +4,9 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-connectDB()
 
 export const GET = async (req) => {
+  connectDB()
   const jwtToken = cookies().get("token")?.value || ""
 
   if (!jwtToken) {
