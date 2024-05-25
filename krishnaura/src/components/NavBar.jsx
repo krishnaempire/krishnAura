@@ -11,6 +11,9 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  NavbarMenuToggle,
+  NavbarMenuItem,
+  NavbarMenu,
 } from "@nextui-org/react";
 import {
   Sheet,
@@ -34,7 +37,7 @@ export default function NavBar() {
   const { getCart } = useCartApi();
   const { updateSession } = useGetUser();
   const [refreshCart, setRefreshCart] = useState(false)
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useSelector(
     (state) => state.user.userData,
     shallowEqual
@@ -67,10 +70,15 @@ export default function NavBar() {
     })();
   }, []);
 
+
+
   return (
     <>
       <Navbar shouldHideOnScroll maxWidth="full" height={"7rem"} className="z-10 fixed top-0">
-        <NavbarBrand className="relative left-[1rem]">
+        <NavbarContent className="sm:hidden" justify="start">
+          <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
+        </NavbarContent>
+        <NavbarBrand className="relative md:left-[1rem]">
           <Link href="/" className="font-bold Link-inherit">
             <Image src={KA} alt="" className="md:w-[12rem] md:h-[5rem] w-[9rem] h-[4rem]" />
           </Link>
@@ -103,15 +111,15 @@ export default function NavBar() {
               <FaRegUser />
             </Link>
           </div>
-          <div className="sm:hidden">
-          <Dropdown>
-                <DropdownTrigger>
-                  <Button
-                    className="capitalize bg-[#d4a72c] text-white rounded-[1rem] py-[1.5rem] w-[7.3rem] font-medium"
-                  >
-                    Menu
-                  </Button>
-                </DropdownTrigger>
+          {/* <div className="hidden">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button
+                  className="capitalize bg-[#d4a72c] text-white rounded-[1rem] py-[1.5rem] w-[7.3rem] font-medium"
+                >
+                  Menu
+                </Button>
+              </DropdownTrigger>
               <DropdownMenu variant="faded" aria-label="Menu">
                 <DropdownItem key="Profile">
                   <Button as={Link} href={user?._id ? `/profile/${user?._id}` : "/auth"} className="font-semibold bg-transparent">
@@ -131,7 +139,7 @@ export default function NavBar() {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          </div>
+          </div> */}
           <div className="mx-4 ">
             <Sheet>
               <SheetTrigger
@@ -151,6 +159,22 @@ export default function NavBar() {
               </SheetContent>
             </Sheet>
           </div>
+          <NavbarMenu>
+            <NavbarMenuItem>
+              <div className="w-full flex flex-col gap-5">
+                <Button as={Link}  href={user?._id ? `/profile/${user?._id}` : "/auth"} className="font-semibold bg-transparent">
+                  Profile
+                </Button>
+                <Button as={Link} href={user?._id ? `/order` : "/auth"} color="foreground" className="font-semibold bg-transparent">
+                    Orders
+                  </Button>
+                  <Button as={Link} href={"/#dress"} className="font-semibold bg-transparent">Clothes</Button>
+                  <Button as={Link} href={"/#jewellery"} className="font-semibold bg-transparent">Jewellery</Button>
+                
+              </div>
+
+            </NavbarMenuItem>
+          </NavbarMenu>
         </NavbarContent>
       </Navbar>
     </>
