@@ -114,20 +114,20 @@ export default function NavBar() {
                 </DropdownTrigger>
               <DropdownMenu variant="faded" aria-label="Menu">
                 <DropdownItem key="Profile">
-                  <Link href={user?._id ? `/profile/${user?._id}` : "/auth"} className="font-semibold">
+                  <Button as={Link} href={user?._id ? `/profile/${user?._id}` : "/auth"} className="font-semibold bg-transparent">
                     Profile
-                  </Link>
+                  </Button>
                 </DropdownItem>
                 <DropdownItem key="Order">
-                  <Link href={user?._id ? `/order` : "/auth"} color="foreground" className="font-semibold">
+                  <Button as={Link} href={user?._id ? `/order` : "/auth"} color="foreground" className="font-semibold bg-transparent">
                     Orders
-                  </Link>
+                  </Button>
                 </DropdownItem>
                 <DropdownItem key="dress">
-                  <Link href={"/#dress"} className="font-semibold">Clothes</Link>
+                  <Button as={Link} href={"/#dress"} className="font-semibold bg-transparent">Clothes</Button>
                 </DropdownItem>
                 <DropdownItem key="jewelry">
-                  <Link href={"/#jewellery"} className="font-semibold">Jewellery</Link>
+                  <Button as={Link} href={"/#jewellery"} className="font-semibold bg-transparent">Jewellery</Button>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
