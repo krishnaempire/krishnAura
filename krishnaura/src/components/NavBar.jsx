@@ -74,15 +74,22 @@ export default function NavBar() {
 
   return (
     <>
-      <Navbar shouldHideOnScroll maxWidth="full" height={"7rem"} className="z-10 fixed top-0">
-        <NavbarContent className="sm:hidden" justify="start">
-          <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
+      <Navbar
+        shouldHideOnScroll
+        maxWidth="full"
+        height={"7rem"}
+        className="z-10 fixed top-0"
+        // isMenuOpen={isMenuOpen}
+        // onMenuOpenChange={setIsMenuOpen}
+        >
+        <NavbarContent justify="start">
+          {/* <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} className="sm:hidden" /> */}
+          <NavbarBrand className="relative md:left-[1rem]">
+            <Link href="/" className="font-bold Link-inherit">
+              <Image src={KA} alt="" className="md:w-[12rem] md:h-[5rem] w-[9rem] h-[4rem]" />
+            </Link>
+          </NavbarBrand>
         </NavbarContent>
-        <NavbarBrand className="relative md:left-[1rem]">
-          <Link href="/" className="font-bold Link-inherit">
-            <Image src={KA} alt="" className="md:w-[12rem] md:h-[5rem] w-[9rem] h-[4rem]" />
-          </Link>
-        </NavbarBrand>
         <NavbarContent className="hidden sm:flex gap-10" justify="center">
           <NavbarItem>
             <Dropdown backdrop="blur">
@@ -111,11 +118,12 @@ export default function NavBar() {
               <FaRegUser />
             </Link>
           </div>
-          {/* <div className="hidden">
+          <div className="sm:hidden">
             <Dropdown>
               <DropdownTrigger>
                 <Button
-                  className="capitalize bg-[#d4a72c] text-white rounded-[1rem] py-[1.5rem] w-[7.3rem] font-medium"
+                  variant={"bordered"}
+                  className="capitalize  text-[#d4a72c] rounded-[1rem] py-[1.3rem] w-[5rem] font-medium"
                 >
                   Menu
                 </Button>
@@ -139,7 +147,7 @@ export default function NavBar() {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
-          </div> */}
+          </div>
           <div className="mx-4 ">
             <Sheet>
               <SheetTrigger
@@ -159,23 +167,30 @@ export default function NavBar() {
               </SheetContent>
             </Sheet>
           </div>
-          <NavbarMenu>
-            <NavbarMenuItem>
-              <div className="w-full flex flex-col gap-5">
-                <Button as={Link}  href={user?._id ? `/profile/${user?._id}` : "/auth"} className="font-semibold bg-transparent">
-                  Profile
-                </Button>
-                <Button as={Link} href={user?._id ? `/order` : "/auth"} color="foreground" className="font-semibold bg-transparent">
-                    Orders
-                  </Button>
-                  <Button as={Link} href={"/#dress"} className="font-semibold bg-transparent">Clothes</Button>
-                  <Button as={Link} href={"/#jewellery"} className="font-semibold bg-transparent">Jewellery</Button>
-                
-              </div>
-
-            </NavbarMenuItem>
-          </NavbarMenu>
         </NavbarContent>
+        {/* <NavbarMenu>
+          <NavbarMenuItem>
+            <Button as={Link} href={user?._id ? `/profile/${user?._id}` : "/auth"} className="font-semibold bg-transparent">
+              Profile
+            </Button>
+
+
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+
+            <Button as={Link} href={user?._id ? `/order` : "/auth"} color="foreground" className="font-semibold bg-transparent">
+              Orders
+            </Button>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Button as={Link} href={"/#dress"} className="font-semibold bg-transparent">Clothes</Button>
+
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Button as={Link} href={"/#jewellery"} className="font-semibold bg-transparent">Jewellery</Button>
+
+          </NavbarMenuItem>
+        </NavbarMenu> */}
       </Navbar>
     </>
   );
