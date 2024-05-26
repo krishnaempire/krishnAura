@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { Input, Button, Spinner } from "@nextui-org/react";
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import useUserApi from '@/api/userApi/useUserApi';
 import { useToast } from '@/components/ui/use-toast';
 import useGetUser from '@/api/getUser';
@@ -11,7 +11,10 @@ const UpdateProfile = () => {
     const { toast } = useToast()
     const { update } = useUserApi();
     const [updating, setUpdating] = useState(false)
-    const user = useSelector(state => state.user.userData);
+    const user = useSelector(
+        (state) => state.user.userData,
+        shallowEqual
+      );
     const id = user?._id
     const [userData, setUserData] = useState({
         email: user?.email || "",
@@ -20,7 +23,7 @@ const UpdateProfile = () => {
         address: user?.address || ""
     });
 
-
+    console.log("chaange")
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData((prevData) => ({

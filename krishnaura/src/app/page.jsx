@@ -50,8 +50,8 @@ export default function Page() {
           ))}
         </CarouselContent>
       </Carousel>
-      <div className="my-[4rem] font-bold text-[2rem] flex justify-center">
-        <div className="lg:w-[60rem] text-wrap text-center opacity-30">
+      <div className="my-[4rem] font-bold sm:text-[2rem] text-[1.5rem] flex justify-center">
+        <div className="lg:w-[60rem] sm:w-[40rem] w-[25rem] text-wrap text-center opacity-30">
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, quis Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
         </div>
       </div>

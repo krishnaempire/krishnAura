@@ -3,13 +3,15 @@ import useOrderApi from '@/api/useOrderApi'
 import useProductApi from '@/api/useProductApi'
 import OrderCard from '@/components/OrderCard'
 import { useToast } from '@/components/ui/use-toast'
-import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import { Spinner } from "@nextui-org/react"
 
 const Orders = () => {
-  const user = useSelector(state => state.user.userData)
+  const user = useSelector(
+    (state) => state.user.userData,
+    shallowEqual
+  );
   const [product, setProduct] = useState([])
   const { toast } = useToast()
   const { getUserOrder, getAllOrder } = useOrderApi()
@@ -17,7 +19,7 @@ const Orders = () => {
   const [orders, setOrders] = useState()
   const [fetching, setFetching] = useState(true)
 
-  
+  console.log("render")
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -31,9 +33,9 @@ const Orders = () => {
         }))
         setProduct(productArray)
       } catch (error) {
-        toast({
-          description: "Error fetching orders"
-        })
+        // toast({
+        //   description: "Error fetching orders"
+        // })
       } finally {
         setFetching(false)
       }
@@ -59,13 +61,13 @@ const Orders = () => {
       }
     }
 
-    if (user.isAdmin) {
+    if (user?.isAdmin) {
       fecthAllOrder()
     } else {
       fetchOrders();
     }
     
-  }, [])
+  }, [user])
 
   if (!fetching && !orders[0]?._id ) {
     return (

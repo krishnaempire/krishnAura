@@ -101,7 +101,7 @@ export default function ProductPage() {
             </div>
           ))}
         </div>
-        <Carousel className="w-full max-w-xs m-auto">
+        <Carousel className="w-full sm:hidden max-w-xs m-auto">
           <CarouselContent>
             {product?.productImages?.map((url, index) => (
               <CarouselItem key={index}>

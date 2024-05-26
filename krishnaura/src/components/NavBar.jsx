@@ -114,7 +114,7 @@ export default function NavBar() {
         </NavbarContent>
         <NavbarContent justify="end">
           <div className="hidden sm:flex">
-            <Link href={user?._id ? `/profile/${user?._id}` : "/auth"} className="text-[1.3rem] hover:scale-125 transform duration-300">
+            <Link href={user?._id ? `/profile/${user?._id}` : "/auth"} className="text-[1.3rem] lg:hover:scale-125 transform duration-300">
               <FaRegUser />
             </Link>
           </div>
@@ -148,10 +148,10 @@ export default function NavBar() {
               </DropdownMenu>
             </Dropdown>
           </div>
-          <div className="mx-4 ">
+          <div className="mx-4 mt-[.4rem] ">
             <Sheet>
               <SheetTrigger
-                className="text-[1.4rem] hover:scale-125 transform duration-300 border-none"
+                className="text-[1.4rem] lg:hover:scale-125 transform duration-300 border-none"
                 onClick={handleCartClick}
                 disabled={!user?._id}
               >
