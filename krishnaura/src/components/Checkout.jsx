@@ -54,6 +54,7 @@ export function Checkout({ product, size, color, quantity }) {
   useEffect(() => {
 
     sessionStorage.setItem("checkoutData", false)
+    sessionStorage.setItem("guestCart", false)
 
     setProductId(product[0]?._id)
     if (product[0]?.cartId) {
@@ -356,11 +357,11 @@ export function Checkout({ product, size, color, quantity }) {
                                 {size || product.size[0].name}
                               </p>
                             </div>
-                            <p className="mt-4 text-xs font-medium ">x {quantity || 1}</p>
+                            <p className="mt-4 text-xs font-medium ">{quantity || 1}</p>
                           </div>
                         </div>
                         <div className="ml-auto flex flex-col items-end justify-between">
-                          <p className="text-right text-sm font-bold text-gray-900">Rs: {!product[0]?.cartId ? price : product.size[0].price}</p>
+                          <p className="text-right text-sm font-bold text-gray-900">Rs: {product.size[0].price}</p>
                           <button
                             type="button"
                             className="-m-2 inline-flex rounded p-2 text-gray-400 transition-all duration-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
@@ -398,7 +399,7 @@ export function Checkout({ product, size, color, quantity }) {
                 <ul className="mt-6 space-y-3">
                   <li className="flex items-center justify-between text-gray-600">
                     <p className="text-sm font-medium">Sub total</p>
-                    <p className="text-sm font-medium">{quantity} x {price}</p>
+                    <p className="text-sm font-medium">{quantity ? `${quantity} x ${price}` : price}</p>
                   </li>
                   <li className="flex items-center justify-between text-gray-900">
                     <p className="text-sm font-medium ">Total</p>

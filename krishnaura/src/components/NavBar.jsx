@@ -33,27 +33,41 @@ import useCartApi from "@/api/useCartApi";
 import { useRouter } from "next/navigation"; // To redirect
 
 export default function NavBar() {
-
-  const { getCart } = useCartApi();
+  const { getCart, addToCart } = useCartApi();
   const { updateSession } = useGetUser();
   const [refreshCart, setRefreshCart] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
   const user = useSelector(
     (state) => state.user.userData,
     shallowEqual
   );
-  const router = useRouter(); // Used for redirection
+  // const router = useRouter(); // Used for redirection
   const [products, setProducts] = useState()
 
   const handleCartClick = async () => {
-    console.log("trigger")
     if (user?._id) {
       const product = await getCart(user?._id);
+      console.log(product)
       setProducts(product)
     } else {
-      router.push("/auth");
+      const cart = JSON.parse(sessionStorage.getItem('guestCart'))
+      setProducts(cart)
     }
   };
+
+  useEffect(() => {
+    if (user && user._id) {
+      const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
+
+      if (cart) {
+        cart?.forEach((item) => {
+          addToCart({ userId: user._id, productId: item._id });
+        });
+        sessionStorage.removeItem('guestCart');
+      }
+
+    }
+  }, [user?._id]);
 
   useEffect(() => {
     if (refreshCart) {
@@ -153,7 +167,7 @@ export default function NavBar() {
               <SheetTrigger
                 className="text-[1.4rem] lg:hover:scale-125 transform duration-300 border-none"
                 onClick={handleCartClick}
-                disabled={!user?._id}
+                // disabled={!user?._id}
               >
                 <HiOutlineShoppingBag
 

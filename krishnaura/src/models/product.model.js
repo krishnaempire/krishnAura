@@ -17,13 +17,9 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  off: {
-    type: String,
+  about: {
+    type: String
   },
-  offPrice: {
-    type: String,
-  },
-
   description: {
     type: String,
     required: true,
@@ -41,6 +37,14 @@ const productSchema = new mongoose.Schema({
       type: Number,
       required: true,
     },
+    offPercentage: {
+      type: Number,
+      required: true
+    },
+    offPrice: {
+      type: Number,
+      required: true
+    }
   }],
   color: [{
     name: {

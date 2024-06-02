@@ -3,15 +3,19 @@ import React, { useEffect, useState } from 'react';
 import useProductApi from '@/api/useProductApi';
 import { useParams, useRouter } from 'next/navigation';
 import { shallowEqual, useSelector } from 'react-redux';
-import { Spinner } from '@nextui-org/react';
+import { Button, Modal, ModalBody, ModalContent, ModalHeader, Spinner, useDisclosure } from '@nextui-org/react';
 import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import useCartApi from '@/api/useCartApi';
+import SizeChart from "../../../../public/SizeChart.png"
 
 export default function ProductPage() {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const user = useSelector(
     (state) => state.user.userData,
     shallowEqual
   );
+  const { addToCart } = useCartApi()
   const router = useRouter();
   const { getProduct } = useProductApi();
   const { id } = useParams();
@@ -20,6 +24,8 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [price, setPrice] = useState(0);
+  const [off, setOff] = useState(0);
+  const [offPrice, setOffPrice] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -38,6 +44,8 @@ export default function ProductPage() {
       // Set default price based on the first available size
       if (product.size.length > 0) {
         setPrice(product.size[0].price);
+        setOff(product.size[0].offPercentage);
+        setOffPrice(product.size[0].offPrice);
       }
     }
   }, [product]);
@@ -48,8 +56,26 @@ export default function ProductPage() {
     const size = product.size.find((s) => s.name === sizeName);
     if (size) {
       setPrice(size.price); // Set the price based on the selected size
+      setOff(size.offPercentage)
+      setOffPrice(size.offPrice)
     }
   };
+
+  const handleAddToCart = () => {
+    if (user && user._id) {
+      addToCart({ userId: user._id, productId: product._id });
+    } else {
+      const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
+      const item = {
+        ...product,
+        cartId: 1
+      }
+      cart.push(item);
+      sessionStorage.setItem('guestCart', JSON.stringify(cart));
+    }
+  };
+
+
 
   const handleColorClick = (colorName) => {
     setSelectedColor(colorName);
@@ -106,12 +132,12 @@ export default function ProductPage() {
             {product?.productImages?.map((url, index) => (
               <CarouselItem key={index}>
                 <Image
-                src={url}
-                width={320}
-                height={240}
-                alt="product image"
-                className="w-full h-full object-cover"
-              />
+                  src={url}
+                  width={320}
+                  height={240}
+                  alt="product image"
+                  className="w-full h-full object-cover"
+                />
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -126,17 +152,31 @@ export default function ProductPage() {
             <h2 className="text-heading mb-3.5 text-lg font-bold md:text-xl lg:text-2xl 2xl:text-3xl">
               {product?.name}
             </h2>
+            <div className=" md:hidden mt-5 flex items-center">
+              <div className="text-heading pr-2 text-base font-bold md:pr-0 md:text-xl lg:pr-2 lg:text-2xl 2xl:pr-0 2xl:text-4xl">
+                Rs {price}.00 {/* Display updated price based on the selected size */}
+              </div>
+              <span className="font-segoe pl-2 text-sm text-gray-400 line-through md:text-base lg:text-lg xl:text-xl">
+                Rs {offPrice}.00
+              </span>
+              <span className="font-segoe pl-2 text-sm text-red-700 line-through md:text-base lg:text-lg xl:text-xl">
+                {off}%
+              </span>
+            </div>
             <p className="text-body text-sm leading-6 lg:text-base lg:leading-8">
               {product?.description}
             </p>
 
             {/* Price Section */}
-            <div className="mt-5 flex items-center">
+            <div className="mt-5 hidden md:flex items-center">
               <div className="text-heading pr-2 text-base font-bold md:pr-0 md:text-xl lg:pr-2 lg:text-2xl 2xl:pr-0 2xl:text-4xl">
                 Rs {price}.00 {/* Display updated price based on the selected size */}
               </div>
               <span className="font-segoe pl-2 text-sm text-gray-400 line-through md:text-base lg:text-lg xl:text-xl">
-                Rs {product?.offPrice}.00
+                Rs {offPrice}.00
+              </span>
+              <span className="font-segoe pl-2 text-sm text-red-700 line-through md:text-base lg:text-lg xl:text-xl">
+                {off}%
               </span>
             </div>
           </div>
@@ -145,6 +185,7 @@ export default function ProductPage() {
           <div className="border-b border-gray-300 pb-3">
             {/* Size Selection */}
             <div className="mb-4">
+            <Button className='mb-2' onPress={onOpen} variant={"bordered"}>Size Chart</Button>
               <h3 className="text-heading mb-2.5 text-base font-semibold capitalize md:text-lg">
                 Size
               </h3>
@@ -189,7 +230,7 @@ export default function ProductPage() {
           </div>
 
           {/* Quantity and Checkout */}
-          <div className="space-s-4 3xl:pr-48 flex items-center gap-2 border-b border-gray-300 py-8  md:pr-32 lg:pr-12 2xl:pr-32">
+          <div className=" bottom-1 space-s-4 3xl:pr-48 flex items-center gap-2 border-b border-gray-300 py-8  md:pr-32 lg:pr-12 2xl:pr-32">
             <div className="group flex h-11 flex-shrink-0 items-center justify-between overflow-hidden rounded-md border border-gray-300 md:h-12">
               {/* Increment and Decrement */}
               <button
@@ -209,17 +250,45 @@ export default function ProductPage() {
               </button>
             </div>
 
+
             {/* Checkout Button */}
-            <button
-              type="button"
-              onClick={handleCheckOut}
-              className="h-11 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            >
-              Checkout
-            </button>
+            <div className='fixed bottom-2 lg:static lg:bottom-0 flex w-[95%] gap-2 right-[.7rem]'>
+              <button
+                type="button"
+                onClick={handleCheckOut}
+                className="h-11 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Order Now
+              </button>
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="h-11 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Cart
+              </button>
+            </div>
+
           </div>
+          <p className="text-body text-sm leading-6 mb-[5rem] lg:text-base lg:leading-8 whitespace-pre-wrap">
+            {product?.about}
+          </p>
+
         </div>
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent className='mb-[6rem] md:mb-0'>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Size Chart</ModalHeader>
+              <ModalBody>
+                <Image width={1000} height={1000} alt='Size Chart' src={SizeChart}/>
+              </ModalBody>
+
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

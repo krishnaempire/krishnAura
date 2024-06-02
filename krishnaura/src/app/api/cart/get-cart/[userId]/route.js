@@ -18,7 +18,6 @@ export const GET = async (req, { params }) => {
     }
 
     const cartItems = await Cart.find({ userId });
-
     if (!cartItems.length) {
       return NextResponse.json(
         { message: "No items in the cart." },
@@ -36,7 +35,7 @@ export const GET = async (req, { params }) => {
             cartId: cartItem._id, // Include the cartId
           };
         }
-
+        
         return null; // If product not found
       })
     );

@@ -18,14 +18,14 @@ export const POST = async (req) => {
         }
 
         // Check if the item already exists in the cart
-        const existingCartItem = await Cart.findOne({ userId, productId });
+        // const existingCartItem = await Cart.findOne({ userId, productId });
 
-        if (existingCartItem) {
-            return NextResponse.json(
-                { message: "Product is already in the cart." },
-                { status: 200 }
-            );
-        }
+        // if (existingCartItem) {
+        //     return NextResponse.json(
+        //         { message: "Product is already in the cart." },
+        //         { status: 200 }
+        //     );
+        // }
 
         // Create a new cart item if it doesn't exist
         const newCartItem = await Cart.create({ userId, productId });

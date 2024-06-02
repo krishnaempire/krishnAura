@@ -9,6 +9,7 @@ import {
 import Card from "@/components/Card";
 import useProductApi from "@/api/useProductApi";
 import Image from "next/image";
+import Footer from "@/components/Footer";
 
 const Img = [
   "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -70,6 +71,7 @@ export default function Page() {
           <Card product={product} key={index} />
         ))}
       </div>
+      <Footer />
     </div>
   );
 }

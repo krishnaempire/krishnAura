@@ -8,9 +8,9 @@ connectDB()
 
 export const POST = asyncHandler(async (req) => {
     try {
-        const { imgUrl, stock, color, size, name, type, off, offPrice, description } = await req.json()
+        const { imgUrl, stock, color, size, name, type, description, about } = await req.json()
         
-        if (!imgUrl || !stock || !color || !size || !type || !off || !offPrice || !description || !name) {
+        if (!imgUrl || !stock || !color || !size || !type || !about || !description || !name) {
             return NextResponse.json(
                 { error: "All fields are required" },
                 { status: 400 }
@@ -39,8 +39,7 @@ export const POST = asyncHandler(async (req) => {
             size,
             type,
             description,
-            off,
-            offPrice
+            about,
         })
 
         if (!product) {

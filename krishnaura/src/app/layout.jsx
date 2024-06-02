@@ -4,7 +4,6 @@ import { Providers } from "./providers";
 import { Toaster } from "@/components/ui/toaster.jsx"
 import NavBar from "@/components/NavBar";
 import ReduxProvider from "./reduxProvider";
-import Footer from "@/components/Footer";
 import Script from 'next/script'
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,7 +22,6 @@ export default function RootLayout({ children }) {
             <Providers>
               <NavBar />
               {children}
-              <Footer />
             </Providers>
           </ReduxProvider>
           <Toaster />

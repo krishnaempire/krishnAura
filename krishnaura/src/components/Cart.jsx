@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Spinner } from '@nextui-org/react';
 import useCartApi from '@/api/useCartApi';
 import { useRouter } from 'next/navigation';
+import { shallowEqual, useSelector } from 'react-redux';
 // import { Trash, Heart } from 'lucide-react'
 
 // const products = [
@@ -50,6 +51,10 @@ export default function Cart({ products, setRefreshCart }) {
 
   const { deleteCartItem } = useCartApi()
   const router = useRouter()
+  const user = useSelector(
+    (state) => state.user.userData,
+    shallowEqual
+  );
   const [totalAmount, setTotalAmount] = useState(0);
 
   const handleDelete = async (cartId) => {
@@ -80,6 +85,10 @@ export default function Cart({ products, setRefreshCart }) {
   };
 
   const handleCheckout = () => {
+    if (!user?._id) {
+      router.push("/auth")
+      return
+    }
     storeCheckoutData(products, totalAmount);
     router.push('/product-page/checkout');
   };

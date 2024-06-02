@@ -16,8 +16,8 @@ function CheckoutComponent() {
     const quantity = searchParams.get('quantity');
     const size = searchParams.get('size');
     const color = searchParams.get('color');
-    useEffect(() => {
 
+    useEffect(() => {
         const sessionData = JSON.parse(sessionStorage.getItem("checkoutData"));
         if (sessionData) {
             setProduct(sessionData.products);
@@ -56,14 +56,17 @@ function CheckoutComponent() {
 
     return (
         <div className='mt-[6rem] md:flex '>
-            <Button
-                variant={"bordered"}
-                className='relative top-4 left-2'
-                onClick={handleBack}
-                disabled={!product[0]?._id}
-            >
-                Back
-            </Button>
+            {!product[0]?.cartId &&
+
+                <Button
+                    variant={"bordered"}
+                    className='relative top-4 left-2'
+                    onClick={handleBack}
+                    disabled={!product[0]?._id}
+                >
+                    Back
+                </Button>
+            }
             {product.length > 0 && (
                 <Checkout product={product} color={color} size={size} quantity={quantity} />
             )}
