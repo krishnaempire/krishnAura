@@ -76,10 +76,37 @@ const useProductApi = () => {
         }
     }
 
-    
+
+    const getPaginatedProducts = async (page = 1, limit = 5) => {
+        try {
+            const res = await fetch(`/api/product/get-product?page=${page}&limit=${limit}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await res.json();
+
+            if (data.error) {
+                toast({
+                    description: data.error,
+                });
+                return;
+            }
+
+            return data;
+        } catch (error) {
+            toast({
+                description: error.message,
+            });
+        }
+    };
+
     return {
         addProduct,
         getProduct,
+        getPaginatedProducts,
     };
 };
 
