@@ -49,7 +49,7 @@ const ReturnPolicy = () => {
                             <p className='font-semibold'>Contact Us</p>
                             <p>If you have any questions about our return policy, please contact us at:</p>
                             <p><span className='font-semibold'>Email:</span> Kirshnaempire77@gmail.com</p>
-                            <p><span className='font-semibold'>Phone:</span>Even we don't know</p>
+                            <p><span className='font-semibold'>Phone:</span>Even we don&apos;t know</p>
                         </div>
                         <p>Thank you for shopping with Krishna Aura. We appreciate your understanding and cooperation.</p>
                     </div>
