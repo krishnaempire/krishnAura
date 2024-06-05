@@ -27,7 +27,7 @@ const SuggestionCard = ({ product }) => {
   const description = product?.description.slice(0, 20) + ".";
   return (
     <>
-      <div className='w-[12rem]  rounded-lg bg-gray-100 hover:shadow-lg'>
+      <div className='w-[10rem] md:w-[12rem]  rounded-lg bg-gray-100 hover:shadow-lg'>
         <div className='w-full text-white text-center h-[10rem] bg-slate-500 rounded-lg overflow-hidden'>
           <Link href={`/product-page/${product?._id}`}>
             <Image src={product?.productImages[0]} alt="" width={352} height={288} className="object-cover h-full w-full" />
@@ -35,7 +35,7 @@ const SuggestionCard = ({ product }) => {
         </div>
         <div className='mx-4 mt-2 flex flex-col gap-[1px]'>
           <p className='font-medium text-[.8rem] w-full'>{product?.name}</p>
-          <p className='font-medium sm:text-[.7rem] md:text-[1rem] w-full'>{description}</p>
+          <p className='font-medium text-[.7rem] md:text-[1rem] w-full'>{description}</p>
           <div className='flex flex-col  justify-between mt-2'>
               <p className='text-[1rem] line-through opacity-60 font-semibold'>&#8377;{`${product.size[0].price}.00`}</p>
               <p className='text-[1rem] opacity-90 font-semibold'>&#8377;{`${product.size[0].offPrice}.00`}</p>
