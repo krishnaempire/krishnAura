@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import useCartApi from '@/api/useCartApi';
 import SizeChart from "../../../../public/SizeChart.png"
+import ProductSuggestion from '@/components/ProductSuggestion';
 
 export default function ProductPage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -154,10 +155,10 @@ export default function ProductPage() {
             </h2>
             <div className=" md:hidden mt-5 flex items-center">
               <div className="text-heading pr-2 text-base font-bold md:pr-0 md:text-xl lg:pr-2 lg:text-2xl 2xl:pr-0 2xl:text-4xl">
-                Rs {price}.00 {/* Display updated price based on the selected size */}
+                Rs {offPrice}.00 {/* Display updated price based on the selected size */}
               </div>
               <span className="font-segoe pl-2 text-sm text-gray-400 line-through md:text-base lg:text-lg xl:text-xl">
-                Rs {offPrice}.00
+                Rs {price}.00
               </span>
               <span className="font-segoe pl-2 text-sm text-red-700 line-through md:text-base lg:text-lg xl:text-xl">
                 {off}%
@@ -170,10 +171,10 @@ export default function ProductPage() {
             {/* Price Section */}
             <div className="mt-5 hidden md:flex items-center">
               <div className="text-heading pr-2 text-base font-bold md:pr-0 md:text-xl lg:pr-2 lg:text-2xl 2xl:pr-0 2xl:text-4xl">
-                Rs {price}.00 {/* Display updated price based on the selected size */}
+                Rs {offPrice}.00 {/* Display updated price based on the selected size */}
               </div>
               <span className="font-segoe pl-2 text-sm text-gray-400 line-through md:text-base lg:text-lg xl:text-xl">
-                Rs {offPrice}.00
+                Rs {price}.00
               </span>
               <span className="font-segoe pl-2 text-sm text-red-700 line-through md:text-base lg:text-lg xl:text-xl">
                 {off}%
@@ -255,17 +256,17 @@ export default function ProductPage() {
             <div className='fixed bottom-2 lg:static lg:bottom-0 flex w-[95%] gap-2 right-[.7rem]'>
               <button
                 type="button"
-                onClick={handleCheckOut}
-                className="h-11 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-              >
-                Order Now
-              </button>
-              <button
-                type="button"
                 onClick={handleAddToCart}
                 className="h-11 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 Cart
+              </button>
+              <button
+                type="button"
+                onClick={handleCheckOut}
+                className="h-11 w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                Order Now
               </button>
             </div>
 
@@ -289,6 +290,7 @@ export default function ProductPage() {
           )}
         </ModalContent>
       </Modal>
+      <ProductSuggestion/>
     </div>
   );
 }

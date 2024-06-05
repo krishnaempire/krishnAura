@@ -77,9 +77,9 @@ const useProductApi = () => {
     }
 
 
-    const getPaginatedProducts = async (page = 1, limit = 5) => {
+    const getPaginatedProducts = async (page = 1, limit = 10) => {
         try {
-            const res = await fetch(`/api/product/get-product?page=${page}&limit=${limit}`, {
+            const res = await fetch(`/api/product/get-product/page?page=${page}&limit=${limit}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

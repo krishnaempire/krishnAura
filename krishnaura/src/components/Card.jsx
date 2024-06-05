@@ -40,8 +40,8 @@ const Card = ({ product }) => {
           <div className='flex items-center justify-between mt-2'>
             <p className='text-red-400 font-semibold text-[1rem]'>-{product?.size[0].offPercentage}% off</p>
             <div className='ml-2 rounded-[.9rem] h-[2.2rem] w-[11rem] bg-white flex items-center justify-evenly '>
-              <p className='text-[1rem] opacity-90 font-semibold'>&#8377;{product?.size[0].price}</p>
-              <p className='line-through opacity-60 text-[.9rem] font-medium'>M.R.P: {`${product.size[0].offPrice}.00`}</p>
+              <p className='text-[1rem] opacity-90 font-semibold'>&#8377;{`${product.size[0].offPrice}.00`}</p>
+              <p className='line-through opacity-60 text-[.9rem] font-medium'>M.R.P: {product?.size[0].price}</p>
             </div>
           </div>
           <div className="flex justify-end w-full">
