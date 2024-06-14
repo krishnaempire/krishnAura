@@ -81,7 +81,6 @@ export default function Cart({ products, setRefreshCart }) {
           praesentium incidunt.
         </p>
         <ul className="flex flex-col divide-y divide-gray-200">
-        // Assuming selectedSize is stored in each product object
           {products.map((product, index) => (
             <li key={index} className="flex flex-col py-6 sm:flex-row sm:justify-between">
               <div className="flex w-full space-x-2 sm:space-x-4">
