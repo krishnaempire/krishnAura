@@ -24,7 +24,7 @@ const OrderCard = ({ order, product, isAdmin }) => {
           <div className="flex flex-col w-[90%] items-center gap-2 ">
 
             <div className="">
-              <Image src={product?.productImages[0]} alt="" width={352} height={288} className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-cover" />
+              <Image src={product?.productImages[0]} alt={product?.name} width={352} height={288} className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-cover" />
             </div>
 
             <div className="flex flex-col gap-2">

@@ -9,10 +9,10 @@ connectDB()
 
 export const POST = asyncHandler(async (req) => {
     const body = await req.json()
-    const { fullName, phoneNumber, email, password } = body;
+    const { firstName, lastName, phoneNumber, email, password } = body;
 
     // Check if any required field is missing or empty
-    if (![fullName, phoneNumber, email, password].every(Boolean)) {
+    if (![firstName, lastName, phoneNumber, email, password].every(Boolean)) {
         return NextResponse.json(
             { error: "All fields are required" },
             { status: 400 }
@@ -42,7 +42,8 @@ export const POST = asyncHandler(async (req) => {
 
         // Create the user
         const newUser = await User.create({
-            fullName,
+            firstName,
+            lastName,
             email,
             phoneNumber,
             password: hashedPassword,

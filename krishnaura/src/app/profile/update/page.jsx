@@ -14,16 +14,19 @@ const UpdateProfile = () => {
     const user = useSelector(
         (state) => state.user.userData,
         shallowEqual
-      );
+    );
     const id = user?._id
     const [userData, setUserData] = useState({
         email: user?.email || "",
-        fullName: user?.fullName || "",
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
         phoneNumber: user?.phoneNumber || "",
-        address: user?.address || ""
+        address: user?.address || "",
+        city: user?.city || "",
+        state: user?.state || "",
+        pinCode: user?.pinCode || ""
     });
 
-    console.log("chaange")
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData((prevData) => ({
@@ -33,7 +36,7 @@ const UpdateProfile = () => {
     };
 
     const handleUpdate = async () => {
-        if (!userData.email || !userData.phoneNumber || !userData.address || !userData.fullName) {
+        if (!userData.email || !userData.phoneNumber || !userData.address || !userData.firstName || !userData.lastName || !userData.city || !userData.state || !userData.pinCode || !userData.state) {
             return toast({
                 description: "Fill all the fields"
             })
@@ -49,7 +52,6 @@ const UpdateProfile = () => {
             })
             return
         } catch (error) {
-
             console.error('Error updating profile:', error);
             toast({
                 description: 'Failed to update profile. Please try again later'
@@ -69,9 +71,13 @@ const UpdateProfile = () => {
         setUserData(prevUserData => ({
             ...prevUserData,
             email: user?.email || "",
-            fullName: user?.fullName || "",
+            firstName: user?.firstName || "",
+            lastName: user?.lastName || "",
             phoneNumber: user?.phoneNumber || "",
-            address: user?.address || ""
+            address: user?.address || "",
+            city: user?.city || "",
+            state: user?.state || "",
+            pinCode: user?.pinCode || ""
         }));
     }, [user]);
 
@@ -81,11 +87,10 @@ const UpdateProfile = () => {
                 <Spinner size='lg' />
             </div>
         );
-
     }
 
     return (
-        <div className='mt-[8rem] h-[20rem] mb-[10rem] w-full flex justify-center z-0'>
+        <div className='mt-[8rem]  mb-[10rem] w-full flex justify-center z-0'>
             <div className='flex flex-col gap-3 w-[25rem]'>
                 <Input
                     name='email'
@@ -96,11 +101,19 @@ const UpdateProfile = () => {
                     onChange={handleInputChange}
                 />
                 <Input
-                    name='fullName'
+                    name='firstName'
                     type="text"
-                    label="Full Name"
+                    label="First Name"
                     variant="bordered"
-                    value={userData.fullName}
+                    value={userData.firstName}
+                    onChange={handleInputChange}
+                />
+                <Input
+                    name='lastName'
+                    type="text"
+                    label="Last Name"
+                    variant="bordered"
+                    value={userData.lastName}
                     onChange={handleInputChange}
                 />
                 <Input
@@ -117,6 +130,30 @@ const UpdateProfile = () => {
                     label="Address"
                     variant="bordered"
                     value={userData.address}
+                    onChange={handleInputChange}
+                />
+                <Input
+                    name='city'
+                    type="text"
+                    label="City"
+                    variant="bordered"
+                    value={userData.city}
+                    onChange={handleInputChange}
+                />
+                <Input
+                    name='state'
+                    type="text"
+                    label="State"
+                    variant="bordered"
+                    value={userData.state}
+                    onChange={handleInputChange}
+                />
+                <Input
+                    name='pinCode'
+                    type="text"
+                    label="Pin Code"
+                    variant="bordered"
+                    value={userData.pinCode}
                     onChange={handleInputChange}
                 />
                 <Button isLoading={updating} className='bg-[#d4a72c] font-medium text-white' onClick={handleUpdate}>

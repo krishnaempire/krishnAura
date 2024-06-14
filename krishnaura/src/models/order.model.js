@@ -27,7 +27,6 @@ const orderSchema = new mongoose.Schema({
   },
   paymentId: {
     type: String,
-    required: true
   },
   color: {
     type: String,
@@ -37,13 +36,16 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  postalCode: {
+  pinCode: {
     type: Number,
     required: true
   },
   size: {
     type: String,
     required: true
+  },
+  paymentType:{
+    type: String
   },
   price: {
     type: String,

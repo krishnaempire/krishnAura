@@ -64,11 +64,14 @@ export default function ProductPage() {
 
   const handleAddToCart = () => {
     if (user && user._id) {
-      addToCart({ userId: user._id, productId: product._id });
+      addToCart({ userId: user._id, productId: product._id, selectedColor: selectedColor, selectedSize: selectedSize, quantity: quantity });
     } else {
       const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
       const item = {
         ...product,
+        selectedColor: selectedColor,
+        selectedSize: selectedSize,
+        quantity,
         cartId: 1
       }
       cart.push(item);
@@ -253,7 +256,7 @@ export default function ProductPage() {
 
 
             {/* Checkout Button */}
-            <div className='fixed bottom-2 lg:static lg:bottom-0 flex w-[95%] gap-2 right-[.7rem]'>
+            <div className='fixed z-10 bottom-2 lg:static lg:bottom-0 flex w-[95%] gap-2 right-[.7rem]'>
               <button
                 type="button"
                 onClick={handleAddToCart}

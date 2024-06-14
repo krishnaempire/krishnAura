@@ -3,13 +3,11 @@ import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/DBConfig/connectDB.js";
 
-
 export const POST = async (req) => {
     connectDB();
     try {
-        const { userId, productId } = await req.json();
-
-        // Check if userId and productId are valid ObjectId
+        const { userId, productId, selectedSize, selectedColor, quantity } = await req.json();
+        console.log(selectedColor, selectedSize)
         if (!isValidObjectId(userId) || !isValidObjectId(productId)) {
             return NextResponse.json(
                 { error: "Invalid userId or productId." },
@@ -17,20 +15,14 @@ export const POST = async (req) => {
             );
         }
 
-        // Check if the item already exists in the cart
-        // const existingCartItem = await Cart.findOne({ userId, productId });
+        const cartItemData = { userId, productId };
+        if (selectedSize) cartItemData.selectedSize = selectedSize;
+        if (selectedColor) cartItemData.selectedColor = selectedColor;
+        if (quantity) cartItemData.quantity = quantity;
 
-        // if (existingCartItem) {
-        //     return NextResponse.json(
-        //         { message: "Product is already in the cart." },
-        //         { status: 200 }
-        //     );
-        // }
-
-        // Create a new cart item if it doesn't exist
-        const newCartItem = await Cart.create({ userId, productId });
-
-        return NextResponse.json({newCartItem}, { status: 201 });
+        const newCartItem = await Cart.create(cartItemData);
+        
+        return NextResponse.json({ newCartItem }, { status: 201 });
     } catch (error) {
         console.error("Error adding product to cart:", error);
         return NextResponse.json(

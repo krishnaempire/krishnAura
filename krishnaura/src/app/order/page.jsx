@@ -19,7 +19,6 @@ const Orders = () => {
   const [orders, setOrders] = useState()
   const [fetching, setFetching] = useState(true)
 
-  console.log("render")
 
   useEffect(() => {
     const fetchOrders = async () => {

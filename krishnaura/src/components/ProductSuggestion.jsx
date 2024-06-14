@@ -41,13 +41,13 @@ const ProductSuggestion = () => {
             <Carousel className="w-full flex justify-center mb-[5rem]">
                 <CarouselContent className="-ml-1">
                     {products.map((product, index) => (
-                        <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/4">
+                        <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/3">
                             <SuggestionCard product={product}/>
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                {/* <CarouselPrevious /> */}
-                {/* <CarouselNext /> */}
+                <CarouselPrevious className="hidden lg:block"  />
+                <CarouselNext className="hidden lg:block"  />
             </Carousel>
             {/* <Carousel className="w-full flex justify-center mb-[5rem]">
                 <CarouselContent className="-ml-1">

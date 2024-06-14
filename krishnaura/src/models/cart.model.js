@@ -10,6 +10,15 @@ const cartSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
     required: true
+  },
+  selectedSize: {
+    type: String,
+  },
+  selectedColor: {
+    type: String,
+  },
+  quantity: {
+    type: String,
   }
 });
 

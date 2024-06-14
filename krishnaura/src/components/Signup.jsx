@@ -13,7 +13,8 @@ const Signup = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [userData, setUserData] = useState({
-    fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phoneNumber: '',
     password: ''
@@ -32,6 +33,14 @@ const Signup = () => {
 
     if (!validatePhoneNumber(userData.phoneNumber)) {
       showErrorToast('Please enter a valid phone number');
+      return;
+    }
+    if (!userData.lastName) {
+      showErrorToast('Please enter a Last Name');
+      return;
+    }
+    if (!userData.firstName) {
+      showErrorToast('Please enter a First Name');
       return;
     }
 
@@ -112,21 +121,32 @@ const Signup = () => {
         <div className='w-full text-center mb-4 text-[1.8rem] font-semibold'>
           <div>
 
-          Hello! 
-          <div>
+            Hello!
+            <div>
 
-          Please Sign up here
+              Please Sign up here
+            </div>
           </div>
-          </div>
-          </div>
+        </div>
+        <div className='flex'>
+
         <Input
           type='text'
           value={userData.fullName}
           variant='underlined'
-          placeholder='Enter your Full Name'
+          placeholder='Enter your First Name'
           radius='sm'
-          onChange={(e) => setUserData({ ...userData, fullName: e.target.value })}
+          onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
         />
+        <Input
+          type='text'
+          value={userData.fullName}
+          variant='underlined'
+          placeholder='Enter your Last Name'
+          radius='sm'
+          onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
+        />
+        </div>
         <Input
           type='email'
           className='mt-5'
@@ -153,13 +173,13 @@ const Signup = () => {
           variant='underlined'
           onChange={(e) => setUserData({ ...userData, password: e.target.value })}
           endContent={
-            <button className='focus:outline-none' type='button'  onClick={toggleVisibility}>
+            <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
               {isVisible ? 'Hide' : 'Show'}
             </button>
           }
           type={isVisible ? 'text' : 'password'}
         />
-        <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-white'  onClick={handleOTP}>
+        <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-white' onClick={handleOTP}>
           Send OTP
         </Button>
       </div>
@@ -182,15 +202,15 @@ const Signup = () => {
                   </div>
                   <div className='w-full flex justify-center items-center'>
 
-                  {/* <div className='w-[4rem] flex justify-center items-center'> */}
-                  <Input
-                    value={otpInput}
-                    className='text-[2rem] p-2'
-                    autoFocus
-                    onChange={(e) => setOtpInput(e.target.value)}
-                  />
+                    {/* <div className='w-[4rem] flex justify-center items-center'> */}
+                    <Input
+                      value={otpInput}
+                      className='text-[2rem] p-2'
+                      autoFocus
+                      onChange={(e) => setOtpInput(e.target.value)}
+                    />
 
-                  {/* </div> */}
+                    {/* </div> */}
                   </div>
                 </ModalBody>
                 <ModalFooter>

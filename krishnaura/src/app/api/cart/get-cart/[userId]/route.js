@@ -28,21 +28,36 @@ export const GET = async (req, { params }) => {
     const cartProducts = await Promise.all(
       cartItems.map(async (cartItem) => {
         const product = await Product.findById(cartItem.productId);
-        
+
+        const item = {};
+        if (cartItem?.selectedSize) item.selectedSize = cartItem.selectedSize;
+        if (cartItem?.selectedSize) item.selectedColor = cartItem.selectedColor;
+        if (cartItem?.quantity) item.quantity = cartItem.quantity;
+
         if (product) {
-          return {
-            ...product.toObject(), // Convert Mongoose document to plain object
-            cartId: cartItem._id, // Include the cartId
-          };
+          if (Object.keys(item).length !== 0) {
+            return {
+              ...product.toObject(),
+              cartId: cartItem._id,
+              ...item
+            };
+          } else {
+            return {
+              ...product.toObject(),
+              cartId: cartItem._id,
+            };
+          }
+        } else {
+          return null;
         }
-        
-        return null; // If product not found
       })
     );
+
 
     const validCartProducts = cartProducts.filter((item) => item !== null);
 
     return NextResponse.json(validCartProducts, { status: 200 });
+
   } catch (error) {
     console.error("Error fetching cart items and products:", error);
     return NextResponse.json(

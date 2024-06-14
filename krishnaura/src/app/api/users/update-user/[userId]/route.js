@@ -1,15 +1,14 @@
-import asyncHandler from "express-async-handler";
 import User from "@/models/user.model.js";
 import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/DBConfig/connectDB.js";
 
-connectDB()
+connectDB();
 
-export const PATCH = asyncHandler(async (req, { params }) => {
+export const PATCH = async (req, { params }) => {
     try {
         const { userId } = params;
-        const { fullName, email, phoneNumber, address } = await req.json();
+        const { firstName, lastName, email, phoneNumber, address, city, state, pinCode } = await req.json();
 
         if (!isValidObjectId(userId)) {
             return NextResponse.json({ error: "Please provide a valid userId" }, { status: 400 });
@@ -22,10 +21,13 @@ export const PATCH = asyncHandler(async (req, { params }) => {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
-        let updateValue = {}
+        let updateValue = {};
 
-        if (fullName) {
-            updateValue.fullName = fullName;
+        if (firstName) {
+            updateValue.firstName = firstName;
+        }
+        if (lastName) {
+            updateValue.lastName = lastName;
         }
         if (email) {
             updateValue.email = email;
@@ -36,21 +38,30 @@ export const PATCH = asyncHandler(async (req, { params }) => {
         if (address) {
             updateValue.address = address;
         }
-
+        if (city) {
+            updateValue.city = city;
+        }
+        if (state) {
+            updateValue.state = state;
+        }
+        if (pinCode) {
+            updateValue.pinCode = pinCode;
+        }
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
             updateValue,
             { new: true }
-        )
+        );
 
         if (!updatedUser) {
             return NextResponse.json(
-                {error: 'something went wrong while updating user'},
-                {status: 500})
+                { error: 'Something went wrong while updating user' },
+                { status: 500 }
+            );
         }
         return NextResponse.json(updatedUser);
     } catch (error) {
         return NextResponse.json({ error: "Something went wrong while updating the user" }, { status: 500 });
     }
-});
+};

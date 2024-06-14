@@ -8,25 +8,26 @@ import { useRouter } from 'next/navigation'
 import useOrderApi from '@/api/useOrderApi'
 import useCartApi from '@/api/useCartApi'
 
-function extractCartIds(products) {
-  return products.map((product) => product.cartId || null);
+function extractCartIds(product) {
+  return product.map((product) => product.cartId || null);
 }
 
-function extractProductIds(products) {
-  return products.map((product) => product._id || null);
+function extractProductIds(product) {
+  return product.map((product) => product._id || null);
 }
-function extractColor(products) {
-  return products.map((product) => product.color[0].name || null).flat().join(" ");
+function extractColor(product) {
+  return product.map((product) => product.selectedColor || product.color[0].name).flat().join(" ");
 }
-function extractSize(products) {
-  return products.map((product) => product.size[0].name || null).flat().join(" ");
+function extractSize(product) {
+  return product.map((product) => product.selectedSize || product.size[0].name).flat().join(" ");
 }
 
 export function Checkout({ product, size, color, quantity }) {
 
-  const { addOrder } = useOrderApi()
+  const { addOrder, addOrdertoShipway } = useOrderApi()
   const { deleteCartItems } = useCartApi()
   const router = useRouter()
+  const [isCOD, setIsCOD] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [phoneVerified, setPhoneVerified] = useState(false)
   const [addressVerified, setAddressVerified] = useState(false)
@@ -36,20 +37,26 @@ export function Checkout({ product, size, color, quantity }) {
   const [countdown, setCountdown] = useState(5);
   const [redirect, setRedirect] = useState("")
   const [price, setPrice] = useState(0);
+  const [priceList, setPriceList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [productId, setProductId] = useState();
   const [sizes, setSizes] = useState();
   const [colors, setColors] = useState();
   const [userData, setUserData] = useState({
-    fullName: user?.fullName || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
     phoneNumber: user?.phoneNumber || "",
     address: user?.address || "",
-    postalCode: ""
+    city: user?.city || "",
+    pinCode: user?.pinCode || "",
+    city: user.city,
+    state: user.state
   })
 
-  
+  console.log(color)
   const userId = user?._id
-  
+
 
   useEffect(() => {
 
@@ -68,24 +75,33 @@ export function Checkout({ product, size, color, quantity }) {
       setCartId(cartId)
     }
 
-    const getPriceForSize = (products, size) => {
-      if (!products[0].cartId) {
-        const sizeForPrice = products[0].size.find((s) => s.name === size);
-        return sizeForPrice ? sizeForPrice.price : 0;
+    const getPriceForSize = (product, size) => {
+
+      if (!product[0].cartId) {
+        const sizeForPrice = product[0].size.find((s) => s.name === size);
+        setPriceList([sizeForPrice.offPrice])
+        return sizeForPrice ? sizeForPrice.offPrice : 0;
 
       } else {
-        return products.reduce((total, product) => {
-          const sizePrice = product.size[0]?.price || 0;
+
+        return product.reduce((total, product) => {
+          let sizePrice
+
+          if (product.selectedSize) {
+            sizePrice = product.size.find((s) => s.name === product.selectedSize)?.offPrice || 0;
+          } else {
+            sizePrice = product.size[0]?.offPrice || 0;
+          }
+          setPriceList(prevPriceList => [...prevPriceList, sizePrice]);
           return total + sizePrice;
         }, 0);
       }
     };
 
     const newPrice = getPriceForSize(product, size);
-    setTotalPrice(quantity * newPrice || 1 * newPrice)
+    setTotalPrice(quantity * newPrice + 60 || 1 * newPrice + 60)
     setPrice(newPrice);
   }, []);
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -125,7 +141,7 @@ export function Checkout({ product, size, color, quantity }) {
       })
       return
     }
-    if (!userData.phoneNumber || !userData.address || !userData.postalCode) {
+    if (!userData.phoneNumber || !userData.address || !userData.pinCode) {
       return toast({
         description: "Fill all the fields"
       })
@@ -182,14 +198,17 @@ export function Checkout({ product, size, color, quantity }) {
 
         orderData = {
           ...orderData,
+          ...userData,
+          userId,
+          productId: productId?.length ? productId : [productId],
+          orderId: generateOrderId(),
           totalPrice,
-          address: userData.address,
-          phoneNumber: userData.phoneNumber,
-          postalCode: userData.postalCode
-        }
-        console.log(orderData)
+          paymentType: isCOD ? "C" : "P",
+          order_date: formatDate(new Date())
+        };
 
         await addOrder(orderData)
+        await addOrdertoShipway(orderData, product, priceList)
         if (cartIds) {
           deleteCartItems(cartIds)
         }
@@ -213,6 +232,88 @@ export function Checkout({ product, size, color, quantity }) {
     razor.open();
 
   }
+
+  const handleCOD = async () => {
+    let orderData = {};
+
+    if (!orderData.color) {
+      orderData.color = color || colors;
+    }
+    if (!orderData.size) {
+      orderData.size = size || sizes;
+    }
+    if (!orderData.quantity) {
+      orderData.quantity = quantity || 1;
+    }
+    if (!product[0].quantity) {
+      product[0].quantity = quantity || 1;
+    }
+
+
+
+
+    // Generate a random orderId
+    const generateOrderId = () => {
+      return 'ORD-' + Math.random().toString(36).substring(2, 11).toUpperCase();
+    };
+
+
+    if (priceList.length > 0) {
+      setPriceList(priceList.slice(0, priceList.length / 2));
+    }
+
+    // console.log(halfPriceList)
+
+    orderData = {
+      ...orderData,
+      ...userData,
+      userId,
+      productId: productId?.length ? productId : [productId],
+      orderId: generateOrderId(),
+      totalPrice,
+      paymentType: isCOD ? "C" : "P",
+      order_date: formatDate(new Date())
+    };
+
+    await addOrder(orderData)
+    await addOrdertoShipway(orderData, product, priceList)
+
+  };
+
+  const handleCheckboxClick = () => {
+
+    if (isCOD) {
+      setTotalPrice(totalPrice - 60);
+
+      } else {
+      setTotalPrice(totalPrice + 60);
+    }
+
+    setIsCOD(!isCOD);
+
+  };
+
+
+
+  function formatDate(date) {
+    const padTo2Digits = (num) => num.toString().padStart(2, '0');
+
+    return (
+      date.getFullYear() +
+      '-' +
+      padTo2Digits(date.getMonth() + 1) +
+      '-' +
+      padTo2Digits(date.getDate()) +
+      ' ' +
+      padTo2Digits(date.getHours()) +
+      ':' +
+      padTo2Digits(date.getMinutes()) +
+      ':' +
+      padTo2Digits(date.getSeconds())
+    );
+  }
+
+
 
   return (
     <>
@@ -243,15 +344,32 @@ export function Checkout({ product, size, color, quantity }) {
                                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                   htmlFor="name"
                                 >
-                                  Full Name
+                                  First Name
                                 </label>
                                 <input
                                   className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                                   type="text"
-                                  value={userData.fullName}
+                                  value={userData.firstName}
                                   onChange={handleInputChange}
-                                  placeholder="Enter your name"
-                                  name="fullName"
+                                  placeholder="Enter your first name"
+                                  name="firstName"
+                                ></input>
+                              </div>
+                              <div>
+
+                                <label
+                                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                  htmlFor="name"
+                                >
+                                  Last Name
+                                </label>
+                                <input
+                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                  type="text"
+                                  value={userData.lastName}
+                                  onChange={handleInputChange}
+                                  placeholder="Enter your last name"
+                                  name="lastName"
                                 ></input>
                               </div>
                               <div>
@@ -285,6 +403,44 @@ export function Checkout({ product, size, color, quantity }) {
                                   htmlFor="address"
                                   className="block text-sm font-medium text-gray-700"
                                 >
+                                  State
+                                </label>
+                                <div className="mt-1">
+                                  <input
+                                    type="text"
+                                    value={userData.state}
+                                    onChange={handleInputChange}
+                                    name="state"
+                                    autoComplete="street-address"
+                                    className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                  />
+                                </div>
+
+                              </div>
+                              <div className="sm:col-span-3">
+                                <label
+                                  htmlFor="address"
+                                  className="block text-sm font-medium text-gray-700"
+                                >
+                                  City
+                                </label>
+                                <div className="mt-1">
+                                  <input
+                                    type="text"
+                                    value={userData.city}
+                                    onChange={handleInputChange}
+                                    name="city"
+                                    autoComplete="street-address"
+                                    className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                  />
+                                </div>
+
+                              </div>
+                              <div className="sm:col-span-3">
+                                <label
+                                  htmlFor="address"
+                                  className="block text-sm font-medium text-gray-700"
+                                >
                                   Address
                                 </label>
                                 <div className="mt-1">
@@ -311,8 +467,8 @@ export function Checkout({ product, size, color, quantity }) {
                                 <div className="mt-1">
                                   <input
                                     type="text"
-                                    name="postalCode"
-                                    value={userData.postalCode}
+                                    name="pinCode"
+                                    value={userData.pinCode}
                                     onChange={handleInputChange}
                                     autoComplete="postal-code"
                                     className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
@@ -351,17 +507,17 @@ export function Checkout({ product, size, color, quantity }) {
                             <div className="flex-1">
                               <p className="text-sm font-bold">{product.name}</p>
                               <p className="mt-1.5 text-sm font-medium text-gray-500">
-                                {color || product.color[0].name}
+                                {product.selectedColor || product.color[0].name}
                               </p>
                               <p className="mt-1.5 text-sm font-medium text-gray-500">
-                                {size || product.size[0].name}
+                                {product.selectedSize || product.size[0].name}
                               </p>
                             </div>
                             <p className="mt-4 text-xs font-medium ">{quantity || 1}</p>
                           </div>
                         </div>
                         <div className="ml-auto flex flex-col items-end justify-between">
-                          <p className="text-right text-sm font-bold text-gray-900">Rs: {product.size[0].price}</p>
+                          <p className="text-right text-sm font-bold text-gray-900">Rs: {!product.cartId ? price : priceList[index]}</p>
                           <button
                             type="button"
                             className="-m-2 inline-flex rounded p-2 text-gray-400 transition-all duration-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
@@ -377,22 +533,23 @@ export function Checkout({ product, size, color, quantity }) {
                 </div>
                 <hr className="mt-6 border-gray-200" />
                 <form action="#" className="mt-6">
-                  <div className="sm:flex sm:space-x-2.5 md:flex-col md:space-x-0 lg:flex-row lg:space-x-2.5">
-                    {/* <div className="flex-grow">
-                  <input
-                    className="flex w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                    type="text"
-                    placeholder="Enter coupon code"
-                  />
-                </div> */}
+                  <div className="sm:flex sm:space-x-2.5 md:flex-col md:space-x-0 lg:gap-3 lg:space-x-2.5">
+
+                    <div className='lg:relative lg:left-2'>
+
+                      <Checkbox isSelected={isCOD} onClick={handleCheckboxClick}>
+                        Cash On Delivery
+                      </Checkbox>
+                    </div>
                     <div className="mt-4 sm:mt-0 md:mt-4 lg:mt-0">
                       <button
-                        onClick={handlePayment}
+                        onClick={isCOD ? handleCOD : handlePayment}
                         type="button"
                         className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                       >
-                        Make Payment
+                        {isCOD ? "Order" : "Make Payment"}
                       </button>
+
                     </div>
                   </div>
                 </form>
@@ -400,6 +557,14 @@ export function Checkout({ product, size, color, quantity }) {
                   <li className="flex items-center justify-between text-gray-600">
                     <p className="text-sm font-medium">Sub total</p>
                     <p className="text-sm font-medium">{quantity ? `${quantity} x ${price}` : price}</p>
+                  </li>
+                  <li className="flex items-center justify-between text-gray-600">
+                    <p className="text-sm font-medium">Delivery Charges</p>
+                    <p className="text-sm font-medium">{isCOD ? 80 : 20}</p>
+                  </li>
+                  <li className="flex items-center justify-between text-gray-600">
+                    <p className="text-sm font-medium">Taxes</p>
+                    <p className="text-sm font-medium">40</p>
                   </li>
                   <li className="flex items-center justify-between text-gray-900">
                     <p className="text-sm font-medium ">Total</p>
