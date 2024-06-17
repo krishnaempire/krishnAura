@@ -1,19 +1,18 @@
 const { NextResponse } = require("next/server")
 import { transporter } from "@/utils/nodemailer.js"
-import otpGenerator from "otp-generator"
 
 export const POST = async (req) => {
     const body = await req.json()
     const email = body
 
-    const otp = otpGenerator.generate(4, { digits: true });
+    let verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     try {
         await transporter.sendMail({
             from: `KRISHNA EMPIRE <${process.env.MAIL}>`,
             to: email,
             subject: "OTP for signup",
-            html: `<h1>${otp}</h1>`
+            html: `<h1>${verifyCode}</h1>`
         })
         return NextResponse.json({message: "OTP sent", otp}, {status: 200})
 

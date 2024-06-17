@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react';
 import { useToast } from '@/components/ui/use-toast';
 import useUserApi from '@/api/userApi/useUserApi';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 
 const Login = () => {
-  const data = useSelector(state => state.user.userData)
+  // const data = useSelector(state => state.user.userData)
+  const { update } = useUserApi()
+  const {isOpen, onOpenChange, onClose, onOpen} = useDisclosure()
   const router =  useRouter()
   const { login } = useUserApi();
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleNewPassword, setIsVisibleNewPassword] = useState(false);
+  const [OTP, setOTP] = useState("")
+  const [enterOTP, setEnterOTP] = useState("")
+  const [wrongOTP, setWrongOTP] = useState(false)
+  const [isValidOTP, setValidOTP] = useState(false);
+  const [newPassword, setNewPassword] = useState()
+  
 
   const [userData, setUserData] = useState({
     credentials: "",
@@ -33,6 +42,37 @@ const Login = () => {
       showErrorToast(err.message);
     }
   };
+
+
+  const handleSendOTP = async() => {
+    const res = await fetch("/api/sendmail/send-forgot-pass-otp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application.json"
+      },
+      body: JSON.stringify(userData.credentials)
+    })
+    const data = await res.json()
+    if(data.verifyCode){
+      setOTP(Number(data.verifyCode))
+    }
+    console.log(data)
+  }
+
+  const handleVerifyOTP = () => {
+    if(OTP === enterOTP){
+      setIsVisibleNewPassword(true)
+      return
+    }
+    setWrongOTP(true)
+    setTimeout(() =>{
+      setWrongOTP(false)
+    },2000)
+  }
+
+  const handleUpdatePassword = async() => {
+    
+  }
 
   const showErrorToast = (message) => {
     toast({
@@ -83,10 +123,65 @@ const Login = () => {
           }
           type={isVisible ? 'text' : 'password'}
         />
+        <div className='flex justify-center'>
+          <p className='text-blue-500 hover:text-blue-800 cursor-pointer' onClick={onOpen}>Forgot pass?</p>
+        </div>
         <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-white' onClick={handleLogin}>
           Login
         </Button>
       </div>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        className="w-[23rem]"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Return Order</ModalHeader>
+              <ModalBody>
+                <div className={`w-full flex justify-center`}>
+                  <input
+                    type="text"
+                    value={userData.credentials}
+                    placeholder="Enter email"
+                    className=" bg-gray-200 text-[.8rem] px-[1rem] rounded-[.7rem] mr-1"
+                    onChange={e => setUserData({...userData, credentials: e.target.value })}
+                  />
+                  <Button color={"primary"} onClick={handleSendOTP} >Send OTP</Button>
+
+                </div>
+                <div className={`w-full flex h-[2.5rem] ${OTP ? "block" : "hidden"}`}>
+
+                  <input
+                    type="text"
+                    value={userData.credentials}
+                    placeholder="Enter OTP"
+                    className=" bg-gray-200 px-[1rem] rounded-[.7rem] mr-1"
+                    onChange={e => setUserData({...userData, credentials: e.target.value })}
+                  />
+                  <Button color={"primary"} onClick={handleVerifyOTP} >{wrongOTP ? "Wrong" :"Verify"}</Button>
+                </div>
+                <div className={`flex flex-col gap-2 ${isVisibleNewPassword ? "block" : "hidden"}`}>
+                  <input
+                    type="text"
+                    value={newPassword}
+                    placeholder={"Enter your new password"}
+                    className="bg-gray-200 px-4 rounded-lg h-10"
+                    onChange={e => setNewPassword(e.target.value)}
+                  />
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color={"primary"} variant={"ghost"}>
+                  Proceed
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
 
     </>
   );

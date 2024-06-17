@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema({
     required: true
   },
   quantity: {
-    type: Number,
+    type: String,
     required: true
   },
   pinCode: {
@@ -54,10 +54,18 @@ const orderSchema = new mongoose.Schema({
   isDone: {
     type: Boolean,
     default: false
+  },
+  canceled: {
+    type: Boolean,
+    default: false
+  },
+  refund: {
+    type: Boolean,
+    default: false
   }
 });
 
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
-
+ 
 export default Order;
 

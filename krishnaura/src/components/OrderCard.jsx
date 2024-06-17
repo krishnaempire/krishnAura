@@ -42,11 +42,11 @@ const OrderCard = ({ order, product, isAdmin }) => {
               </div>
               <div className="flex gap-2 items-center">
                 <p className="text-[.9rem]">Color:</p>
-                <p className="text-[.8rem]">{order.color}</p>
+                <p className="text-[.8rem]">{order.color.split(" ").join(", ")}</p>
               </div>
               <div className="flex gap-2 items-center">
                 <p className="text-[.9rem]">Quantity:</p>
-                <p className="text-[.8rem]">{order.quantity}</p>
+                <p className="text-[.8rem]">{order.quantity.split(" ").join(", ")}</p>
               </div>
               <div className="flex gap-2 items-center">
                 <p className="text-[.9rem]">Postal Code:</p>

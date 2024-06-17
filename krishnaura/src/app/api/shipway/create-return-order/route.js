@@ -1,4 +1,3 @@
-// app/api/shipway/route.js
 import { NextResponse } from 'next/server';
 
 export async function POST(request) {
@@ -16,7 +15,7 @@ export async function POST(request) {
             redirect: "follow"
         };
 
-        const response = await fetch("https://app.shipway.com/api/v2orders", requestOptions);
+        const response = await fetch("https://app.shipway.com/api/Createreturns", requestOptions);
         
         if (!response.ok) {
             const errorData = await response.json();
@@ -24,9 +23,10 @@ export async function POST(request) {
         }
 
         const result = await response.json();
+        console.log(result)
         return NextResponse.json(result, { status: 200 });
     } catch (error) {
-        console.error("Error adding order:", error);
+        console.error("Error creating return:", error);
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

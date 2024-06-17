@@ -32,9 +32,11 @@ export const GET = async (req, { params }) => {
             return NextResponse.json({ error: "No products found for the given productIds" }, { status: 404 });
         }
 
+        const reversedProducts = products.reverse();
+
         const orderWithProducts = {
             ...order.toObject(),
-            products,
+            products: reversedProducts,
         };
 
         return NextResponse.json(orderWithProducts, { status: 200 });
