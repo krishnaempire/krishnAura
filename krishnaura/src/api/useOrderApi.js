@@ -68,13 +68,14 @@ const useOrderApi = () => {
         }
     };
 
-    const updateOrder = async (orderId) => {
+    const updateOrder = async (orderId, cancel, returned) => {
         try {
             const response = await fetch(`/api/order/update-order/${orderId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"
-                }
+                },
+                body: JSON.stringify({cancel, returned})
             });
 
             if (!response.ok) {
@@ -171,6 +172,7 @@ const useOrderApi = () => {
             }
     
             const data = await response.json();
+            console.log(data)
             return data;
     
         } catch (error) {

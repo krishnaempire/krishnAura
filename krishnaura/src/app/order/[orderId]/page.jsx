@@ -8,7 +8,8 @@ import Link from "next/link";
 import { shallowEqual, useSelector } from "react-redux";
 
 const Order = () => {
-  const { getOrder, cancelOrderInShipway, returnReasonShipway, createReturnOrder } = useOrderApi();
+  
+  const { getOrder, cancelOrderInShipway, returnReasonShipway, createReturnOrder, updateOrder } = useOrderApi();
   const { orderId } = useParams();
   const user = useSelector(
     (state) => state.user.userData,
@@ -88,6 +89,8 @@ const Order = () => {
 
   const handleCancelOrder = () => {
     cancelOrderInShipway(order?.orderId);
+    const cancel = true
+    updateOrder(orderId, cancel)
     cancelModal.onClose();
   };
 

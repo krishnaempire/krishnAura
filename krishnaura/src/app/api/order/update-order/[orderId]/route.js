@@ -4,11 +4,11 @@ import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/DBConfig/connectDB.js";
 
-
 export const PATCH = asyncHandler(async (req, { params }) => {
     connectDB();
     try {
         const { orderId } = params;
+        const { cancel, returned } = await req.json();
 
         if (!isValidObjectId(orderId)) {
             return NextResponse.json({ error: "Please provide a valid orderId" }, { status: 400 });
@@ -20,9 +20,16 @@ export const PATCH = asyncHandler(async (req, { params }) => {
             return NextResponse.json({ error: "No order found for the orderId" }, { status: 404 });
         }
 
+        if (cancel) {
+            await Order.deleteOne({ _id: orderId });
+
+            // Return response immediately after deletion
+            return NextResponse.json({ success: true, message: "Order canceled and product deleted" }, { status: 200 });
+        }
+
         const updatedOrder = await Order.findByIdAndUpdate(
             orderId,
-            { isDone: !order.isDone },
+            { isDone: !order.isDone},
             { new: true }
         );
 

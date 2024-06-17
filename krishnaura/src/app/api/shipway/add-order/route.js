@@ -2,12 +2,12 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(request) {
+    
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Basic ${process.env.SHIPWAY_AUTH}`);
     myHeaders.append("Content-Type", "application/json");
 
     const payload = await request.json();
-    
     try {
         const requestOptions = {
             method: "POST",
@@ -20,6 +20,7 @@ export async function POST(request) {
         
         if (!response.ok) {
             const errorData = await response.json();
+            console.log(errorData)
             return NextResponse.json({ message: errorData.message }, { status: response.status });
         }
 
