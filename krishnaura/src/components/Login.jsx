@@ -145,6 +145,7 @@ const Login = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         className="w-[23rem]"
+        placement='center'
       >
         <ModalContent>
           {(onClose) => (
