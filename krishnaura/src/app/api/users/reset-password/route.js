@@ -1,6 +1,7 @@
 import User from "@/models/user.model.js";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/DBConfig/connectDB.js";
+import bcrypt from "bcrypt"
 
 
 export const PATCH = async (req) => {
@@ -14,12 +15,17 @@ export const PATCH = async (req) => {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
         
         const updatedUser = await User.findByIdAndUpdate(
             user?._id,
-            password,
+            {
+                password: hashedPassword
+            },
             { new: true }
         );
+
         if (!updatedUser) {
             return NextResponse.json(
                 { error: 'Something went wrong while updating user' },

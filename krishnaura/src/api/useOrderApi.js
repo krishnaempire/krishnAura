@@ -28,9 +28,9 @@ const useOrderApi = () => {
         }
     };
 
-    const getUserOrder = async (id) => {
+    const getUserOrder = async (id, page) => {
         try {
-            const response = await fetch(`/api/order/get-user-order/${id}`, { cache: 'no-store' });
+            const response = await fetch(`/api/order/get-user-order/${id}?page=${page}`, { cache: 'no-store' });
 
             if (!response.ok) {
                 toast({
@@ -42,9 +42,9 @@ const useOrderApi = () => {
 
         } catch (error) {
             console.error("Error getting orders:", error);
-            toast({
-                description: error.message
-            });
+            // toast({
+            //     description: error.message
+            // });
         }
     };
 
@@ -62,9 +62,9 @@ const useOrderApi = () => {
 
         } catch (error) {
             console.error("Error getting orders:", error);
-            toast({
-                description: error.message
-            });
+            // toast({
+            //     description: error.message
+            // });
         }
     };
 
@@ -93,9 +93,9 @@ const useOrderApi = () => {
         }
     };
 
-    const getAllOrder = async () => {
+    const getAllOrder = async (page) => {
         try {
-            const response = await fetch(`/api/order/get-all-order`, { next: { revalidate: 0 } });
+            const response = await fetch(`/api/order/get-all-order?page=${page}`, { next: { revalidate: 0 } });
 
             if (!response.ok) {
                 toast({

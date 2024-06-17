@@ -68,7 +68,7 @@ export const POST = asyncHandler(async (req) => {
             sameSite: "Strict",  
             maxAge: 10 * 24 * 60 * 60 * 1000
         })
-
+        
         return response
 
     

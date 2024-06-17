@@ -58,11 +58,12 @@ const Signup = () => {
         }
       });
       const data = await res.json();
+
       if (data.error) {
         showErrorToast(data.error);
       } else {
         showSuccessToast('OTP has been sent');
-        setOtp(data.otp);
+        setOtp(data.verifyCode);
         onOpen(); // Open the modal after OTP is sent
       }
     } catch (error) {
@@ -78,57 +79,58 @@ const Signup = () => {
 
     try {
       const res = await signup(userData);
+
       if (res.error) {
-        showErrorToast(res.error);
-      } else {
-        showSuccessToast('Signup successful');
-        setUserData({ email: '', phoneNumber: '', password: '' });
-        router.push("/")
+        return showErrorToast("Something went wrong while signing up");
       }
+      showSuccessToast(res.message);
+      setUserData({ email: '', phoneNumber: '', password: '' });
+      router.push("/")
+    
     } catch (err) {
-      showErrorToast(err.message);
-    }
-  };
+    showErrorToast(err.message);
+  }
+};
 
-  const validateEmail = (email) => {
-    // Regex for validating email address
-    const emailRegex = /@gmail\.com$/;
-    return emailRegex.test(email);
-  };
+const validateEmail = (email) => {
+  // Regex for validating email address
+  const emailRegex = /@gmail\.com$/;
+  return emailRegex.test(email);
+};
 
-  const validatePhoneNumber = (phoneNumber) => {
-    // Regex for validating phone number
-    const phoneRegex = /^\d{10}$/;
-    return phoneRegex.test(phoneNumber);
-  };
+const validatePhoneNumber = (phoneNumber) => {
+  // Regex for validating phone number
+  const phoneRegex = /^\d{10}$/;
+  return phoneRegex.test(phoneNumber);
+};
 
-  const showErrorToast = (message) => {
-    toast({
-      title: 'Uh oh! Something went wrong.',
-      description: message,
-    });
-  };
+const showErrorToast = (message) => {
+  toast({
+    title: 'Uh oh! Something went wrong.',
+    description: message,
+  });
+};
 
-  const showSuccessToast = (message) => {
-    toast({
-      description: message,
-    });
-  };
+const showSuccessToast = (message) => {
+  toast({
+    description: message,
+  });
+};
 
-  return (
-    <>
-      <div className='w-[25rem]'>
-        <div className='w-full text-center mb-4 text-[1.8rem] font-semibold'>
+return (
+  <>
+    <div className='w-[25rem]'>
+      <div className='w-full text-center mb-4 text-[1.8rem] font-semibold'>
+        <div>
+
+          Hello!
           <div>
 
-            Hello!
-            <div>
-
-              Please Sign up here
-            </div>
+            Please Sign up here
           </div>
         </div>
-        <div className='flex'>
+      </div>
+      <div className='flex'>
 
         <Input
           type='text'
@@ -146,88 +148,88 @@ const Signup = () => {
           radius='sm'
           onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
         />
-        </div>
-        <Input
-          type='email'
-          className='mt-5'
-          value={userData.email}
-          variant='underlined'
-          placeholder='Enter your email'
-          radius='sm'
-          onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-        />
-        <Input
-          className='mt-5'
-          value={userData.phoneNumber}
-          type='text'
-          placeholder='Enter your phone number'
-          variant='underlined'
-          radius='sm'
-          onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
-        />
-        <Input
-          className='mt-5'
-          value={userData.password}
-          placeholder='Enter your password'
-          radius='sm'
-          variant='underlined'
-          onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-          endContent={
-            <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
-              {isVisible ? 'Hide' : 'Show'}
-            </button>
-          }
-          type={isVisible ? 'text' : 'password'}
-        />
-        <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-white' onClick={handleOTP}>
-          Send OTP
-        </Button>
       </div>
+      <Input
+        type='email'
+        className='mt-5'
+        value={userData.email}
+        variant='underlined'
+        placeholder='Enter your email'
+        radius='sm'
+        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+      />
+      <Input
+        className='mt-5'
+        value={userData.phoneNumber}
+        type='text'
+        placeholder='Enter your phone number'
+        variant='underlined'
+        radius='sm'
+        onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
+      />
+      <Input
+        className='mt-5'
+        value={userData.password}
+        placeholder='Enter your password'
+        radius='sm'
+        variant='underlined'
+        onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+        endContent={
+          <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+            {isVisible ? 'Hide' : 'Show'}
+          </button>
+        }
+        type={isVisible ? 'text' : 'password'}
+      />
+      <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-white' onClick={handleOTP}>
+        Send OTP
+      </Button>
+    </div>
 
-      <div>
-        <Modal
-          className='w-[20rem]'
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          placement='top-center'>
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalBody>
-                  <div className='w-full font-semibold flex justify-center'>
-                    <div className='flex flex-col'>
-                      <p className='text-[1.5rem]'>Enter OTP</p>
-                      <p>sent to email</p>
-                    </div>
+    <div>
+      <Modal
+        className='w-[20rem]'
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement='top-center'>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                <div className='w-full font-semibold flex justify-center'>
+                  <div className='flex flex-col'>
+                    <p className='text-[1.5rem]'>Enter OTP</p>
+                    <p>sent to email</p>
                   </div>
-                  <div className='w-full flex justify-center items-center'>
+                </div>
+                <div className='w-full flex justify-center items-center'>
 
-                    {/* <div className='w-[4rem] flex justify-center items-center'> */}
-                    <Input
-                      value={otpInput}
-                      className='text-[2rem] p-2'
-                      autoFocus
-                      onChange={(e) => setOtpInput(e.target.value)}
-                    />
+                  {/* <div className='w-[4rem] flex justify-center items-center'> */}
+                  <Input
+                    value={otpInput}
+                    className='text-[2rem] p-2'
+                    autoFocus
+                    onChange={(e) => setOtpInput(e.target.value)}
+                  />
 
-                    {/* </div> */}
-                  </div>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color='primary' className='w-full' onClick={handleOTP}>
-                    Resend OTP
-                  </Button>
-                  <Button color='primary' onClick={handleSignup} className='w-full' >
-                    Sign Up
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-      </div>
-    </>
-  );
+                  {/* </div> */}
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color='primary' className='w-full' onClick={handleOTP}>
+                  Resend OTP
+                </Button>
+                <Button color='primary' onClick={handleSignup} className='w-full' >
+                  Sign Up
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </div>
+  </>
+);
 };
 
 export default Signup;

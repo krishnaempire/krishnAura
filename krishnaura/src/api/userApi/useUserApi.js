@@ -23,6 +23,7 @@ const useUserApi = () => {
       const data = await response.json();
       dispatch(setUser(data.newUser))
       localStorage.setItem("user", JSON.stringify(data.newUser))
+      return data
 
     } catch (error) {
       console.error('Error signing up:', error.message);

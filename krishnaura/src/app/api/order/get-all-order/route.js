@@ -1,24 +1,45 @@
+import Order from "@/models/order.model.js";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/DBConfig/connectDB.js";
-import Order from "@/models/order.model";
 
 export const GET = async (req) => {
     connectDB();
     try {
-        const order = await Order.find({});
+        const url = new URL(req.url);
+        const page = parseInt(url.searchParams.get('page')) || 1;
+        const limit = 4;
 
-        if (!order || order.length === 0) {
+        const skip = (page - 1) * limit;
+
+        const orders = await Order.aggregate([
+            { $match: {} },
+            { $skip: skip },
+            { $limit: limit }
+        ]);
+
+        if (!orders || orders.length === 0) {
             return NextResponse.json(
-                { message: "No order found" }, 
+                { message: "No orders found" },
                 { status: 404 }
             );
         }
 
-        return NextResponse.json(order);
+        const totalOrders = await Order.countDocuments({});
+        const totalPages = Math.ceil(totalOrders / limit);
+
+        return NextResponse.json({
+            orders,
+            pagination: {
+                totalOrders,
+                totalPages,
+                currentPage: page,
+                pageSize: limit
+            }
+        });
 
     } catch (error) {
         return NextResponse.json(
-            { error: "Something went wrong while fetching order" }, 
+            { error: "Something went wrong while fetching orders" },
             { status: 500 }
         );
     }

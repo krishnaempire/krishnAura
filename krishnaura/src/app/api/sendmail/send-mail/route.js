@@ -14,7 +14,7 @@ export const POST = async (req) => {
             subject: "OTP for signup",
             html: `<h1>${verifyCode}</h1>`
         })
-        return NextResponse.json({message: "OTP sent", otp}, {status: 200})
+        return NextResponse.json({message: "OTP sent", verifyCode}, {status: 200})
 
     } catch (error) {
         console.log(error.message)
