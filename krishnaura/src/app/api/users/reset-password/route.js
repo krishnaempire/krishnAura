@@ -7,10 +7,8 @@ export const PATCH = async (req) => {
     connectDB();
     try {
         const { email, password } = await req.json();
-
-        // Find the user by userId
+    
         let user = await User.findOne({email});
-        console.log(user)
 
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });

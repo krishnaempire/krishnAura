@@ -56,7 +56,6 @@ const Login = () => {
     if(data.verifyCode){
       setOTP(Number(data.verifyCode))
     }
-    console.log(data)
   }
 
   const handleVerifyOTP = () => {
@@ -174,6 +173,15 @@ const Login = () => {
                   />
                   <Button color={"primary"} onClick={handleVerifyOTP} >{wrongOTP ? "Wrong" :"Verify"}</Button>
                 </div>
+                <div className={`flex flex-col gap-2 $`}>
+                  <input
+                    type="text"
+                    value={newPassword}
+                    placeholder={"Enter your new password"}
+                    className="bg-gray-200 px-4 rounded-lg h-10"
+                    onChange={e => setNewPassword(e.target.value)}
+                  />
+                </div>
                 <div className={`flex flex-col gap-2 ${isVisibleNewPassword ? "block" : "hidden"}`}>
                   <input
                     type="text"
@@ -185,6 +193,9 @@ const Login = () => {
                 </div>
               </ModalBody>
               <ModalFooter>
+                <Button color={"primary"} variant={"ghost"}  onClick={handleUpdatePassword}>
+                  Update
+                </Button>
                 <Button color={"primary"} variant={"ghost"} className={`${isVisibleNewPassword ? "block" : "hidden"}`} onClick={handleUpdatePassword}>
                   Update
                 </Button>

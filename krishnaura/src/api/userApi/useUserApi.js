@@ -82,12 +82,12 @@ const useUserApi = () => {
 
   const resetPassword = async (email, password) => {
     try {
-      const response = await fetch('/api/users/update-pass', {
+      const response = await fetch('/api/users/reset-password', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(email, password),
+        body: JSON.stringify({email, password}),
       });
 
       if (!response.ok) {
