@@ -30,11 +30,11 @@ export default function Cart({ products, setRefreshCart }) {
         const offPrice = product.selectedSize ? product.size.find(size => size.name === product.selectedSize)?.offPrice : product.size[0].offPrice;
         return total + offPrice;
       }, 0);
-  
+
       setTotalAmount(calculatedTotal);
     }
   }, [products]);
-  
+
 
   const storeCheckoutData = (products, totalAmount) => {
     const data = {
@@ -96,15 +96,17 @@ export default function Cart({ products, setRefreshCart }) {
                     <div className="space-y-1">
                       <h3 className="text-lg font-semibold leading-snug sm:pr-8">{product.name}</h3>
                       <p className="text-sm">{!product?.selectedColor ? product.color[0].name : product?.selectedColor}</p>
-                    </div>
-                    <div className="text-right">
-                      {/* Here we check if product has selectedSize and find the corresponding offPrice */}
-                      <p className="text-lg font-semibold">
-                        {product.selectedSize ?
-                          product.size.find(size => size.name === product.selectedSize)?.offPrice :
-                          product.size[0].offPrice}
+                      <p className="text-sm">
+                        {product.quantity}
                       </p>
                     </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-semibold">
+                      {product.selectedSize ?
+                        product.size.find(size => size.name === product.selectedSize)?.offPrice :
+                        product.size[0].offPrice}
+                    </p>
                   </div>
                   <div className="flex divide-x text-sm">
                     <button type="button"

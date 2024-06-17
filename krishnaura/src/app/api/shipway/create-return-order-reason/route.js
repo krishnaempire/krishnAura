@@ -1,4 +1,3 @@
-// app/api/shipway/route.js
 import { NextResponse } from 'next/server';
 
 export async function POST(request) {
@@ -7,16 +6,16 @@ export async function POST(request) {
     myHeaders.append("Content-Type", "application/json");
 
     const payload = await request.json();
-    
+
     try {
         const requestOptions = {
             method: "POST",
             headers: myHeaders,
-            body: JSON.stringify(payload), 
+            body: JSON.stringify(payload),
             redirect: "follow"
         };
 
-        const response = await fetch("https://app.shipway.com/api/v2orders", requestOptions);
+        const response = await fetch("https://app.shipway.com/api/Getreturnreasons", requestOptions);
         
         if (!response.ok) {
             const errorData = await response.json();
@@ -24,9 +23,10 @@ export async function POST(request) {
         }
 
         const result = await response.json();
+        
         return NextResponse.json(result, { status: 200 });
     } catch (error) {
-        console.error("Error adding order:", error);
+        console.error("Error fetching return reasons:", error);
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

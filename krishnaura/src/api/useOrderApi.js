@@ -205,12 +205,112 @@ const useOrderApi = () => {
             console.error("Error canceling orders:", error);
         }
     };
+
+    const returnReasonShipway = async (reason) => {
+        const payload = {
+            reason: reason
+        };
+    
+        try {
+            const response = await fetch('/api/shipway/create-return-order-reason', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Failed to create return resson: ${errorData.message}`);
+            }
+    
+            const data = await response.json();
+            return data;
+    
+        } catch (error) {
+            console.error("Error creating reson:", error);
+        }
+    };
+    
+    const createReturnOrder = async (orderData, products) => {
+        const payload = {
+            order_id: orderData.orderId,
+            return_order_status: "R",
+            products: products.map((product, index) => ({
+                product: product.name,
+                price: String(orderData.priceList[index]),
+                amount: orderData.quantity.split(" ")[index],
+                tax_rate: "2",
+                product_code: product.name,
+                tax_title: "IGST",
+                return_reason_id: String(orderData.reasonId),
+                return_products_images: product.productImages[0],
+                customer_notes: orderData.reason,
+                variants: orderData.color.split(" ")[index]
+            })),
+            refund_payment_id: orderData.returnPayment,
+            discount: "0",
+            shipping: "60",
+            order_total: String(orderData.price),
+            taxes: "40",
+            payment_type: "P",
+            email: orderData.email,
+            billing_address: orderData.address,
+            billing_address2: orderData.address,
+            billing_city: orderData.city,
+            billing_state: orderData.state,
+            billing_firstname: orderData.firstName,
+            billing_lastname: orderData.lastName,
+            billing_phone: orderData.phoneNumber,
+            billing_zipcode: String(orderData.pinCode),
+            shipping_address: orderData.address,
+            shipping_address2: orderData.address,
+            shipping_city: orderData.city,
+            shipping_state: orderData.state,
+            shipping_country: "India",
+            shipping_firstname: orderData.firstName,
+            shipping_lastname: orderData.lastName,
+            shipping_phone: orderData.phoneNumber,
+            shipping_zipcode: String(orderData.pinCode),
+            order_weight: "200",
+            box_length: "10",
+            box_breadth: "10",
+            box_height: "3",
+            order_date: orderData.order_date
+        };
+        console.log(payload)
+        try {
+            const response = await fetch('/api/shipway/create-return-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`Failed to create return order: ${errorData.message}`);
+            }
+    
+            const data = await response.json();
+            return data;
+    
+        } catch (error) {
+            console.error("Error creating return order:", error);
+        }
+    };
+    
+    
     
 
     return {
         addOrder,
+        createReturnOrder,
         addOrdertoShipway,
         cancelOrderInShipway,
+        returnReasonShipway,
         getUserOrder,
         updateOrder,
         getAllOrder,

@@ -80,6 +80,30 @@ const useUserApi = () => {
     }
   };
 
+  const resetPassword = async (email, password) => {
+    try {
+      const response = await fetch('/api/users/update-pass', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(email, password),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+          throw new Error(errorData.error); 
+      }
+      const data = await response.json();
+
+      return data
+
+    } catch (error) {
+      console.error('Error reseting password:', error.message);
+      throw error;
+    }
+  };
+
   const getUser = async (id) => {
     try {
       const response = await fetch(`/api/users/get-user/${id}`, {
@@ -130,7 +154,8 @@ const useUserApi = () => {
     login,
     getUser,
     logout,
-    update
+    update,
+    resetPassword
   };
 };
 

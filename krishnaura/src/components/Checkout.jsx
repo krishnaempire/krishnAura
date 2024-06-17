@@ -21,6 +21,9 @@ function extractColor(product) {
 function extractSize(product) {
   return product.map((product) => product.selectedSize || product.size[0].name).flat().join(" ");
 }
+function extractQuantities(product) {
+  return product.map((product) => product.quantity).flat().join(" ");
+}
 
 export function Checkout({ product, size, color, quantity }) {
 
@@ -42,6 +45,7 @@ export function Checkout({ product, size, color, quantity }) {
   const [productId, setProductId] = useState();
   const [sizes, setSizes] = useState();
   const [colors, setColors] = useState();
+  const [quantities, setQuantities] = useState();
   const [userData, setUserData] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
@@ -53,10 +57,7 @@ export function Checkout({ product, size, color, quantity }) {
     city: user.city,
     state: user.state
   })
-
-  console.log(color)
   const userId = user?._id
-
 
   useEffect(() => {
 
@@ -69,10 +70,12 @@ export function Checkout({ product, size, color, quantity }) {
       const productIds = extractProductIds(product);
       const colors = extractColor(product)
       const sizes = extractSize(product)
+      const quantities = extractQuantities(product)
       setColors(colors)
       setSizes(sizes)
       setProductId(productIds)
       setCartId(cartId)
+      setQuantities(quantities)
     }
 
     const getPriceForSize = (product, size) => {
@@ -93,14 +96,15 @@ export function Checkout({ product, size, color, quantity }) {
             sizePrice = product.size[0]?.offPrice || 0;
           }
           setPriceList(prevPriceList => [...prevPriceList, sizePrice]);
-          return total + sizePrice;
+          return total + sizePrice * Number(product.quantity);
         }, 0);
       }
     };
-
+    
     const newPrice = getPriceForSize(product, size);
-    setTotalPrice(quantity * newPrice + 60 || 1 * newPrice + 60)
+    setTotalPrice(quantity ? quantity * newPrice + 60 :  newPrice + 60)
     setPrice(newPrice);
+    
   }, []);
 
   const handleInputChange = (e) => {
@@ -193,7 +197,7 @@ export function Checkout({ product, size, color, quantity }) {
           orderData.size = size || sizes;
         }
         if (!orderData.quantity) {
-          orderData.quantity = quantity || 1;
+          orderData.quantity = quantity || quantities ;
         }
 
         orderData = {
@@ -243,13 +247,12 @@ export function Checkout({ product, size, color, quantity }) {
       orderData.size = size || sizes;
     }
     if (!orderData.quantity) {
-      orderData.quantity = quantity || 1;
+      orderData.quantity = quantity || quantities;
     }
+
     if (!product[0].quantity) {
       product[0].quantity = quantity || 1;
     }
-
-
 
 
     // Generate a random orderId
@@ -262,7 +265,6 @@ export function Checkout({ product, size, color, quantity }) {
       setPriceList(priceList.slice(0, priceList.length / 2));
     }
 
-    // console.log(halfPriceList)
 
     orderData = {
       ...orderData,
@@ -277,6 +279,13 @@ export function Checkout({ product, size, color, quantity }) {
 
     await addOrder(orderData)
     await addOrdertoShipway(orderData, product, priceList)
+
+    if (cartIds) {
+      deleteCartItems(cartIds)
+    }
+
+    onOpen()
+    setRedirect(true)
 
   };
 
@@ -513,7 +522,7 @@ export function Checkout({ product, size, color, quantity }) {
                                 {product.selectedSize || product.size[0].name}
                               </p>
                             </div>
-                            <p className="mt-4 text-xs font-medium ">{quantity || 1}</p>
+                            <p className="mt-4 text-xs font-medium ">{quantity || product?.quantity}</p>
                           </div>
                         </div>
                         <div className="ml-auto flex flex-col items-end justify-between">

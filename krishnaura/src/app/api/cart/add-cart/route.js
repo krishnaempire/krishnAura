@@ -16,9 +16,9 @@ export const POST = async (req) => {
         }
 
         const cartItemData = { userId, productId };
+        cartItemData.quantity = quantity || 1;
         if (selectedSize) cartItemData.selectedSize = selectedSize;
         if (selectedColor) cartItemData.selectedColor = selectedColor;
-        if (quantity) cartItemData.quantity = quantity;
 
         const newCartItem = await Cart.create(cartItemData);
         
