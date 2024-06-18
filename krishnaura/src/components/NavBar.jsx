@@ -70,9 +70,7 @@ export default function NavBar() {
   }, [user?._id]);
 
   useEffect(() => {
-    if (refreshCart) {
       handleCartClick();
-    }
   }, [refreshCart]);
 
   useEffect(() => {

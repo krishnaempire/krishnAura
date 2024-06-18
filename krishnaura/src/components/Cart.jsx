@@ -17,10 +17,22 @@ export default function Cart({ products, setRefreshCart }) {
   const [totalAmount, setTotalAmount] = useState(0);
 
   const handleDelete = async (cartId) => {
-    const success = await deleteCartItem(cartId);
+    if (user && user?._id) {
 
-    if (success) {
-      setRefreshCart(prev => !prev)
+      const success = await deleteCartItem(cartId);
+
+      if (success) {
+        setRefreshCart(prev => !prev)
+      }
+
+    } else {
+      let guestCart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
+
+      guestCart = guestCart.filter(item => item.cartId !== cartId);
+
+      sessionStorage.setItem('guestCart', JSON.stringify(guestCart));
+
+      setRefreshCart(prev => !prev);
     }
   };
 

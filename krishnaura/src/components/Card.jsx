@@ -13,13 +13,19 @@ const Card = ({ product }) => {
 
   const handleAddToCart = () => {
     if (user && user._id) {
+      
       addToCart({ userId: user._id, productId: product._id });
     } else {
+
+      const generateCartId = () => {
+        return 'cartId-' + Math.random().toString(36).substring(2, 11).toUpperCase();
+      };
       const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
       const item ={
         ...product,
-        cartId: 1
+        cartId: generateCartId()
       }
+    
       cart.push(item);
       sessionStorage.setItem('guestCart', JSON.stringify(cart));
     }
