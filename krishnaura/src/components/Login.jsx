@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation';
 const Login = () => {
   // const data = useSelector(state => state.user.userData)
   const { resetPassword } = useUserApi()
-  const {isOpen, onOpenChange, onClose, onOpen} = useDisclosure()
-  const router =  useRouter()
+  const { isOpen, onOpenChange, onClose, onOpen } = useDisclosure()
+  const router = useRouter()
   const { login } = useUserApi();
   const { toast } = useToast();
   const [isVisible, setIsVisible] = useState(false);
@@ -17,9 +17,8 @@ const Login = () => {
   const [OTP, setOTP] = useState("")
   const [enterOTP, setEnterOTP] = useState("")
   const [wrongOTP, setWrongOTP] = useState(false)
-  const [isValidOTP, setValidOTP] = useState(false);
   const [newPassword, setNewPassword] = useState()
-  
+
 
   const [userData, setUserData] = useState({
     credentials: "",
@@ -44,7 +43,7 @@ const Login = () => {
   };
 
 
-  const handleSendOTP = async() => {
+  const handleSendOTP = async () => {
     const res = await fetch("/api/sendmail/send-forgot-pass-otp", {
       method: "POST",
       headers: {
@@ -53,31 +52,34 @@ const Login = () => {
       body: JSON.stringify(userData.credentials)
     })
     const data = await res.json()
-    if(data.verifyCode){
+    if (data.verifyCode) {
       setOTP(Number(data.verifyCode))
     }
   }
 
   const handleVerifyOTP = () => {
-    if(OTP == enterOTP){
+    if (OTP == enterOTP) {
       setIsVisibleNewPassword(true)
       return
     }
     setWrongOTP(true)
-    setTimeout(() =>{
+    setTimeout(() => {
       setWrongOTP(false)
-    },2000)
+    }, 2000)
   }
 
-  const handleUpdatePassword = async() => {
+  const handleUpdatePassword = async () => {
+    if (newPassword.length < 6) {
+      showErrorToast('Password must be at least 6 characters long');
+      return;
+    }
     try {
       const res = await resetPassword(userData.credentials, newPassword)
-      console.log(res)
       if (res.error) {
         showErrorToast(res.error);
       } else {
         showSuccessToast('Password Reset Successfull');
-        setUserData({credentials: ""});
+        setUserData({ credentials: "" });
         onClose()
       }
     } catch (err) {
@@ -100,46 +102,56 @@ const Login = () => {
 
   return (
     <>
-      <div className='w-[25rem]'>
-        <div className='w-full text-center mb-4 text-[1.8rem] font-semibold'>
-          <div>
-            Hello!
-            <div>
-              Please Login here
+      <div className="mx-auto w-[23rem] md:max-w-md space-y-6 py-12">
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-bold">Welcome back!</h1>
+          <p className="text-muted-foreground">Sign in to your account to continue shopping with us.</p>
+        </div>
+        <div className="space-y-4">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-muted" />
             </div>
           </div>
-        </div>
+          <div className="space-y-2">
+            <label htmlFor="email">Email</label>
+            <Input
+              id="email"
+              type="email"
+              required={true}
+              value={userData.email}
+              placeholder='Enter your email or phone number'
+              radius='sm'
+              onChange={(e) => setUserData({ ...userData, credentials: e.target.value })}
 
-        <Input
-          type='email'
-          className='mt-5'
-          value={userData.email}
-          variant='underlined'
-          placeholder='Enter your email or phone number'
-          radius='sm'
-          onChange={(e) => setUserData({ ...userData, credentials: e.target.value })}
-        />
-
-        <Input
-          className='mt-5'
-          value={userData.password}
-          placeholder='Enter your password'
-          radius='sm'
-          variant='underlined'
-          onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-          endContent={
-            <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
-              {isVisible ? 'Hide' : 'Show'}
-            </button>
-          }
-          type={isVisible ? 'text' : 'password'}
-        />
-        <div className='flex justify-center'>
-          <p className='text-blue-500 hover:text-blue-800 cursor-pointer' onClick={onOpen}>Forgot pass?</p>
+            />
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="password">Password</label>
+            <Input
+              id="password"
+              type={isVisible ? 'text' : 'password'}
+              required={true}
+              value={userData.password}
+              placeholder='Enter your password'
+              radius='sm'
+              onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+              endContent={
+                <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+                  {isVisible ? 'Hide' : 'Show'}
+                </button>
+              }
+            />
+          </div>
+          <div className='flex justify-center'>
+            <p className='text-blue-500 hover:text-blue-800 cursor-pointer' onClick={onOpen}>Forgot pass?</p>
+          </div>
+          <Button type="submit" className="w-full bg-[#d4a72c] font-semibold text-[1rem] text-white "
+          onClick={handleLogin}
+          >
+            Sign In
+          </Button>
         </div>
-        <Button className='mt-3 h-10 w-full bg-[#d4a72c] font-semibold text-[1rem] text-white' onClick={handleLogin}>
-          Login
-        </Button>
       </div>
       <Modal
         isOpen={isOpen}
@@ -158,7 +170,7 @@ const Login = () => {
                     value={userData.credentials}
                     placeholder="Enter email"
                     className=" bg-gray-200 text-[.8rem] px-[1.5rem] rounded-[.7rem] mr-1"
-                    onChange={e => setUserData({...userData, credentials: e.target.value })}
+                    onChange={e => setUserData({ ...userData, credentials: e.target.value })}
                   />
                   <Button color={"primary"} onClick={handleSendOTP} >Send OTP</Button>
 
@@ -172,9 +184,9 @@ const Login = () => {
                     className=" bg-gray-200 px-[1rem] rounded-[.7rem] mr-1"
                     onChange={e => setEnterOTP(e.target.value)}
                   />
-                  <Button color={"primary"} onClick={handleVerifyOTP} >{wrongOTP ? "Wrong" :"Verify"}</Button>
+                  <Button color={"primary"} onClick={handleVerifyOTP} >{wrongOTP ? "Wrong" : "Verify"}</Button>
                 </div>
-                
+
                 <div className={`flex flex-col gap-2 ${isVisibleNewPassword ? "block" : "hidden"}`}>
                   <input
                     type="text"
@@ -186,7 +198,7 @@ const Login = () => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                
+
                 <Button color={"primary"} variant={"ghost"} className={`${isVisibleNewPassword ? "block" : "hidden"}`} onClick={handleUpdatePassword}>
                   Update
                 </Button>

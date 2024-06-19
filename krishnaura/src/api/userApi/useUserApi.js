@@ -1,8 +1,15 @@
 import { setUser } from '@/redux/userSlice';
-import { useDispatch } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import useCartApi from '../useCartApi';
 
 const useUserApi = () => {
   const dispatch = useDispatch()
+  const { addToCart } = useCartApi();
+  const user = useSelector(
+    (state) => state.user.userData,
+    shallowEqual
+  );
+
   
   const signup = async (userData) => {
     try {
@@ -22,6 +29,16 @@ const useUserApi = () => {
 
       const data = await response.json();
       dispatch(setUser(data.newUser))
+
+      const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
+
+      if (cart) {
+        cart?.forEach((item) => {
+          addToCart({ userId: user._id, productId: item._id });
+        });
+        sessionStorage.removeItem('guestCart');
+      }
+
       localStorage.setItem("user", JSON.stringify(data.newUser))
       return data
 
@@ -50,6 +67,16 @@ const useUserApi = () => {
       const data = await response.json();
 
       dispatch(setUser(data.user))
+
+      const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
+
+      if (cart) {
+        cart?.forEach((item) => {
+          addToCart({ userId: user._id, productId: item._id });
+        });
+        sessionStorage.removeItem('guestCart');
+      }
+
 
       return data
     } catch (error) {
@@ -143,6 +170,7 @@ const useUserApi = () => {
         
       }
       dispatch(setUser(""))
+      // sessionStorage.setItem("guestCart", "")
 
     } catch (error) {
       console.error('Error getting user', error.message);

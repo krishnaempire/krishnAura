@@ -55,19 +55,19 @@ export default function NavBar() {
     }
   };
 
-  useEffect(() => {
-    if (user && user._id) {
-      const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
+  // useEffect(() => {
+  //   if (user && user._id) {
+  //     const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
 
-      if (cart) {
-        cart?.forEach((item) => {
-          addToCart({ userId: user._id, productId: item._id });
-        });
-        sessionStorage.removeItem('guestCart');
-      }
+  //     if (cart) {
+  //       cart?.forEach((item) => {
+  //         addToCart({ userId: user._id, productId: item._id });
+  //       });
+  //       sessionStorage.removeItem('guestCart');
+  //     }
 
-    }
-  }, [user?._id]);
+  //   }
+  // }, [user?._id]);
 
   useEffect(() => {
       handleCartClick();

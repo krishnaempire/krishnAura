@@ -119,23 +119,16 @@ const showSuccessToast = (message) => {
 
 return (
   <>
-    <div className='w-[25rem]'>
-      <div className='w-full text-center mb-4 text-[1.8rem] font-semibold'>
-        <div>
-
-          Hello!
-          <div>
-
-            Please Sign up here
-          </div>
+    <div className='w-[23rem] md:w-[25rem] m-auto mt-[3rem]'>
+    <div className="text-center space-y-2 mb-3">
+          <h1 className="text-3xl font-bold">Welcome User</h1>
+          <p className="text-muted-foreground">Create your account to shopping with us.</p>
         </div>
-      </div>
-      <div className='flex'>
+      <div className='flex gap-1'>
 
         <Input
           type='text'
           value={userData.fullName}
-          variant='underlined'
           placeholder='Enter your First Name'
           radius='sm'
           onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
@@ -143,7 +136,6 @@ return (
         <Input
           type='text'
           value={userData.fullName}
-          variant='underlined'
           placeholder='Enter your Last Name'
           radius='sm'
           onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
@@ -153,7 +145,6 @@ return (
         type='email'
         className='mt-5'
         value={userData.email}
-        variant='underlined'
         placeholder='Enter your email'
         radius='sm'
         onChange={(e) => setUserData({ ...userData, email: e.target.value })}
@@ -163,7 +154,6 @@ return (
         value={userData.phoneNumber}
         type='text'
         placeholder='Enter your phone number'
-        variant='underlined'
         radius='sm'
         onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
       />
@@ -172,7 +162,6 @@ return (
         value={userData.password}
         placeholder='Enter your password'
         radius='sm'
-        variant='underlined'
         onChange={(e) => setUserData({ ...userData, password: e.target.value })}
         endContent={
           <button className='focus:outline-none' type='button' onClick={toggleVisibility}>

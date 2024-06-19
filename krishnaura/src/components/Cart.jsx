@@ -27,7 +27,7 @@ export default function Cart({ products, setRefreshCart }) {
 
     } else {
       let guestCart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
-
+      
       guestCart = guestCart.filter(item => item.cartId !== cartId);
 
       sessionStorage.setItem('guestCart', JSON.stringify(guestCart));
