@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
+import Link from "next/link"
 import { Spinner } from '@nextui-org/react';
 import useCartApi from '@/api/useCartApi';
 import { useRouter } from 'next/navigation';
@@ -96,12 +97,14 @@ export default function Cart({ products, setRefreshCart }) {
           {products.map((product, index) => (
             <li key={index} className="flex flex-col py-6 sm:flex-row sm:justify-between">
               <div className="flex w-full space-x-2 sm:space-x-4">
+                <Link href={`/product-page/${product?._id}`}>
                 <Image
                   width={80}
                   height={80}
                   className="h-20 w-20 flex-shrink-0 rounded object-contain outline-none dark:border-transparent sm:h-32 sm:w-32"
                   src={product.productImages[0]}
                   alt={product.name}
+                </Link>
                 />
                 <div className="flex w-full flex-col justify-between pb-4">
                   <div className="flex w-full justify-between space-x-2 pb-2">
