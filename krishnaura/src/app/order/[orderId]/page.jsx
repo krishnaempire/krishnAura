@@ -258,6 +258,7 @@ const Order = () => {
         isOpen={cancelModal.isOpen}
         onOpenChange={cancelModal.onOpenChange}
         className="w-[23rem]"
+        placement='center'
       >
         <ModalContent>
           {(onClose) => (
@@ -284,6 +285,7 @@ const Order = () => {
         isOpen={returnModal.isOpen}
         onOpenChange={returnModal.onOpenChange}
         className="w-[23rem]"
+        placement='center'
       >
         <ModalContent>
           {(onClose) => (
