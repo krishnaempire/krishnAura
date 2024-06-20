@@ -1,4 +1,5 @@
 import { useToast } from "@/components/ui/use-toast";
+import { isValidObjectId } from "mongoose";
 
 const useProductApi = () => {
     const { toast } = useToast()
@@ -37,44 +38,57 @@ const useProductApi = () => {
         }
     }
 
-    const getProduct = async (id) => {
+    const getProductById = async (id) => {
         try {
-            let res
-
-            if (id) {
-                res = await fetch(`/api/product/get-product/${id}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-
-            } else {
-                res = await fetch("/api/product/get-product", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-            }
-
-            const data = await res.json()
-
+            const res = await fetch(`/api/product/get-product/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+    
+            const data = await res.json();
+    
             if (data.error) {
                 toast({
                     description: data.error
-                })
-                return
+                });
+                return;
             }
-
-            return data
-
+    
+            return data;
         } catch (error) {
             toast({
                 description: error.message
-            })
+            });
         }
-    }
+    };
+    
+    const getAllProduct = async (page) => {
+        try {
+            const res = await fetch(`/api/product/get-product?page=${page}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+    
+            const data = await res.json();
+    
+            if (data.error) {
+                toast({
+                    description: data.error
+                });
+                return;
+            }
+    
+            return data;
+        } catch (error) {
+            toast({
+                description: error.message
+            });
+        }
+    };
 
 
     const getPaginatedProducts = async (page = 1, limit = 10) => {
@@ -105,7 +119,8 @@ const useProductApi = () => {
 
     return {
         addProduct,
-        getProduct,
+        getProductById,
+        getAllProduct,
         getPaginatedProducts,
     };
 };

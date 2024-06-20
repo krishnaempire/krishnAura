@@ -17,7 +17,7 @@ const Orders = () => {
   const [product, setProduct] = useState([]);
   const { toast } = useToast();
   const { getUserOrder, getAllOrder } = useOrderApi();
-  const { getProduct } = useProductApi();
+  const { getProductById } = useProductApi();
   const [orders, setOrders] = useState([]);
   const [fetching, setFetching] = useState(true);
 
@@ -28,7 +28,7 @@ const Orders = () => {
       setTotalPages(orderData.pagination.totalPages);
 
       const productArray = await Promise.all(orderData.orders.map(async (order) => {
-        const product = await getProduct(order.productId);
+        const product = await getProductById(order.productId[0]);
         return product;
       }));
       setProduct(productArray);
@@ -40,7 +40,6 @@ const Orders = () => {
       setFetching(false);
     }
   };
-
   const fetchAllOrders = async (page) => {
     try {
       const orderData = await getAllOrder(page);
@@ -48,7 +47,7 @@ const Orders = () => {
       setTotalPages(orderData.pagination.totalPages);
       
       const productArray = await Promise.all(orderData.orders.map(async (order) => {
-        const product = await getProduct(order.productId[0]);
+        const product = await getProductById(order.productId[0]);
         return product;
       }));
       setProduct(productArray);

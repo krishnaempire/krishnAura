@@ -7,9 +7,18 @@ connectDB()
 
 export const GET = asyncHandler(async (req) => {
     try {
+        const url = new URL(req.url);
+        const page = parseInt(url.searchParams.get('page')) || 1;
+        const limit = 4;
+
+        const skip = (page - 1) * limit;
+
         const products = await Product.aggregate([
-            { $match: {} }
+            { $match: {} },
+            { $skip: skip },
+            { $limit: limit }
         ]);
+
 
         if (!products || products.length === 0) {
             return NextResponse.json(
@@ -17,7 +26,19 @@ export const GET = asyncHandler(async (req) => {
                 { status: 404 });
         }
 
-        return NextResponse.json(products);
+        const totalOrders = await Product.countDocuments({});
+        const totalPages = Math.ceil(totalOrders / limit);
+        
+        return NextResponse.json({
+            products,
+            pagination: {
+                totalOrders,
+                totalPages,
+                currentPage: page,
+                pageSize: limit
+            }
+        });
+
         
     } catch (error) {
         return NextResponse.json(

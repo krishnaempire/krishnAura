@@ -16,7 +16,6 @@ const OrderCard = ({ order, product, isAdmin }) => {
 
   const address = order?.address.slice(0, 20) + "..";
 
-
   return (
     <div className="w-[18rem]">
       <div className={`w-[18rem] ${isAdmin ? "h-[27rem]" : "h-[26rem]"} rounded-[1.5rem] border-1 border-gray-300 ${isDone && "bg-gray-100"}`}>

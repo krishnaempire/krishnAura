@@ -10,6 +10,7 @@ import Card from "@/components/Card";
 import useProductApi from "@/api/useProductApi";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { Pagination, Spinner } from "@nextui-org/react";
 
 const Img = [
   "https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -19,21 +20,39 @@ const Img = [
 ];
 
 export default function Page() {
-  const { getProduct } = useProductApi();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const { getAllProduct } = useProductApi();
   const [products, setProducts] = useState([]);
   const plugin = useRef(Autoplay({ delay: 6000, stopOnInteraction: true }));
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (page) => {
+      setFetching(true)
       try {
-        const data = await getProduct();
-        setProducts(data);
+        const data = await getAllProduct(page);
+        setProducts(data.products);
+        setTotalPages(data.pagination.totalPages);
       } catch (error) {
         console.error("Error fetching product data:", error);
+      } finally {
+        setFetching(false)
       }
     };
-    fetchData();
-  }, []);
+    fetchData(currentPage);
+  }, [currentPage]);
+
+
+  // if (!products) {
+  //   return (
+  //     <div className='w-full h-screen flex justify-center items-center'>
+  //       <Spinner size='lg' />
+  //     </div>
+  //   );
+  // }
+
+
 
   const filterProductsByType = (type) => products.filter((product) => product.type === type);
 
@@ -70,6 +89,16 @@ export default function Page() {
         {filterProductsByType("Jewellery").map((product, index) => (
           <Card product={product} key={index} />
         ))}
+      </div>
+      <div className="overflow-hidden flex justify-center mb-5 mt-[4rem]">
+        <Pagination
+          total={totalPages}
+          classNames={{
+            cursor: "bg-gradient-to-b shadow-lg from-default-900 to-default-800 text-white font-bold",
+          }}
+          page={currentPage}
+          onChange={(page) => setCurrentPage(page)}
+        />
       </div>
       <Footer />
     </div>

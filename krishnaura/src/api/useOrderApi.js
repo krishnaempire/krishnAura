@@ -30,7 +30,7 @@ const useOrderApi = () => {
 
     const getUserOrder = async (id, page) => {
         try {
-            const response = await fetch(`/api/order/get-user-order/${id}?page=${page}`, { cache: 'no-store' });
+            const response = await fetch(`/api/order/get-user-order/${id}?page=${page}`);
 
             if (!response.ok) {
                 toast({
@@ -38,6 +38,7 @@ const useOrderApi = () => {
                 });
             }
             const data = await response.json();
+
             return data;
 
         } catch (error) {
