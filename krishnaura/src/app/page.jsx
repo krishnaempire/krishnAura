@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -7,16 +7,16 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel.jsx";
 import Card from "@/components/Card";
-import Slider1 from "../../public/Slider1.png"
-import Slider2 from "../../public/Slider2.png"
-import Slider3 from "../../public/Slider3.png"
-import Slider4 from "../../public/Slider4.png"
-import Slider5 from "../../public/Slider5.png"
-import SmSlider1 from "../../public/SmSlider1.png"
-import SmSlider2 from "../../public/SmSlider2.png"
-import SmSlider3 from "../../public/SmSlider3.png"
-import SmSlider4 from "../../public/SmSlider4.png"
-import SmSlider5 from "../../public/SmSlider5.png"
+import Slider1 from "../../public/Slider1.png";
+import Slider2 from "../../public/Slider2.png";
+import Slider3 from "../../public/Slider3.png";
+import Slider4 from "../../public/Slider4.png";
+import Slider5 from "../../public/Slider5.png";
+import SmSlider1 from "../../public/SmSlider1.png";
+import SmSlider2 from "../../public/SmSlider2.png";
+import SmSlider3 from "../../public/SmSlider3.png";
+import SmSlider4 from "../../public/SmSlider4.png";
+import SmSlider5 from "../../public/SmSlider5.png";
 import useProductApi from "@/api/useProductApi";
 import Image from "next/image";
 import Footer from "@/components/Footer";
@@ -45,17 +45,17 @@ export default function Page() {
   const [products, setProducts] = useState([]);
   const plugin = useRef(Autoplay({ delay: 6000, stopOnInteraction: true }));
   const [fetching, setFetching] = useState(true);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState(null);
 
   const updateScreenWidth = () => {
     setScreenWidth(window.innerWidth);
   };
 
   useEffect(() => {
-    window.addEventListener('resize', updateScreenWidth); // Add event listener for screen resize
-    return () => {
-      window.removeEventListener('resize', updateScreenWidth); // Cleanup on component unmount
-    };
+    // This effect runs only on the client
+    setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", updateScreenWidth);
+    return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
 
   useEffect(() => {
@@ -80,18 +80,20 @@ export default function Page() {
 
   return (
     <div className="w-full mt-[7rem] grid place-items-center">
-      <Carousel
-        plugins={[plugin.current]}
-        className="w-full lg:h-[30rem] md:h-[18rem] h-[13rem]  bg-slate-200 overflow-hidden"
-      >
-        <CarouselContent>
-          {imagesToShow.map((src, index) => (
-            <CarouselItem key={index}>
-              <Image src={src} alt="" width={1000} height={100} className="w-full" />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+      {screenWidth !== null && (
+        <Carousel
+          plugins={[plugin.current]}
+          className="w-full lg:h-[30rem] md:h-[18rem] h-[13rem]  bg-slate-200 overflow-hidden"
+        >
+          <CarouselContent>
+            {imagesToShow.map((src, index) => (
+              <CarouselItem key={index}>
+                <Image src={src} alt="" width={1000} height={100} className="w-full" />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      )}
       <div className="my-[4rem] font-bold flex justify-center">
         <div className="lg:w-[60rem] sm:w-[40rem] w-[25rem] text-wrap text-center opacity-30">
           <p className="font-bold sm:text-[2rem] text-[1.5rem]">Welcome to the World of Divine Beauty</p>
