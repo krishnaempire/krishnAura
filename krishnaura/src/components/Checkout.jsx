@@ -38,7 +38,7 @@ export function Checkout({ product, size, color, quantity }) {
   const user = useSelector(
     (state) => state.user.userData,
     shallowEqual
-);
+  );
   const [cartIds, setCartId] = useState()
   const [countdown, setCountdown] = useState(5);
   const [redirect, setRedirect] = useState("")
@@ -75,7 +75,7 @@ export function Checkout({ product, size, color, quantity }) {
       });
     }
   }, [user]);
-  
+
   const userId = user?._id
 
 
@@ -118,11 +118,11 @@ export function Checkout({ product, size, color, quantity }) {
         }, 0);
       }
     };
-    
+
     const newPrice = getPriceForSize(product, size);
-    setTotalPrice(quantity ? quantity * newPrice + 60 :  newPrice + 60)
+    setTotalPrice(quantity ? quantity * newPrice + 60 : newPrice + 60)
     setPrice(newPrice);
-    
+
   }, []);
 
   const handleInputChange = (e) => {
@@ -215,7 +215,7 @@ export function Checkout({ product, size, color, quantity }) {
           orderData.size = size || sizes;
         }
         if (!orderData.quantity) {
-          orderData.quantity = quantity || quantities ;
+          orderData.quantity = quantity || quantities;
         }
 
         orderData = {
@@ -312,7 +312,7 @@ export function Checkout({ product, size, color, quantity }) {
     if (isCOD) {
       setTotalPrice(totalPrice - 60);
 
-      } else {
+    } else {
       setTotalPrice(totalPrice + 60);
     }
 
@@ -585,21 +585,25 @@ export function Checkout({ product, size, color, quantity }) {
                     <p className="text-sm font-medium">Sub total</p>
                     <p className="text-sm font-medium">{quantity ? `${quantity} x ${price}` : price}</p>
                   </li>
-                  <li className="flex items-center justify-between text-gray-600">
-                    <p className="text-sm font-medium">Delivery Charges</p>
-                    <p className="text-sm font-medium">{isCOD ? 80 : 20}</p>
-                  </li>
+                  {totalPrice < 499 &&
+
+                    <li className="flex items-center justify-between text-gray-600">
+                      <p className="text-sm font-medium">Delivery Charges</p>
+                      <p className="text-sm font-medium">{isCOD ? 80 : 20}</p>
+                    </li>
+                  }
+
                   <li className="flex items-center justify-between text-gray-600">
                     <p className="text-sm font-medium">Taxes</p>
                     <p className="text-sm font-medium">40</p>
                   </li>
                   <li className="flex items-center justify-between text-gray-900">
                     <p className="text-sm font-medium ">Total</p>
-                    {product[0]?.cartId 
-                    ?
-                    <p className="text-sm font-bold ">{totalPrice > 499 ? (price + 40) : totalPrice}</p>
-                    :
-                    <p className="text-sm font-bold ">{totalPrice > 499 ? (quantity * price + 40) : totalPrice}</p>
+                    {product[0]?.cartId
+                      ?
+                      <p className="text-sm font-bold ">{totalPrice > 499 ? (price + 40) : totalPrice}</p>
+                      :
+                      <p className="text-sm font-bold ">{totalPrice > 499 ? (quantity * price + 40) : totalPrice}</p>
                     }
                   </li>
                 </ul>
