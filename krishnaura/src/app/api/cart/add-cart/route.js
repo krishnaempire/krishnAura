@@ -7,7 +7,6 @@ export const POST = async (req) => {
     connectDB();
     try {
         const { userId, productId, selectedSize, selectedColor, quantity } = await req.json();
-        console.log(selectedColor, selectedSize)
         if (!isValidObjectId(userId) || !isValidObjectId(productId)) {
             return NextResponse.json(
                 { error: "Invalid userId or productId." },

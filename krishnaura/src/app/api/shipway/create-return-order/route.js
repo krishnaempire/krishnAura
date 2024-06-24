@@ -23,7 +23,6 @@ export async function POST(request) {
         }
 
         const result = await response.json();
-        console.log(result)
         return NextResponse.json(result, { status: 200 });
     } catch (error) {
         console.error("Error creating return:", error);

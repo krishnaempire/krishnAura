@@ -180,12 +180,12 @@ const Order = () => {
             <div className="p-8">
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-1">
                 <div className="mb-4">
-                  <div className="text-sm font-semibold">Order Id</div>
-                  <div className="text-sm font-medium text-gray-700">{order?.orderId}</div>
-                </div>
-                <div className="mb-4">
                   <div className="text-sm font-semibold">Total Amount</div>
                   <div className="text-sm font-medium text-gray-700">{order?.price}</div>
+                </div>
+                <div className="mb-4">
+                  <div className="text-sm font-semibold">Order Id</div>
+                  <div className="text-sm font-medium text-gray-700">{order?.orderId}</div>
                 </div>
                 <div className="mb-4">
                   <div className="text-sm font-semibold">Order Status</div>

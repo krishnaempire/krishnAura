@@ -18,7 +18,7 @@ export default function ProductPage() {
   );
   const { addToCart } = useCartApi()
   const router = useRouter();
-  const { getProduct } = useProductApi();
+  const { getProductById } = useProductApi();
   const { id } = useParams();
   const [product, setProduct] = useState();
   const [quantity, setQuantity] = useState(1);
@@ -30,7 +30,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const data = await getProduct(id);
+      const data = await getProductById(id);
       setProduct(data);
     };
 

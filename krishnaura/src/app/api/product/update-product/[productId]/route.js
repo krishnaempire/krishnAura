@@ -11,7 +11,6 @@ export const PATCH = asyncHandler( async(req, {params}) => {
     const body = await req.json()
     const { productId } = params
     const { imgUrl, stock = 0, size, color } = body
-    console.log(size)
 
     if (!isValidObjectId(productId)) {
         return NextResponse.json(

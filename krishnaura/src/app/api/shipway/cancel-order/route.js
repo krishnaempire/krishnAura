@@ -20,12 +20,10 @@ export async function POST(request) {
         if (!response.ok) {
 
             const errorData = await response.json();
-            console.log(errorData)
             return NextResponse.json({ message: errorData.message }, { status: response.status });
         }
 
         const result = await response.json();
-        console.log(result)
         return NextResponse.json(result, { status: 200 });
     } catch (error) {
         console.error("Error canceling orders:", error);

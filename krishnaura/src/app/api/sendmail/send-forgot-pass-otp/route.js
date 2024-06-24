@@ -17,7 +17,6 @@ export const POST = async (req) => {
             subject: 'Krishna Aura Password reset',
             react: VerificationEmail({otp: verifyCode }),
         });
-        console.log(verifyCode)
         return NextResponse.json({ success: true, message: 'Verification email sent successfully.', verifyCode });
     } catch (emailError) {
         console.error('Error sending verification email:', emailError);

@@ -9,7 +9,6 @@ export const DELETE = asyncHandler(async (req, { params }) => {
     connectDB()
     try {
         const { cartId } = params;
-        console.log(cartId)
         // Check if cartItemId is a valid ObjectId
         if (!isValidObjectId(cartId)) {
             return NextResponse.json({ error: "Please provide a valid cartItemId" }, { status: 400 });

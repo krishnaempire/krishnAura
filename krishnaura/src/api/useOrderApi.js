@@ -173,7 +173,6 @@ const useOrderApi = () => {
             }
     
             const data = await response.json();
-            console.log(data)
             return data;
     
         } catch (error) {
@@ -282,7 +281,6 @@ const useOrderApi = () => {
             box_height: "3",
             order_date: orderData.order_date
         };
-        console.log(payload)
         try {
             const response = await fetch('/api/shipway/create-return-order', {
                 method: 'POST',

@@ -6,6 +6,7 @@ import { Spinner } from '@nextui-org/react';
 import useCartApi from '@/api/useCartApi';
 import { useRouter } from 'next/navigation';
 import { shallowEqual, useSelector } from 'react-redux';
+import { SheetClose } from './ui/sheet';
 
 
 export default function Cart({ products, setRefreshCart }) {
@@ -90,8 +91,7 @@ export default function Cart({ products, setRefreshCart }) {
       <div className="mx-auto flex max-w-3xl flex-col space-y-4 p-6 px-2 sm:p-10 sm:px-2">
         <h2 className="text-3xl font-bold">Your cart</h2>
         <p className="mt-3 text-sm font-medium text-gray-700">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum eius repellat ipsam, sit
-          praesentium incidunt.
+        Thank you for shopping with us! Below are the items currently in your cart. Please review them before proceeding to checkout.
         </p>
         <ul className="flex flex-col divide-y divide-gray-200">
           {products.map((product, index) => (
@@ -144,13 +144,16 @@ export default function Cart({ products, setRefreshCart }) {
           </p>
         </div>
         <div className="flex justify-end space-x-4">
+          <SheetClose>
+
           <button
             type="button"
             className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible-outline-2 focus-visible-outline-offset-2 focus-visible-outline-black"
             onClick={handleCheckout}
-          >
+            >
             Checkout
           </button>
+            </SheetClose>
         </div>
       </div>
     </>
