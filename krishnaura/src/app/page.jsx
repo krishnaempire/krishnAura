@@ -95,9 +95,10 @@ export default function Page() {
         </Carousel>
       )}
       <div className="my-[4rem] font-bold flex justify-center">
-        <div className="lg:w-[60rem] sm:w-[40rem] w-[25rem] text-wrap text-center opacity-30">
-          <p className="font-bold sm:text-[2rem] text-[1.5rem]">Welcome to the World of Divine Beauty</p>
-          <p className="sm:text-[1.5rem] font-medium">Celebrate your Laddu Gopal with our exclusive, handcrafted dresses, each designed to bring out the divine charm and grace.</p>
+        <div className="lg:w-[60rem] sm:w-[40rem] w-[25rem] text-wrap text-center ">
+          <p className="font-bold sm:text-[2rem]   text-[1.5rem]">Not to Use for now</p>
+          <p className="font-bold sm:text-[2rem] opacity-30 text-[1.5rem]">Welcome to the World of Divine Beauty</p>
+          <p className="sm:text-[1.5rem] font-medium opacity-30">Celebrate your Laddu Gopal with our exclusive, handcrafted dresses, each designed to bring out the divine charm and grace.</p>
         </div>
       </div>
       <div id="dress" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
