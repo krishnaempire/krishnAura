@@ -33,9 +33,7 @@ const Orders = () => {
       }));
       setProduct(productArray);
     } catch (error) {
-      toast({
-        description: "Error fetching orders",
-      });
+      console.log("Error fecthing orders")
     } finally {
       setFetching(false);
     }
@@ -52,9 +50,7 @@ const Orders = () => {
       }));
       setProduct(productArray);
     } catch (error) {
-      toast({
-        description: "No Orders",
-      });
+      console.log("No order")
     } finally {
       setFetching(false);
     }
