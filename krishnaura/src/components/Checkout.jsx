@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
-import React, { Suspense, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { shallowEqual, useSelector } from 'react-redux'
 import { useToast } from './ui/use-toast'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
@@ -35,7 +35,10 @@ export function Checkout({ product, size, color, quantity }) {
   const [phoneVerified, setPhoneVerified] = useState(false)
   const [addressVerified, setAddressVerified] = useState(false)
   const { toast } = useToast()
-  const user = useSelector(state => state.user.userData)
+  const user = useSelector(
+    (state) => state.user.userData,
+    shallowEqual
+);
   const [cartIds, setCartId] = useState()
   const [countdown, setCountdown] = useState(5);
   const [redirect, setRedirect] = useState("")
@@ -57,7 +60,25 @@ export function Checkout({ product, size, color, quantity }) {
     city: user.city,
     state: user.state
   })
+
+  useEffect(() => {
+    if (user) {
+      setUserData({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        phoneNumber: user.phoneNumber || "",
+        address: user.address || "",
+        city: user.city || "",
+        pinCode: user.pinCode || "",
+        state: user.state || ""
+      });
+    }
+  }, [user]);
+  
   const userId = user?._id
+
+
 
   useEffect(() => {
 

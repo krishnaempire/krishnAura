@@ -53,7 +53,7 @@ const Profile = () => {
                     </Link>
                   </DropdownItem>
                   <DropdownItem key="copy">
-                    <Link href={"update"}>
+                    <Link href={"profile/update"}>
                       Update Profile
                     </Link>
                   </DropdownItem>
