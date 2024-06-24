@@ -168,12 +168,20 @@ export function Checkout({ product, size, color, quantity }) {
         description: "Fill all the fields"
       })
     }
+
+    let actualPrice
+    if (product[0]?.cartId) {
+      actualPrice = totalPrice > 499 ? (price + 40) : totalPrice
+    } else {
+      actualPrice = totalPrice > 499 ? (quantity * price + 40) : totalPrice
+    }
+
     const res = await fetch("/api/payment/create-order", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ totalPrice })
+      body: JSON.stringify({ totalPrice: actualPrice })
     })
 
     const data = await res.json()
@@ -182,7 +190,7 @@ export function Checkout({ product, size, color, quantity }) {
       "key": process.env.RAZOR_KEY_ID,
       "amount": data.amount,
       "currency": "INR",
-      "name": "Acme Corp",
+      "name": "Krishna Aura",
       "description": "Test Transaction",
       "image": "https://example.com/your_logo",
       "order_id": data.id,
@@ -218,13 +226,14 @@ export function Checkout({ product, size, color, quantity }) {
           orderData.quantity = quantity || quantities;
         }
 
+
         orderData = {
           ...orderData,
           ...userData,
           userId,
           productId: productId?.length ? productId : [productId],
           orderId: generateOrderId(),
-          totalPrice,
+          totalPrice: actualPrice,
           paymentType: isCOD ? "C" : "P",
           order_date: formatDate(new Date())
         };
@@ -283,6 +292,12 @@ export function Checkout({ product, size, color, quantity }) {
       setPriceList(priceList.slice(0, priceList.length / 2));
     }
 
+    let actualPrice
+    if (product[0]?.cartId) {
+      actualPrice = totalPrice > 499 ? (price + 40) : totalPrice
+    } else {
+      actualPrice = totalPrice > 499 ? (quantity * price + 40) : totalPrice
+    }
 
     orderData = {
       ...orderData,
@@ -290,7 +305,7 @@ export function Checkout({ product, size, color, quantity }) {
       userId,
       productId: productId?.length ? productId : [productId],
       orderId: generateOrderId(),
-      totalPrice,
+      totalPrice: actualPrice,
       paymentType: isCOD ? "C" : "P",
       order_date: formatDate(new Date())
     };
