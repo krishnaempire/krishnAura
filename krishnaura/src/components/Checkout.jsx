@@ -61,9 +61,6 @@ export function Checkout({ product, size, color, quantity }) {
 
   useEffect(() => {
 
-    sessionStorage.setItem("checkoutData", false)
-    sessionStorage.setItem("guestCart", false)
-
     setProductId(product[0]?._id)
     if (product[0]?.cartId) {
       const cartId = extractCartIds(product);
@@ -577,7 +574,12 @@ export function Checkout({ product, size, color, quantity }) {
                   </li>
                   <li className="flex items-center justify-between text-gray-900">
                     <p className="text-sm font-medium ">Total</p>
-                    <p className="text-sm font-bold ">{totalPrice}</p>
+                    {product[0]?.cartId 
+                    ?
+                    <p className="text-sm font-bold ">{totalPrice > 499 ? (price + 40) : totalPrice}</p>
+                    :
+                    <p className="text-sm font-bold ">{totalPrice > 499 ? (quantity * price + 40) : totalPrice}</p>
+                    }
                   </li>
                 </ul>
               </div>

@@ -40,8 +40,10 @@ export default function Cart({ products, setRefreshCart }) {
 
   useEffect(() => {
     if (products?.length) {
+      
       const calculatedTotal = products.reduce((total, product) => {
-        const offPrice = product.selectedSize ? product.size.find(size => size.name === product.selectedSize)?.offPrice : product.size[0].offPrice;
+        let offPrice = product.selectedSize ? product.size.find(size => size.name === product.selectedSize)?.offPrice : product.size[0].offPrice;
+        offPrice *= Number(product.quantity) || 1
         return total + offPrice;
       }, 0);
 
@@ -63,8 +65,8 @@ export default function Cart({ products, setRefreshCart }) {
       router.push("/auth")
       return
     }
-    storeCheckoutData(products, totalAmount);
-    router.push('/product-page/checkout');
+    storeCheckoutData(products);
+    router.push(`/product-page/checkout?cart=${true}`);
   };
 
 
@@ -91,7 +93,7 @@ export default function Cart({ products, setRefreshCart }) {
       <div className="mx-auto flex max-w-3xl flex-col space-y-4 p-6 px-2 sm:p-10 sm:px-2">
         <h2 className="text-3xl font-bold">Your cart</h2>
         <p className="mt-3 text-sm font-medium text-gray-700">
-        Thank you for shopping with us! Below are the items currently in your cart. Please review them before proceeding to checkout.
+          Thank you for shopping with us! Below are the items currently in your cart. Please review them before proceeding to checkout.
         </p>
         <ul className="flex flex-col divide-y divide-gray-200">
           {products.map((product, index) => (
@@ -146,14 +148,14 @@ export default function Cart({ products, setRefreshCart }) {
         <div className="flex justify-end space-x-4">
           <SheetClose>
 
-          <button
-            type="button"
-            className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible-outline-2 focus-visible-outline-offset-2 focus-visible-outline-black"
-            onClick={handleCheckout}
+            <button
+              type="button"
+              className="rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible-outline-2 focus-visible-outline-offset-2 focus-visible-outline-black"
+              onClick={handleCheckout}
             >
-            Checkout
-          </button>
-            </SheetClose>
+              Checkout
+            </button>
+          </SheetClose>
         </div>
       </div>
     </>

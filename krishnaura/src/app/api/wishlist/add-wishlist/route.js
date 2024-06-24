@@ -4,9 +4,9 @@ import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/DBConfig/connectDB.js";
 
-connectDB()
 
 export const POST = asyncHandler(async (req) => {
+    connectDB()
     try {
         const { userId, productId } = await req.json();
 

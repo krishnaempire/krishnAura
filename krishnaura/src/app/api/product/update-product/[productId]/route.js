@@ -4,9 +4,9 @@ import asyncHandler from "express-async-handler"
 import { isValidObjectId } from "mongoose"
 import { NextResponse } from "next/server"
 
-connectDB()
 
 export const PATCH = asyncHandler( async(req, {params}) => {
+    connectDB()
 
     const body = await req.json()
     const { productId } = params

@@ -3,9 +3,9 @@ import User from "@/models/user.model.js";
 import asyncHandler from "express-async-handler";
 import { NextResponse } from "next/server";
 
-connectDB()
 
 export const GET = asyncHandler(async (req, { params }) => {
+    connectDB()
     const { id } = params;
     
     if (!id) {

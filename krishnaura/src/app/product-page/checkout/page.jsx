@@ -7,7 +7,7 @@ import { Spinner, Button } from "@nextui-org/react" // Assuming Button is import
 
 function CheckoutComponent() {
     const router = useRouter();
-    const { getProduct } = useProductApi();
+    const { getProductById } = useProductApi();
     const [product, setProduct] = useState();
     const [searchParamsReady, setSearchParamsReady] = useState(false);
 
@@ -16,17 +16,19 @@ function CheckoutComponent() {
     const quantity = searchParams.get('quantity');
     const size = searchParams.get('size');
     const color = searchParams.get('color');
-
+    const cart = searchParams.get('cart');
+    
     useEffect(() => {
         const sessionData = JSON.parse(sessionStorage.getItem("checkoutData"));
-        if (sessionData) {
+        if (cart === "true") {
+            console.log("sesion")
             setProduct(sessionData.products);
             setSearchParamsReady(true);
         } else {
             // If no session storage data, fetch from the server
             const fetchData = async () => {
                 try {
-                    let data = await getProduct(id);
+                    let data = await getProductById(id);
                     data = [data]
                     setProduct(data);
                     setSearchParamsReady(true);

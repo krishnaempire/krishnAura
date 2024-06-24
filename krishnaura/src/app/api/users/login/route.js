@@ -5,9 +5,9 @@ import { NextResponse } from "next/server"
 import jwt from "jsonwebtoken"
 import { connectDB } from "@/DBConfig/connectDB.js"
 
-connectDB()
 
 export const POST = asyncHandler(async (req) => {
+    connectDB()
 
     try {
         const body = await req.json()

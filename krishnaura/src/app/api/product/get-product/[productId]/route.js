@@ -2,8 +2,10 @@ import asyncHandler from "express-async-handler";
 import Product from "@/models/product.model.js";
 import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
+import { connectDB } from "@/DBConfig/connectDB";
 
 export const GET = asyncHandler(async (req, { params }) => {
+    connectDB()
     try {
         const { productId } = params;
 

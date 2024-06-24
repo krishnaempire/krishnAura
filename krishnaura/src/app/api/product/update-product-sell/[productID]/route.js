@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 import { isValidObjectId } from "mongoose";
 
 
-connectDB()
 
 export const PATCH = asyncHandler( async(req, {params}) =>{
+    connectDB()
     try {
 
         const { productID } = params

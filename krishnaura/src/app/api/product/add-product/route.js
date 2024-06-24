@@ -4,9 +4,9 @@ import { uploadOnCLoudinary } from "@/utils/cloudinary.js"
 import asyncHandler from "express-async-handler"
 import { NextResponse } from "next/server"
 
-connectDB()
 
 export const POST = asyncHandler(async (req) => {
+    connectDB()
     try {
         const { imgUrl, stock, color, size, name, type, description, about } = await req.json()
         

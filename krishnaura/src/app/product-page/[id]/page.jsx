@@ -101,7 +101,7 @@ export default function ProductPage() {
       return;
     }
     if (product && selectedSize && selectedColor) {
-      const queryString = `checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}`;
+      const queryString = `checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&cart=${false}`;
       router.push(queryString);
     }
   };

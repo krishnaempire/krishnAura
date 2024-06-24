@@ -1,7 +1,6 @@
 import { connectDB } from "@/DBConfig/connectDB.js"
 import {  NextResponse } from "next/server"
 
-connectDB()
 
 export const GET = async () => {
     try {

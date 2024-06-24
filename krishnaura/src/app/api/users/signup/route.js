@@ -5,9 +5,9 @@ import User from "@/models/user.model.js";
 import { connectDB } from "@/DBConfig/connectDB";
 import jwt from "jsonwebtoken"
 
-connectDB()
 
 export const POST = asyncHandler(async (req) => {
+    connectDB()
     const body = await req.json()
     const { firstName, lastName, phoneNumber, email, password } = body;
 
