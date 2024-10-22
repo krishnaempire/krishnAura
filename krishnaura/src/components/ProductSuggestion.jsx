@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
+"use client"
+import React, { useState, useEffect, useRef } from 'react';
 import useProductApi from '@/api/useProductApi';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
 import SuggestionCard from './SuggestionCard';
 import { Card, CardBody, CardFooter } from '@nextui-org/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Autoplay from 'embla-carousel-autoplay';
 
 const ProductSuggestion = () => {
     const { getPaginatedProducts } = useProductApi();
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const plugin = useRef(Autoplay({ delay: 6000, stopOnInteraction: true }));
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -38,16 +41,22 @@ const ProductSuggestion = () => {
 
     return (
         <>
-            <Carousel className="w-full flex justify-center mb-[5rem]">
-                <CarouselContent className="-ml-1">
+            <Carousel
+                className="w-full flex justify-center mb-[5rem]"
+                opts={{
+                    align: "start",
+                }}
+                plugins={[plugin.current]}
+            >
+                <CarouselContent className="-ml-2">
                     {products.map((product, index) => (
-                        <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/3">
-                            <SuggestionCard product={product}/>
+                        <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/4">
+                            <SuggestionCard product={product} />
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="hidden lg:block"  />
-                <CarouselNext className="hidden lg:block"  />
+                <CarouselPrevious className="hidden lg:block" />
+                <CarouselNext className="hidden lg:block" />
             </Carousel>
             {/* <Carousel className="w-full flex justify-center mb-[5rem]">
                 <CarouselContent className="-ml-1">

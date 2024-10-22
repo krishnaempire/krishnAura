@@ -20,7 +20,7 @@ const cartSchema = new mongoose.Schema({
   quantity: {
     type: String,
   }
-});
+}, {timestamps: true});
 
 const Cart = mongoose.models.Cart || mongoose.model('Cart', cartSchema);
 

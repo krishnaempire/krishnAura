@@ -21,6 +21,10 @@ import useProductApi from "@/api/useProductApi";
 import Image from "next/image";
 import Footer from "@/components/Footer";
 import { Pagination } from "@nextui-org/react";
+import { FaInstagram } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa6";
+import Link from "next/link";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Img = [
   Slider1,
@@ -43,8 +47,10 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(1);
   const { getAllProduct } = useProductApi();
   const [products, setProducts] = useState([]);
+  const [recentProduct, setRecentProduct] = useState([])
   const plugin = useRef(Autoplay({ delay: 6000, stopOnInteraction: true }));
   const [fetching, setFetching] = useState(true);
+  const [hasMore, setHasMore] = useState(true)
   const [screenWidth, setScreenWidth] = useState(null);
 
   const updateScreenWidth = () => {
@@ -52,27 +58,62 @@ export default function Page() {
   };
 
   useEffect(() => {
-    // This effect runs only on the client
     setScreenWidth(window.innerWidth);
     window.addEventListener("resize", updateScreenWidth);
     return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
 
   useEffect(() => {
+    fetchMoreData()
+  }, [])
+
+  const fetchMoreData = () => {
+
     const fetchData = async (page) => {
       setFetching(true);
       try {
         const data = await getAllProduct(page);
-        setProducts(data.products);
-        setTotalPages(data.pagination.totalPages);
+
+        if (data.products.length === 0) {
+          setHasMore(false);
+        } else {
+          setProducts((prevProducts) => {
+            const newProducts = data.products.filter(newProduct =>
+              !prevProducts.some(prevProduct => prevProduct.id === newProduct.id)
+            );
+
+            return [...prevProducts, ...newProducts];
+          });
+
+          setTotalPages(data.pagination.totalPages);
+          setCurrentPage((prevPage) => prevPage + 1);
+        }
       } catch (error) {
         console.error("Error fetching product data:", error);
       } finally {
         setFetching(false);
       }
     };
+
     fetchData(currentPage);
-  }, [currentPage]);
+  };
+
+  const extractRecentProducts = (products) => {
+    const currentDate = new Date();
+
+    const recentProduct = products.filter(product => {
+      const productDate = new Date(product.createdAt); // Directly parsing the ISO date
+
+      const diffInTime = currentDate - productDate;
+
+      const diffInDays = diffInTime / (1000 * 3600 * 24);
+
+      return diffInDays <= 5;
+    });
+
+    setRecentProduct(recentProduct)
+  };
+
 
   const filterProductsByType = (type) => products.filter((product) => product.type === type);
 
@@ -102,29 +143,41 @@ export default function Page() {
         </div>
       </div>
       <div id="dress" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
-        {filterProductsByType("Dress").map((product, index) => (
-          <Card product={product} key={index} />
-        ))}
+
+        <InfiniteScroll
+          dataLength={products.length}
+          next={fetchMoreData}
+          className={`grid grid-cols-1 ${screenWidth >= 1024 ? "sm:grid-cols-3" : "sm:grid-cols-2"} ${screenWidth > 1024 ? "gap-[6rem]" : "gap-[2rem]"}  gap-[2rem] w-full`}
+          hasMore={hasMore}
+        >
+          {products.map((product, index) => (
+            <Card product={product} key={index} />
+          ))}
+        </InfiniteScroll>
       </div>
-      <div className="my-[4rem] font-bold text-[2rem] flex justify-center">
-        <div className="text-center opacity-30">
-          <p>JEWELLERY</p>
+      {recentProduct.length &&
+        <>
+          <div className="my-[4rem] font-bold text-[2rem] flex justify-center">
+            <div className="text-center opacity-30">
+              <p>Newly Added</p>
+            </div>
+          </div>
+          <div id="recentProduct" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
+            {recentProduct.map((product, index) => (
+              <Card product={product} key={index} />
+            ))}
+          </div>
+        </>
+      }
+      <div className="bg-white flex flex-col gap-2 rounded-full px-2 py-2 fixed top-52 right-5 shadow-md">
+        <Link href="https://www.instagram.com/krishna_aura_">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
+            <FaInstagram />
+          </div>
+        </Link>
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
+          <FaWhatsapp />
         </div>
-      </div>
-      <div id="jewellery" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
-        {filterProductsByType("Jewellery").map((product, index) => (
-          <Card product={product} key={index} />
-        ))}
-      </div>
-      <div className="overflow-hidden flex justify-center mb-5 mt-[4rem]">
-        <Pagination
-          total={totalPages}
-          classNames={{
-            cursor: "bg-gradient-to-b shadow-lg from-default-900 to-default-800 text-white font-bold",
-          }}
-          page={currentPage}
-          onChange={(page) => setCurrentPage(page)}
-        />
       </div>
       <Footer />
     </div>

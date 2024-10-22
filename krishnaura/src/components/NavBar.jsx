@@ -28,6 +28,7 @@ import Image from "next/image";
 import useGetUser from "@/api/getUser";
 import useCartApi from "@/api/useCartApi";
 import { useRouter } from "next/navigation"; // To redirect
+import { FaRegUser } from "react-icons/fa6";
 
 export default function NavBar() {
   const { getCart, addToCart } = useCartApi();
@@ -51,7 +52,7 @@ export default function NavBar() {
 
 
   useEffect(() => {
-      handleCartClick();
+    handleCartClick();
   }, [refreshCart]);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ export default function NavBar() {
         maxWidth="full"
         height={"7rem"}
         className="z-10 fixed top-0"
-        >
+      >
         <NavbarContent justify="start">
           <NavbarBrand className="relative md:left-[1rem]">
             <Link href="/" className="font-bold Link-inherit">
@@ -101,11 +102,16 @@ export default function NavBar() {
               Orders
             </Button>
           </NavbarItem>
+          <NavbarItem>
+            <Button as={Link} href={`/bulk-order`} color="foreground" className="font-semibold">
+              Bulk Order
+            </Button>
+          </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
           <div className="hidden sm:flex">
             <Link href={user?._id ? `/profile` : "/auth"} className="text-[1.3rem] lg:hover:scale-125 transform duration-300">
-              <Image src={profile} alt='profile' width={80} height={80} className='w-[2rem] h-[2rem] rounded-full' />
+              <FaRegUser />
             </Link>
           </div>
           <div className="sm:hidden">
@@ -134,6 +140,11 @@ export default function NavBar() {
                 </DropdownItem>
                 <DropdownItem key="jewelry">
                   <Button as={Link} href={"/#jewellery"} className="font-semibold bg-transparent">Jewellery</Button>
+                </DropdownItem>
+                <DropdownItem key="bulkorder">
+                  <Button as={Link} href={`/bulk-order`} color="foreground" className="font-semibold">
+                    Bulk Order
+                  </Button>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
