@@ -41,14 +41,29 @@ export default function ProductPage() {
     return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
 
-  const copyLink = async () => {
-    try {
-      const currentUrl = window.location.href;
-      await navigator.clipboard.writeText(currentUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy link:", err);
+  const handleShare = async () => {
+    const currentUrl = window.location.href;
+
+    // Check if the Web Share API is supported
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: document.title,
+          text: "Check out this page!",
+          url: currentUrl,
+        });
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      // Fallback to copying the link if the Web Share API is not supported
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // Reset copied state
+      } catch (error) {
+        console.error("Failed to copy link:", error);
+      }
     }
   };
   useEffect(() => {
@@ -215,7 +230,7 @@ export default function ProductPage() {
               <div className='flex gap-2'>
 
                 <Button className='mb-2' onPress={onOpen} variant={"bordered"}>Size Chart</Button>
-                <Button onClick={copyLink} variant="bordered">
+                <Button onClick={handleShare} variant="bordered">
                   {copied ? "Link Copied!" : <><RiShareForwardLine className='text-[1.1rem]' /> Share</>}
                 </Button>
 

@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 export default function BulkOrderPage() {
   const { toast } = useToast();
-  const [order, setOrder] = useState([{ description: '', name: '', mobile: '' }]);
+  const [order, setOrder] = useState({ description: '', name: '', mobile: '' });
 
   const showErrorToast = (message) => {
     toast({
@@ -21,17 +21,15 @@ export default function BulkOrderPage() {
     });
   };
 
-  const updateOrder = (index, field, value) => {
-    const newOrders = [...order];
-    newOrders[index][field] = value;
-    setOrder(newOrders);
+  const updateOrder = (field, value) => {
+    setOrder((prevOrder) => ({ ...prevOrder, [field]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate if all fields in the order are filled
-    if (order.some(({ name, mobile, description }) => !name || !mobile || !description)) {
+    if (!order.name || !order.mobile || !order.description) {
       showErrorToast('Please fill all fields');
       return;
     }
@@ -49,12 +47,11 @@ export default function BulkOrderPage() {
         },
       });
       const data = await res.json();
-
       if (data.error) {
         showErrorToast(data.error);
       } else {
         showSuccessToast('Order sent');
-        setOrder([{ description: '', name: '', mobile: '' }]);
+        setOrder({ description: '', name: '', mobile: '' });
       }
     } catch (error) {
       console.error(error.message || 'Something went wrong');
@@ -66,48 +63,46 @@ export default function BulkOrderPage() {
     <div className="container mx-auto px-4 py-8 mt-[6rem] bg-[#f3dac2]">
       <h1 className="text-3xl font-bold mb-6">Bulk Order</h1>
       <form onSubmit={handleSubmit}>
-        {order.map((item, index) => (
-          <div key={index} className="mb-6 p-4  rounded-lg">
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor={`name-${index}`}>Name</label>
-                  <Input
-                    id={`name-${index}`}
-                    color={"danger"}
-                    value={item.name}
-                    onChange={(e) => updateOrder(index, 'name', e.target.value)}
-                    placeholder="Enter customer name"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor={`mobile-${index}`}>Mobile Number</label>
-                  <Input
-                    id={`mobile-${index}`}
-                    color={"danger"}
-                    type="tel"
-                    value={item.mobile}
-                    onChange={(e) => updateOrder(index, 'mobile', e.target.value)}
-                    placeholder="Enter mobile number"
-                    required
-                  />
-                </div>
+        <div className="mb-6 p-4 rounded-lg">
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="name">Name</label>
+                <Input
+                  id="name"
+                  color="danger"
+                  value={order.name}
+                  onChange={(e) => updateOrder('name', e.target.value)}
+                  placeholder="Enter customer name"
+                  required
+                />
               </div>
               <div>
-                <label htmlFor={`description-${index}`}>Description</label>
-                <Textarea
-                  id={`description-${index}`}
-                  color={"danger"}
-                  value={item.description}
-                  onChange={(e) => updateOrder(index, 'description', e.target.value)}
-                  placeholder="Write what you want from us:-"
+                <label htmlFor="mobile">Mobile Number</label>
+                <Input
+                  id="mobile"
+                  color="danger"
+                  type="tel"
+                  value={order.mobile}
+                  onChange={(e) => updateOrder('mobile', e.target.value)}
+                  placeholder="Enter mobile number"
                   required
                 />
               </div>
             </div>
+            <div>
+              <label htmlFor="description">Description</label>
+              <Textarea
+                id="description"
+                color="danger"
+                value={order.description}
+                onChange={(e) => updateOrder('description', e.target.value)}
+                placeholder="Write what you want from us:-"
+                required
+              />
+            </div>
           </div>
-        ))}
+        </div>
         <Button type="submit" className="mt-4 bg-[#d4a72c] text-white">
           Submit Order
         </Button>
