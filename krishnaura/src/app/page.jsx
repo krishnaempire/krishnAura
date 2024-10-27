@@ -48,7 +48,7 @@ export default function Page() {
   const { getAllProduct } = useProductApi();
   const [products, setProducts] = useState([]);
   const [recentProduct, setRecentProduct] = useState([])
-  const plugin = useRef(Autoplay({ delay: 6000, stopOnInteraction: true }));
+  const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
   const [fetching, setFetching] = useState(true);
   const [hasMore, setHasMore] = useState(true)
   const [screenWidth, setScreenWidth] = useState(null);
@@ -123,8 +123,12 @@ export default function Page() {
     <div className="w-full mt-[7rem] grid place-items-center">
       {screenWidth !== null && (
         <Carousel
+          opts={{
+            align: "start",
+            loop: "true"
+          }}
           plugins={[plugin.current]}
-          className="w-full lg:h-[30rem] md:h-[18rem] h-[13rem]  bg-slate-200 overflow-hidden"
+          className="w-full lg:h-[30rem] md:h-[18rem] h-[13rem]  bg-black overflow-hidden"
         >
           <CarouselContent>
             {imagesToShow.map((src, index) => (
@@ -155,7 +159,7 @@ export default function Page() {
           ))}
         </InfiniteScroll>
       </div>
-      {recentProduct.length &&
+      {recentProduct.length ? (
         <>
           <div className="my-[4rem] font-bold text-[2rem] flex justify-center">
             <div className="text-center opacity-30">
@@ -168,9 +172,10 @@ export default function Page() {
             ))}
           </div>
         </>
-      }
-      <div className="bg-white flex flex-col gap-2 rounded-full px-2 py-2 fixed top-52 right-5 shadow-md">
-        <Link href="https://www.instagram.com/krishna_aura_">
+      ) : null}
+
+      <div className=" flex flex-col gap-2 rounded-full px-2 py-2 fixed top-52 right-5">
+        <Link href="https://www.instagram.com/krishna_aura_" target="_blank">
           <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
             <FaInstagram />
           </div>

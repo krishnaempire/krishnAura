@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import useCartApi from '@/api/useCartApi';
 import SizeChart from "../../../../public/SizeChart.png"
+import { RiShareForwardLine } from "react-icons/ri";
 import ProductSuggestion from '@/components/ProductSuggestion';
 
 export default function ProductPage() {
@@ -27,7 +28,29 @@ export default function ProductPage() {
   const [price, setPrice] = useState(0);
   const [off, setOff] = useState(0);
   const [offPrice, setOffPrice] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(null);
+  const [copied, setCopied] = useState(false);
 
+  const updateScreenWidth = () => {
+    setScreenWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", updateScreenWidth);
+    return () => window.removeEventListener("resize", updateScreenWidth);
+  }, []);
+
+  const copyLink = async () => {
+    try {
+      const currentUrl = window.location.href;
+      await navigator.clipboard.writeText(currentUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy link:", err);
+    }
+  };
   useEffect(() => {
     const fetchProduct = async () => {
       const data = await getProductById(id);
@@ -115,10 +138,10 @@ export default function ProductPage() {
   }
 
   return (
-    <div className="mx-auto mt-[7rem] max-w-7xl px-4 md:px-8 2xl:px-16">
-      <div className="block grid-cols-9 items-start gap-x-10 pb-10 pt-7 lg:grid lg:pb-14 xl:gap-x-14 2xl:pb-20">
+    <div className={`mx-auto mt-[7rem]  ${screenWidth > 1500 ? "w-[90rem]" : "max-w-7xl"} px-4 md:px-8 2xl:px-16`}>
+      <div className={`grid-cols-9 items-start gap-x-10 pb-10 pt-7 ${screenWidth > 1024 ? "grid" : "block"} lg:pb-14 xl:gap-x-14 2xl:pb-20`}>
         {/* Images */}
-        <div className="hidden  col-span-5 md:grid grid-cols-2 gap-2.5">
+        <div className="hidden col-span-5 md:grid grid-cols-2 gap-2.5">
           {product?.productImages?.map((url, index) => (
             <div key={index} className="w-[20rem] h-[15rem] transition duration-150 ease-in hover:opacity-90">
               <Image
@@ -189,7 +212,14 @@ export default function ProductPage() {
           <div className="border-b border-gray-300 pb-3">
             {/* Size Selection */}
             <div className="mb-4">
-            <Button className='mb-2' onPress={onOpen} variant={"bordered"}>Size Chart</Button>
+              <div className='flex gap-2'>
+
+                <Button className='mb-2' onPress={onOpen} variant={"bordered"}>Size Chart</Button>
+                <Button onClick={copyLink} variant="bordered">
+                  {copied ? "Link Copied!" : <><RiShareForwardLine className='text-[1.1rem]' /> Share</>}
+                </Button>
+
+              </div>
               <h3 className="text-heading mb-2.5 text-base font-semibold capitalize md:text-lg">
                 Size
               </h3>
@@ -286,14 +316,14 @@ export default function ProductPage() {
             <>
               <ModalHeader className="flex flex-col gap-1">Size Chart</ModalHeader>
               <ModalBody>
-                <Image width={1000} height={1000} alt='Size Chart' src={SizeChart}/>
+                <Image width={1000} height={1000} alt='Size Chart' src={SizeChart} />
               </ModalBody>
 
             </>
           )}
         </ModalContent>
       </Modal>
-      <ProductSuggestion/>
+      <ProductSuggestion />
     </div>
   );
 }

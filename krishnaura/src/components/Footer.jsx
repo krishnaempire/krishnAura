@@ -56,21 +56,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          <div className="hidden md:flex w-auto p-8">
-            <div className="-m-1.5 flex flex-wrap">
-
-              <div className="w-auto flex flex-col gap-[1rem] p-1.5">
-                <Link href="https://www.instagram.com/krishna_aura_">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
-                    <FaInstagram />
-                  </div>
-                </Link>
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
-                  <FaWhatsapp />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

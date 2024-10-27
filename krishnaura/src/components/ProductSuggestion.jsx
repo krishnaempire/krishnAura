@@ -13,7 +13,7 @@ const ProductSuggestion = () => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const plugin = useRef(Autoplay({ delay: 6000, stopOnInteraction: true }));
+    const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -45,6 +45,7 @@ const ProductSuggestion = () => {
                 className="w-full flex justify-center mb-[5rem]"
                 opts={{
                     align: "start",
+                    loop: "true"
                 }}
                 plugins={[plugin.current]}
             >
