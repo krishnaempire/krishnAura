@@ -16,21 +16,7 @@ export default function Footer() {
             <Link href="/" className="font-bold Link-inherit">
               <Image src={KA} alt="" className="md:w-[12rem] md:h-[5rem] w-[9rem] h-[4rem]" />
             </Link>
-            <div className="md:hidden w-auto p-8 relative left-[9rem]">
-              <div className="-m-1.5 flex flex-wrap">
-
-                <div className="w-auto flex gap-[1rem] p-1.5 relative right-[1rem]">
-                  <Link href="https://www.instagram.com/krishna_aura_">
-                    <div className="flex md:h-8 md:w-8 h-[2.5rem] w-[2.5rem] items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
-                      <FaInstagram />
-                    </div>
-                  </Link>
-                  <div className="flex md:h-8 md:w-8 h-[2.5rem] w-[2.5rem] items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
-                    <FaWhatsapp />
-                  </div>
-                </div>
-              </div>
-            </div>
+           
           </div>
           <div className="w-auto  p-8">
             <ul className="-m-5 flex flex-wrap items-center justify-center">
