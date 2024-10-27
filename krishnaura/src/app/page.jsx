@@ -20,9 +20,10 @@ import SmSlider5 from "../../public/SmSlider5.png";
 import useProductApi from "@/api/useProductApi";
 import Image from "next/image";
 import Footer from "@/components/Footer";
-import { Pagination } from "@nextui-org/react";
 import { FaInstagram } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa6";
+import { FiFacebook } from "react-icons/fi";
+import { FaXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -87,6 +88,7 @@ export default function Page() {
 
           setTotalPages(data.pagination.totalPages);
           setCurrentPage((prevPage) => prevPage + 1);
+          extractRecentProducts()
         }
       } catch (error) {
         console.error("Error fetching product data:", error);
@@ -101,21 +103,19 @@ export default function Page() {
   const extractRecentProducts = (products) => {
     const currentDate = new Date();
 
-    const recentProduct = products.filter(product => {
+    const recentProducts = products.filter(product => {
       const productDate = new Date(product.createdAt); // Directly parsing the ISO date
 
       const diffInTime = currentDate - productDate;
 
-      const diffInDays = diffInTime / (1000 * 3600 * 24);
+      const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert time difference from milliseconds to days
 
-      return diffInDays <= 5;
+      return diffInDays <= 14; // Filter for products created in the last 14 days
     });
 
-    setRecentProduct(recentProduct)
+    setRecentProduct((prev) => [...prev, ...recentProducts]);
   };
 
-
-  const filterProductsByType = (type) => products.filter((product) => product.type === type);
 
   const imagesToShow = screenWidth >= 768 ? Img : Img1;
 
@@ -182,6 +182,12 @@ export default function Page() {
         </Link>
         <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
           <FaWhatsapp />
+        </div>
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
+          <FiFacebook />
+        </div>
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
+          <FaXTwitter />
         </div>
       </div>
       <Footer />
