@@ -60,7 +60,7 @@ export default function BulkOrderPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-[6rem] bg-[#f3dac2]">
+    <div className="container mx-auto px-4 py-8 mt-[8rem] bg-[#f3dac2]">
       <h1 className="text-3xl font-bold mb-6">Bulk Order</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-6 p-4 rounded-lg">

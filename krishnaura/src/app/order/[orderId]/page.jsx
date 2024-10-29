@@ -170,7 +170,7 @@ const Order = () => {
 
   return (
     <>
-      <div className="mx-auto my-4 max-w-6xl px-2 md:my-6 md:px-0">
+      <div className="mx-auto my-4 max-w-6xl px-2 md:my-6 md:px-0 mt-[1rem]">
         <h2 className="text-3xl font-bold">Order Details</h2>
         <div className="mt-3 text-sm">
           Check the status of recent and old orders & discover more products

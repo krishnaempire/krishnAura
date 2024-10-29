@@ -8,7 +8,7 @@ const Auth = () => {
   const [selected, setSelected] = useState("login");
   return (
     <>
-      <div className={`mt-[7rem] flex flex-col justify-center items-center`}>
+      <div className={`mt-[9rem] flex flex-col justify-center items-center`}>
         <div className='max-w-full '>
           <Tabs
             size="md"

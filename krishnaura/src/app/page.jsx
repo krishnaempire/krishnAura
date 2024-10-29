@@ -120,7 +120,7 @@ export default function Page() {
   const imagesToShow = screenWidth >= 768 ? Img : Img1;
 
   return (
-    <div className="w-full mt-[7rem] grid place-items-center">
+    <div className="w-full mt-[9rem] grid place-items-center">
       {screenWidth !== null && (
         <Carousel
           opts={{

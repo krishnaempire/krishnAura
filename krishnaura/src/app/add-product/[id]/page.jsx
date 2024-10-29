@@ -124,7 +124,7 @@ const AddProduct = () => {
 
   return (
     <>
-      <div className='w-[70%] m-auto flex-col lg:flex-row flex justify-evenly mt-[8rem] mb-[10rem] '>
+      <div className='w-[70%] m-auto flex-col lg:flex-row flex justify-evenly mt-[9rem] mb-[10rem] '>
         <div className='flex flex-col gap-3 mr-2'>
           <div>
             <Button onClick={() => imageRef.current.click()} variant={"bordered"}>Add Image</Button>
