@@ -68,11 +68,12 @@ export default function NavBar() {
 
   return (
     <>
+    <div className={"bg-[#a6a2ef] w-full text-black sm:text-[.8rem] z-20 text-[.7rem] hidden sm:fixed top-0 py-2 sm:flex justify-center items-center"}><span>FLAT25 for upto Rs.500OFF on 2000 I FLAT10 for 10%OFF on Rs.899</span></div>
       <Navbar
         shouldHideOnScroll
         maxWidth="full"
         height={"7rem"}
-        className="z-10 fixed top-0"
+        className="z-10 fixed top-0 sm:top-[2rem]"
       >
         <NavbarContent justify="start">
           <NavbarBrand className="relative md:left-[1rem]">
