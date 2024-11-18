@@ -26,6 +26,7 @@ import { FiFacebook } from "react-icons/fi";
 import { FaXTwitter } from "react-icons/fa6";
 import Link from "next/link";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Review from "@/components/Reviews";
 
 const Img = [
   Slider1,
@@ -173,6 +174,10 @@ export default function Page() {
           </div>
         </>
       ) : null}
+
+      <div className="my-[10rem]">
+        <Review/>
+      </div>
 
       <div className=" flex flex-col gap-2 rounded-full px-2 py-2 fixed sm:top-52 top-40 right-5 text-[1.2rem]">
         <Link href="https://www.instagram.com/krishna_aura_" target="_blank">

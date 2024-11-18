@@ -57,7 +57,7 @@ function CheckoutComponent() {
     }
 
     return (
-        <div className='mt-[6rem] md:flex '>
+        <div className='mt-[9rem] md:flex '>
             {!product[0]?.cartId &&
 
                 <Button

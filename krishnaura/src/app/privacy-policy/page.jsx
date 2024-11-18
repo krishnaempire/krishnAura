@@ -3,7 +3,7 @@ import React from 'react'
 const ProvacyPolicy = () => {
     return (
         <>
-            <div className=' mt-[7rem] w-full'>
+            <div className=' mt-[9rem] w-full'>
                 <div className='w-[75%] m-auto' >
 
                     <p className='font-bold text-[2rem]'>Privacy Policy</p>

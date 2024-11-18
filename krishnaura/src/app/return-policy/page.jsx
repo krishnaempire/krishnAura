@@ -3,7 +3,7 @@ import React from 'react'
 const ReturnPolicy = () => {
     return (
         <>
-            <div className='mt-[7rem] w-full'>
+            <div className='mt-[9rem] w-full'>
                 <div className='w-[75%] m-auto'>
                     <p className='font-bold text-[2rem]'>Return Policy</p>
                     <div className='text-[1rem] flex flex-col gap-6 mt-[4rem] font-medium'>
