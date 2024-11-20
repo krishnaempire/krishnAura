@@ -9,10 +9,26 @@ export default function Review() {
         <p className='text-[4rem] font-medium bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent'>Reviews
         </p>
       </div>
+       <div className="w-[19rem] sm:w-[45rem] md:w-[50rem] lg:w-full">
+        <InfiniteMovingCards
+          items={testimonials}
+          direction="left"
+          speed="slow"
+          rotate={true}
+        />
+      </div>
       <div className="w-[19rem] sm:w-[45rem] md:w-[50rem] lg:w-full">
         <InfiniteMovingCards
           items={testimonials}
           direction="right"
+          speed="slow"
+          rotate={true}
+        />
+      </div>
+      <div className="w-[19rem] sm:w-[45rem] md:w-[50rem] lg:w-full">
+        <InfiniteMovingCards
+          items={testimonials}
+          direction="left"
           speed="slow"
           rotate={true}
         />
