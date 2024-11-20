@@ -4,9 +4,9 @@ import React from "react";
 
 export default function Review() {
   return (
-    <div className="rounded-md flex flex-col relative overflow-hidden">
+    <div className="gap-4 rounded-md flex flex-col relative overflow-hidden">
       <div className='text-center mb-[5rem]'>
-        <p className='text-[4rem] font-medium bg-gradient-to-r from-indigo-700 to-purple-700 bg-clip-text text-transparent'>Reviews
+        <p className='text-[4rem] font-medium bg-black-to-r bg-clip-text'>Reviews
         </p>
       </div>
        <div className="w-[19rem] sm:w-[45rem] md:w-[50rem] lg:w-full">

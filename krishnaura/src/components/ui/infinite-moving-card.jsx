@@ -8,7 +8,7 @@ export const InfiniteMovingCards = ({
     items,
     direction = "left",
     speed = "fast",
-    pauseOnHover = true,
+    pauseOnHover = false,
     className,
     rotate
 }) => {
@@ -78,7 +78,7 @@ export const InfiniteMovingCards = ({
                 )}
             >
                 {items.map((item, idx) => (
-                    <div key={item.name} className={`w-[18rem] h-[23rem] sm:w-[25rem] sm:h-[18rem] border-[1px] border-neutral-300 rounded-[1.2rem]`}
+                    <div key={item.name} className={`w-[15rem] h-[17rem] sm:w-[18rem] sm:h-[14rem] border-[1px]  border-[#000000] bg-[#f3dbc3] rounded-[1.2rem]`}
                     >
                         <div className=" relative top-6 left-4 w-[90%] flex flex-col gap-4" >
                             <div className='flex items-center'>
