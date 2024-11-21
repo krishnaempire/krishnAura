@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
 
-    <section className="overflow-hidden bg-white w-full py-8">
+    <section className="overflow-hidden bg-[#cfc2b6] w-full py-8">
       <div className="container  z-10 mx-auto px-4">
         <div className="-m-8 flex flex-wrap items-center justify-between">
           <div className="w-auto flex items-center md:block p-8">
@@ -19,22 +19,22 @@ export default function Footer() {
           <div className="w-auto  p-8">
             <ul className="-m-5 flex flex-wrap items-center justify-center">
               <li className="p-5">
-                <Link className="font-medium text-gray-600 hover:text-gray-700" href="privacy-policy">
+                <Link className="font-medium text-Black-600 hover:text-Black-700" href="privacy-policy">
                   Privacy Policy
                 </Link>
               </li>
               <li className="p-5">
-                <Link className="font-medium text-gray-600 hover:text-gray-700" href="/terms-condition">
+                <Link className="font-medium text-Black-600 hover:text-Black-700" href="/terms-condition">
                   Terms of Service
                 </Link>
               </li>
               <li className="p-5">
-                <Link href={"/return-policy"} className="font-medium text-gray-600 hover:text-gray-700">
+                <Link href={"/return-policy"} className="font-medium text-Black-600 hover:text-Black-700">
                   Return Policy
                 </Link>
               </li>
               <li className="p-5">
-                <a className="font-medium text-gray-600 hover:text-gray-700" href="#">
+                <a className="font-medium text-Black-600 hover:text-Black-700" href="#">
                   Contact Us
                 </a>
               </li>
