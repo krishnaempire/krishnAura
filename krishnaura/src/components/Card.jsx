@@ -5,10 +5,12 @@ import { Button } from "@nextui-org/react";
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation";
+import { Router } from "next/router";
 import { useSelector } from "react-redux";
 
 const Card = ({ product }) => {
   const { addToCart } = useCartApi()
+  const router = useRouter()
   const user = useSelector(state => state.user.userData)
 
   const handleAddToCart = () => {
@@ -40,7 +42,7 @@ const Card = ({ product }) => {
             <Image src={product?.productImages[0]} alt="" width={352} height={288} className="object-cover h-full w-full" />
           </Link>
         </div>
-        <div className='mx-4 mt-2 flex flex-col gap-1'>
+        <div className='mx-4 mt-2 flex flex-col gap-1' onClick={() => router.push(`/product-page/${product?._id}`)}>
           <p className='font-medium text-[1rem] w-full'>{product?.name}</p>
           <p className='font-medium text-[.8rem] w-full'>{description}</p>
           <div className='flex items-center justify-between mt-2'>
@@ -50,10 +52,10 @@ const Card = ({ product }) => {
               <p className='line-through opacity-60 text-[.9rem] font-medium'>M.R.P: {product?.size[0].price}</p>
             </div>
           </div>
-          <div className="flex justify-end w-full">
+        </div>
+          <div className="flex justify-end w-full px-4 py-1">
             <Button onClick={handleAddToCart} className="h-[2rem] bg-[#d4a72c] text-white hover:shadow-lg hover:bg-white hover:text-[#d4a72c]">Cart</Button>
           </div>
-        </div>
       </div>
     </>
   )

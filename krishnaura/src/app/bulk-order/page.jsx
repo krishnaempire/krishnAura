@@ -103,7 +103,7 @@ export default function BulkOrderPage() {
             </div>
           </div>
         </div>
-        <Button type="submit" className="mt-4 bg-[#d4a72c] text-white">
+        <Button type="submit" className="mt-4 bg-[#1A2A6C] text-white">
           Submit Order
         </Button>
       </form>

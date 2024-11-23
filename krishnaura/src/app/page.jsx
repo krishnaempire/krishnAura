@@ -181,17 +181,17 @@ export default function Page() {
 
       <div className=" flex flex-col gap-2 rounded-full px-2 py-2 fixed sm:top-52 top-40 right-5 text-[1.2rem]">
         <Link href="https://www.instagram.com/krishna_aura_" target="_blank">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-black">
             <FaInstagram />
           </div>
         </Link>
-        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-black">
           <FaWhatsapp />
         </div>
-        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-black">
           <FiFacebook />
         </div>
-        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-gray-400">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 hover:border-black">
           <FaXTwitter />
         </div>
       </div>
