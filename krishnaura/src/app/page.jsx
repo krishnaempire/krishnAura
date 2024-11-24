@@ -51,7 +51,7 @@ export default function Page() {
   const [products, setProducts] = useState([]);
   const [recentProduct, setRecentProduct] = useState([])
   const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
-  const [fetching, setFetching] = useState(true);
+  const [fetching, setFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true)
   const [screenWidth, setScreenWidth] = useState(null);
 
@@ -65,57 +65,63 @@ export default function Page() {
     return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
 
+
+  const fetchMoreData = async () => {
+    if (!hasMore || fetching) return;
+    setFetching(true);
+
+    try {
+      const data = await getAllProduct(currentPage);
+      if (data.products.length === 0) {
+        setHasMore(false);
+        return
+      }
+
+      setProducts((prevProducts) => {
+        const newProducts = data.products.filter(newProduct =>
+          !prevProducts.some(prevProduct => prevProduct._id === newProduct._id)
+        );
+        return [...prevProducts, ...newProducts];
+      });
+      extractRecentProducts(data.products); 
+
+
+      setCurrentPage((prev) => prev + 1); // Increment page after successful fetch
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    } finally {
+      setFetching(false);
+    }
+  };
+
+  const fetchMoreProduct = () => {
+    if (!hasMore || fetching) return;
+    setCurrentPage(prev => prev + 1)
+  }
+
   useEffect(() => {
     fetchMoreData()
-  }, [])
+  }, [currentPage])
 
-  const fetchMoreData = () => {
-
-    const fetchData = async (page) => {
-      setFetching(true);
-      try {
-        const data = await getAllProduct(page);
-
-        if (data.products.length === 0) {
-          setHasMore(false);
-        } else {
-          setProducts((prevProducts) => {
-            const newProducts = data.products.filter(newProduct =>
-              !prevProducts.some(prevProduct => prevProduct.id === newProduct.id)
-            );
-
-            return [...prevProducts, ...newProducts];
-          });
-
-          setTotalPages(data.pagination.totalPages);
-          setCurrentPage((prevPage) => prevPage + 1);
-          extractRecentProducts()
-        }
-      } catch (error) {
-        console.error("Error fetching product data:", error);
-      } finally {
-        setFetching(false);
-      }
-    };
-
-    fetchData(currentPage);
-  };
 
   const extractRecentProducts = (products) => {
     const currentDate = new Date();
 
-    const recentProducts = products.filter(product => {
-      const productDate = new Date(product.createdAt); // Directly parsing the ISO date
-
-      const diffInTime = currentDate - productDate;
-
-      const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert time difference from milliseconds to days
-
-      return diffInDays <= 14; // Filter for products created in the last 14 days
+    const recentProducts = products.filter((product) => {
+        const productDate = new Date(product.createdAt); // Parse the ISO date
+        const diffInTime = currentDate - productDate;
+        const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert time difference to days
+        return diffInDays <= 14; // Include products from the last 14 days
     });
 
-    setRecentProduct((prev) => [...prev, ...recentProducts]);
-  };
+    setRecentProduct((prev) => {
+        const uniqueProducts = recentProducts.filter(
+            (newProduct) => !prev.some((existingProduct) => existingProduct._id === newProduct._id)
+        );
+
+        return [...prev, ...uniqueProducts];
+    });
+};
 
 
   const imagesToShow = screenWidth >= 768 ? Img : Img1;
@@ -150,15 +156,17 @@ export default function Page() {
       <div id="dress" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
 
         <InfiniteScroll
-          dataLength={products.length}
-          next={fetchMoreData}
+          dataLength={products.length} // Trigger when this changes
+          next={fetchMoreProduct}
           className={`grid grid-cols-1 ${screenWidth >= 1024 ? "sm:grid-cols-3" : "sm:grid-cols-2"} ${screenWidth > 1024 ? "gap-[6rem]" : "gap-[2rem]"}  gap-[2rem] w-full`}
           hasMore={hasMore}
+          loader={<div>Loading...</div>} // Improve loading UI
         >
           {products.map((product, index) => (
             <Card product={product} key={index} />
           ))}
         </InfiniteScroll>
+
       </div>
       {recentProduct.length ? (
         <>
@@ -176,7 +184,7 @@ export default function Page() {
       ) : null}
 
       <div className="my-[10rem]">
-        <Review/>
+        <Review />
       </div>
 
       <div className=" flex flex-col gap-2 rounded-full px-2 py-2 fixed sm:top-52 top-40 right-5 text-[1.2rem]">

@@ -5,19 +5,20 @@ import { connectDB } from "@/DBConfig/connectDB.js";
 
 connectDB()
 
-export const GET = asyncHandler(async (req) => {
+export const GET = async (req) => {
     try {
         const url = new URL(req.url);
         const page = parseInt(url.searchParams.get('page')) || 1;
-        const limit = 4;
-
+        const limit = 3;
+        console.log(page)
         const skip = (page - 1) * limit;
 
         const products = await Product.aggregate([
-            { $match: {} },
             { $skip: skip },
             { $limit: limit }
         ]);
+
+        console.log(skip)
 
 
         if (!products || products.length === 0) {
@@ -45,4 +46,4 @@ export const GET = asyncHandler(async (req) => {
             { error: "Something went wrong while fetching products" }, 
             { status: 500 });
     }
-});
+};
