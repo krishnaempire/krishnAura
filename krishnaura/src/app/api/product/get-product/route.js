@@ -10,15 +10,13 @@ export const GET = async (req) => {
         const url = new URL(req.url);
         const page = parseInt(url.searchParams.get('page')) || 1;
         const limit = 3;
-        console.log(page)
+        
         const skip = (page - 1) * limit;
 
         const products = await Product.aggregate([
             { $skip: skip },
             { $limit: limit }
         ]);
-
-        console.log(skip)
 
 
         if (!products || products.length === 0) {

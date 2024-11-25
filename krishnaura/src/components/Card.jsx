@@ -15,7 +15,7 @@ const Card = ({ product }) => {
 
   const handleAddToCart = () => {
     if (user && user._id) {
-      
+
       addToCart({ userId: user._id, productId: product._id });
     } else {
 
@@ -23,11 +23,11 @@ const Card = ({ product }) => {
         return 'cartId-' + Math.random().toString(36).substring(2, 11).toUpperCase();
       };
       const cart = JSON.parse(sessionStorage.getItem('guestCart')) || [];
-      const item ={
+      const item = {
         ...product,
         cartId: generateCartId()
       }
-    
+
       cart.push(item);
       sessionStorage.setItem('guestCart', JSON.stringify(cart));
     }
@@ -36,27 +36,49 @@ const Card = ({ product }) => {
   const description = product?.description.slice(0, 27) + ".";
   return (
     <>
-      <div className='w-[19rem] h-[23rem] rounded-lg bg-gray-100 hover:shadow-lg'>
-        <div className='w-full text-white text-center h-[14rem] bg-slate-500 rounded-lg overflow-hidden'>
-          <Link href={`/product-page/${product?._id}`}>
-            <Image src={product?.productImages[0]} alt="" width={352} height={288} className="object-cover h-full w-full" />
-          </Link>
+      <div className="group w-[12rem] sm:w-[18rem] relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-xl">
+        <div className="overflow-hidden" onClick={() => router.push(`/product-page/${product?._id}`)}>
+          <Image
+            src={product?.productImages?.[0] || '/placeholder-image.png'}
+            alt={product?.name || 'Product image'}
+            width={250}
+            height={250}
+            className="w-full h-[12rem] sm:h-[14rem] object-cover  transition-transform duration-300 group-hover:scale-110"
+          />
+          {product?.size?.[0]?.offPercentage > 0 && (
+            <span className="absolute left-2 top-2 bg-white text-black px-2 py-1 rounded text-xs font-semibold">
+              -{product.size[0].offPercentage}%
+            </span>
+          )}
         </div>
-        <div className='mx-4 mt-2 flex flex-col gap-1' onClick={() => router.push(`/product-page/${product?._id}`)}>
-          <p className='font-medium text-[1rem] w-full'>{product?.name}</p>
-          <p className='font-medium text-[.8rem] w-full'>{description}</p>
-          <div className='flex items-center justify-between mt-2'>
-            <p className='text-red-400 font-semibold text-[1rem]'>-{product?.size[0].offPercentage}% off</p>
-            <div className='ml-2 rounded-[.9rem] h-[2.2rem] w-[11rem] bg-white flex items-center justify-evenly '>
-              <p className='text-[1rem] opacity-90 font-semibold'>&#8377;{`${product.size[0].offPrice}.00`}</p>
-              <p className='line-through opacity-60 text-[.9rem] font-medium'>M.R.P: {product?.size[0].price}</p>
+        <div className="p-3">
+          <div onClick={() => router.push(`/product-page/${product?._id}`)}>
+            <h3 className="mb-1 text-sm font-semibold text-gray-800 line-clamp-1">
+              {product?.name || 'Product Name'}
+            </h3>
+            <p className="mb-1 text-xs text-gray-600 line-clamp-2">
+              {product?.description.slice(0, 20) || 'Product description goes here.'}
+            </p>
+            <div className="mb-2 flex items-center">
+              <span className="text-lg font-bold text-gray-900">
+                ₹{product?.size?.[0]?.offPrice?.toFixed(2) || '0.00'}
+              </span>
+              {product?.size?.[0]?.price > product?.size?.[0]?.offPrice && (
+                <span className="ml-2 text-sm text-gray-500 line-through">
+                  ₹{product.size[0].price.toFixed(2)}
+                </span>
+              )}
             </div>
           </div>
+          <button
+            onClick={handleAddToCart}
+            className="w-full py-2 text-xs font-semibold text-white bg-[#d4a72c] rounded hover:bg-white hover:text-[#d4a72c] hover:shadow-lg transition-colors"
+          >
+            Add to Cart
+          </button>
         </div>
-          <div className="flex justify-end w-full px-4 py-1">
-            <Button onClick={handleAddToCart} className="h-[2rem] bg-[#d4a72c] text-white hover:shadow-lg hover:bg-white hover:text-[#d4a72c]">Cart</Button>
-          </div>
       </div>
+
     </>
   )
 }

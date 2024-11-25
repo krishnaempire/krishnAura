@@ -18,6 +18,7 @@ import SmSlider3 from "../../public/SmSlider3.png";
 import SmSlider4 from "../../public/SmSlider4.png";
 import SmSlider5 from "../../public/SmSlider5.png";
 import useProductApi from "@/api/useProductApi";
+import CardSkeleton from "@/components/skeleton/CardSkeleton"
 import Image from "next/image";
 import Footer from "@/components/Footer";
 import { FaInstagram } from "react-icons/fa";
@@ -83,7 +84,7 @@ export default function Page() {
         );
         return [...prevProducts, ...newProducts];
       });
-      extractRecentProducts(data.products); 
+      extractRecentProducts(data.products);
 
 
       setCurrentPage((prev) => prev + 1); // Increment page after successful fetch
@@ -108,20 +109,20 @@ export default function Page() {
     const currentDate = new Date();
 
     const recentProducts = products.filter((product) => {
-        const productDate = new Date(product.createdAt); // Parse the ISO date
-        const diffInTime = currentDate - productDate;
-        const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert time difference to days
-        return diffInDays <= 14; // Include products from the last 14 days
+      const productDate = new Date(product.createdAt); // Parse the ISO date
+      const diffInTime = currentDate - productDate;
+      const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert time difference to days
+      return diffInDays <= 14; // Include products from the last 14 days
     });
 
     setRecentProduct((prev) => {
-        const uniqueProducts = recentProducts.filter(
-            (newProduct) => !prev.some((existingProduct) => existingProduct._id === newProduct._id)
-        );
+      const uniqueProducts = recentProducts.filter(
+        (newProduct) => !prev.some((existingProduct) => existingProduct._id === newProduct._id)
+      );
 
-        return [...prev, ...uniqueProducts];
+      return [...prev, ...uniqueProducts];
     });
-};
+  };
 
 
   const imagesToShow = screenWidth >= 768 ? Img : Img1;
@@ -158,9 +159,16 @@ export default function Page() {
         <InfiniteScroll
           dataLength={products.length} // Trigger when this changes
           next={fetchMoreProduct}
-          className={`grid grid-cols-1 ${screenWidth >= 1024 ? "sm:grid-cols-3" : "sm:grid-cols-2"} ${screenWidth > 1024 ? "gap-[6rem]" : "gap-[2rem]"}  gap-[2rem] w-full`}
+          className={`grid grid-cols-2 ${screenWidth >= 1024 ? "sm:grid-cols-3 gap-[4rem]" : "md:grid-cols-2 gap-[2rem]"} w-full place-items-center`}
           hasMore={hasMore}
-          loader={<div>Loading...</div>} // Improve loading UI
+          loader={
+            <>
+              <CardSkeleton />
+              <CardSkeleton />
+              <CardSkeleton />
+              <CardSkeleton />
+            </>
+          } // Improve loading UI
         >
           {products.map((product, index) => (
             <Card product={product} key={index} />
@@ -175,7 +183,7 @@ export default function Page() {
               <p>Newly Added</p>
             </div>
           </div>
-          <div id="recentProduct" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
+          <div id="recentProduct" className={`grid grid-cols-2 ${screenWidth >= 1024 ? "sm:grid-cols-4" : "md:grid-cols-2 gap-[2rem]"} w-full place-items-center px-4`}>
             {recentProduct.map((product, index) => (
               <Card product={product} key={index} />
             ))}
