@@ -25,7 +25,7 @@ export default function Footer() {
         </div>
       </div>
     </div>
-    <div className="bg-blue-900 text-white py-4 pt-[4rem] z-0 absolute inset-x-0 bottom-0">
+    <div className="bg-[#e9cfa3] text-white py-4 pt-[4rem] z-0 absolute inset-x-0 bottom-0">
       <div className="container text-[.9rem] sm:text-[1rem] mx-auto px-4 text-center">
         <p className="mb-2">&copy; 2024 Kirshnaura. All rights reserved.</p>
       </div>

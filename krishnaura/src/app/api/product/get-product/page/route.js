@@ -11,7 +11,6 @@ export const GET = async (req) => {
         const page = parseInt(url.searchParams.get('page')) || 1;
         const limit = parseInt(url.searchParams.get('limit')) || 10;
 
-        
         const skip = (page - 1) * limit;
 
         const products = await Product.aggregate([
@@ -19,15 +18,6 @@ export const GET = async (req) => {
             { $skip: skip },
             { $limit: limit }
         ]);
-
-        if (!products || products.length === 0) {
-            return NextResponse.json(
-                { message: "No products found" }, 
-                { status: 404 }
-            );
-        }
-
-        
         const totalProducts = await Product.countDocuments({});
         const totalPages = Math.ceil(totalProducts / limit);
 

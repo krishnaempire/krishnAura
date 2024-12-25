@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <>
-      <html lang="en">
+      <html lang="en" className="bg-[#f5ede0]">
         <body className={inter.className}>
           <ReduxProvider>
             <Providers>
@@ -28,6 +28,7 @@ export default function RootLayout({ children }) {
         </body>
       </html>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+
     </>
   );
 }

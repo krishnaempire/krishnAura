@@ -41,8 +41,8 @@ const Card = ({ product }) => {
           <Image
             src={product?.productImages?.[0] || '/placeholder-image.png'}
             alt={product?.name || 'Product image'}
-            width={250}
-            height={250}
+            width={500}
+            height={500}
             className="w-full h-[12rem] sm:h-[14rem] object-cover  transition-transform duration-300 group-hover:scale-110"
           />
           {product?.size?.[0]?.offPercentage > 0 && (

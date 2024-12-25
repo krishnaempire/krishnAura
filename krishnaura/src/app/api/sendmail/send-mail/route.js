@@ -1,18 +1,21 @@
-const { NextResponse } = require("next/server")
-import { transporter } from "@/utils/nodemailer.js"
+import { Resend } from "resend"
+import VerificationEmail from "../../../../../emails/VerificationEmail"
+import { NextResponse } from "next/server"
 
 export const POST = async (req) => {
     const body = await req.json()
     const email = body
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     let verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     try {
-        await transporter.sendMail({
-            from: `KRISHNA EMPIRE <${process.env.MAIL}>`,
+        await resend.emails.send({
+            from: 'onboarding@resend.dev',
             to: email,
             subject: "OTP for signup",
-            html: `<h1>${verifyCode}</h1>`
+            html: VerificationEmail({otp: verifyCode })
         })
         return NextResponse.json({message: "OTP sent", verifyCode}, {status: 200})
 

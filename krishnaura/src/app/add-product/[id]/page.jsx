@@ -124,13 +124,13 @@ const AddProduct = () => {
 
   return (
     <>
-      <div className='w-[70%] m-auto flex-col lg:flex-row flex justify-evenly mt-[9rem] mb-[10rem] '>
+      <div className='w-[70%] h-full m-auto flex-col lg:flex-row flex justify-evenly py-[2rem] mt-[7rem] mb-[10rem] '>
         <div className='flex flex-col gap-3 mr-2'>
           <div>
-            <Button onClick={() => imageRef.current.click()} variant={"bordered"}>Add Image</Button>
+            <Button onClick={() => imageRef.current.click()} >Add Image</Button>
             <input type="file" hidden ref={imageRef} onChange={handleImageChange} />
           </div>
-          <div className='flex flex-wrap justify-evenly border-1 w-[20rem] h-[47rem] p-[1rem] rounded-lg '>
+          <div className='flex flex-wrap justify-evenly border-1 bg-white w-[20rem] h-[47rem] p-[1rem] rounded-lg '>
             {imgUrl && imgUrl.map((url, index) => (
               <div key={index} className='w-[15rem] h-[11.5rem] overflow-hidden'>
                 <Image width={1000} height={1000} src={url} alt={`Selected image ${index + 1}`} className='rounded-sm object-cover h-[10rem]' />
@@ -152,7 +152,6 @@ const AddProduct = () => {
 
             <Input
               type='text'
-              variant={"bordered"}
               name='name'
               placeholder='Product Name'
               value={productValue.name}
@@ -171,7 +170,7 @@ const AddProduct = () => {
             </RadioGroup>
             <Input
               type='text'
-              variant={"bordered"}
+              
               name='stock'
               placeholder='Stock'
               value={productValue.stock}
@@ -180,7 +179,7 @@ const AddProduct = () => {
             <Textarea className='w-full rounded-[.7rem] mt-[1rem]'
               placeholder='write about product...'
               name='description'
-              variant={"bordered"}
+              
               maxRows={5}
               onChange={handleInputChange}
               value={productValue.description}
@@ -188,7 +187,7 @@ const AddProduct = () => {
             <Textarea className='w-full rounded-[.7rem] mt-[1rem]'
               placeholder='write specs of product...'
               name='about'
-              variant={"bordered"}
+              
               maxRows={5}
               onChange={handleInputChange}
               value={productValue.about}
@@ -229,9 +228,8 @@ const AddProduct = () => {
                   disabled={true}
                   name="sizePrice"
                   value={newSize.offPercentage}
-                  // onChange={(e) => setNewSize((prev) => ({ ...prev, price: e.target.value }))}
                   placeholder="Discount"
-                  className="py-[.8rem] px-[1rem] w-[20rem] rounded-[1rem] outline-none border-2 border-gray-200"
+                  className="py-[.8rem] px-[1rem] w-[20rem] bg-white rounded-[1rem] outline-none border-2 border-gray-200"
                 />
                 <Button variant="bordered" onClick={handleAddSize}>
                   Add
@@ -239,7 +237,7 @@ const AddProduct = () => {
               </div>
 
             </div>
-            <ScrollShadow className='w-full h-[6rem] border-2 border-gray-200 rounded-[.7rem] mt-[1rem]'>
+            <ScrollShadow className='w-full h-[6rem] border-2 bg-white border-gray-200 rounded-[.7rem] mt-[1rem]'>
               <div className='flex gap-2 w-full flex-wrap'>
                 {productValue?.size?.map((item, index) => (
                   <div key={index} className='flex gap-2 mt-2 bg-gray-300/50 rounded-[1rem] py-[.2em] px-[.5rem]'>
@@ -265,7 +263,7 @@ const AddProduct = () => {
                   placeholder='add color'
                   className='py-[.8rem] px-[1rem] w-[20rem] rounded-[1rem] outline-none border-2 border-gray-200'
                 />
-                <Button variant={"bordered"} className='font-medium py-[1.5rem] outline-none' onClick={handleAddColor}>
+                <Button  className='font-medium py-[1.5rem] outline-none' onClick={handleAddColor}>
                   Add
                 </Button>
               </div>

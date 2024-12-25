@@ -95,6 +95,8 @@ export default function Page() {
     }
   };
 
+  console.log(hasMore)
+
   const fetchMoreProduct = () => {
     if (!hasMore || fetching) return;
     setCurrentPage(prev => prev + 1)
@@ -128,7 +130,7 @@ export default function Page() {
   const imagesToShow = screenWidth >= 768 ? Img : Img1;
 
   return (
-    <div className="w-full mt-[9rem] grid place-items-center">
+    <div className="w-full mt-[7rem] grid place-items-center">
       {screenWidth !== null && (
         <Carousel
           opts={{
@@ -157,7 +159,7 @@ export default function Page() {
       <div id="dress" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
 
         <InfiniteScroll
-          dataLength={products.length} // Trigger when this changes
+          dataLength={products.length}
           next={fetchMoreProduct}
           className={`grid grid-cols-2 ${screenWidth >= 1024 ? "sm:grid-cols-3 gap-[4rem]" : "md:grid-cols-2 gap-[2rem]"} w-full place-items-center`}
           hasMore={hasMore}

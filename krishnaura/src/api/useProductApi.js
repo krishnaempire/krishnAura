@@ -73,14 +73,14 @@ const useProductApi = () => {
             });
     
             const data = await res.json();
-    
+            
             if (data.error) {
                 toast({
                     description: data.error
                 });
                 return;
             }
-    
+            console.log(data)
             return data;
         } catch (error) {
             toast({

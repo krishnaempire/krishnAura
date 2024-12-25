@@ -60,17 +60,17 @@ export default function BulkOrderPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-[8rem] bg-[#f3dac2]">
+    <div className="container relative top-[6rem] sm:top-[8rem] xl:top-0 mx-auto w-[24rem] sm:w-[40rem] px-4 py-8 mt-[7rem]">
       <h1 className="text-3xl font-bold mb-6">Bulk Order</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-6 p-4 rounded-lg">
+      <form onSubmit={handleSubmit} className='flex flex-col items-end justify-center w-full'>
+        <div className="mb-6 p-4 rounded-lg w-full">
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="name">Name</label>
                 <Input
                   id="name"
-                  color="danger"
+                  // color="danger"
                   value={order.name}
                   onChange={(e) => updateOrder('name', e.target.value)}
                   placeholder="Enter customer name"
@@ -81,7 +81,7 @@ export default function BulkOrderPage() {
                 <label htmlFor="mobile">Mobile Number</label>
                 <Input
                   id="mobile"
-                  color="danger"
+                  // color="danger"
                   type="tel"
                   value={order.mobile}
                   onChange={(e) => updateOrder('mobile', e.target.value)}
@@ -94,7 +94,7 @@ export default function BulkOrderPage() {
               <label htmlFor="description">Description</label>
               <Textarea
                 id="description"
-                color="danger"
+                // color="danger"
                 value={order.description}
                 onChange={(e) => updateOrder('description', e.target.value)}
                 placeholder="Write what you want from us:-"
@@ -103,7 +103,7 @@ export default function BulkOrderPage() {
             </div>
           </div>
         </div>
-        <Button type="submit" className="mt-4 bg-[#1A2A6C] text-white">
+        <Button type="submit" className="mt-4 w-full bg-[#edc49e] text-white">
           Submit Order
         </Button>
       </form>

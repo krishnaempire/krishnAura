@@ -72,13 +72,13 @@ export default function NavBar() {
       <Navbar
         shouldHideOnScroll
         maxWidth="full"
-        height={"7rem"}
+        height={"5rem"}
         className="bg-[#FFFFF0] z-10 fixed top-0 sm:top-[2rem]"
       >
         <NavbarContent justify="start">
           <NavbarBrand className="relative md:left-[1rem]">
             <Link href="/" className="font-bold Link-inherit">
-              <Image src={KA} alt="" className="md:w-[12rem] md:h-[5rem] w-[9rem] h-[4rem]" />
+              <Image src={KA} alt="" className="md:w-[10rem] md:h-[4rem] w-[9rem] h-[4rem]" />
             </Link>
           </NavbarBrand>
         </NavbarContent>

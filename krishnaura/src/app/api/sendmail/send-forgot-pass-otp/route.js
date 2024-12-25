@@ -1,6 +1,6 @@
 import { Resend } from "resend";
-import VerificationEmail from "../../../../../emails/VerificationEmail";
 import { NextResponse } from "next/server";
+import ForgotPassEmail from "../../../../../emails/ForgotPassEmail";
 
 export const POST = async (req) => {
     const body = await req.json()
@@ -15,7 +15,7 @@ export const POST = async (req) => {
             from: 'onboarding@resend.dev',
             to: email,
             subject: 'Krishna Aura Password reset',
-            react: VerificationEmail({otp: verifyCode }),
+            react: ForgotPassEmail({otp: verifyCode }),
         });
         return NextResponse.json({ success: true, message: 'Verification email sent successfully.', verifyCode });
     } catch (emailError) {

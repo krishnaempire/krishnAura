@@ -1,15 +1,18 @@
 "use client";
+import useScreenWidth from "@/hooks/useScreenWidth.js";
 import { InfiniteMovingCards } from "./ui/infinite-moving-card.jsx"
 import React from "react";
 
 export default function Review() {
+  const screenWidth = useScreenWidth()
+  console.log(screenWidth)
   return (
     <div className="gap-4 rounded-md flex flex-col relative overflow-hidden">
       <div className='text-center mb-[5rem] w-[20rem] m-auto sm:w-full sm:text-[4rem] text-[2rem]'>
         <p className='w-full font-medium bg-black-to-r bg-clip-text'>What People Say About Us 
         </p>
       </div>
-       <div className="w-[19rem] sm:w-[45rem] md:w-[50rem] lg:w-full">
+       <div className={`${screenWidth > 1024 ? "w-full" : "w-[19rem] sm:w-[45rem] md:w-[50rem]"}`}>
         <InfiniteMovingCards
           items={testimonials}
           direction="left"
@@ -17,7 +20,7 @@ export default function Review() {
           rotate={true}
         />
       </div>
-      <div className="w-[19rem] sm:w-[45rem] md:w-[50rem] lg:w-full">
+      <div className={`${screenWidth > 1024 ? "w-full" : "w-[19rem] sm:w-[45rem] md:w-[50rem]"}`}>
         <InfiniteMovingCards
           items={testimonials}
           direction="right"
@@ -25,14 +28,14 @@ export default function Review() {
           rotate={true}
         />
       </div>
-      <div className="w-[19rem] sm:w-[45rem] md:w-[50rem] lg:w-full">
+      {/* <div className="w-[19rem] sm:w-[45rem] md:w-[50rem] lg:w-full">
         <InfiniteMovingCards
           items={testimonials}
           direction="left"
           speed="slow"
           rotate={true}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
