@@ -36,14 +36,14 @@ const Card = ({ product }) => {
   const description = product?.description.slice(0, 27) + ".";
   return (
     <>
-      <div className="group w-[12rem] sm:w-[18rem] relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-xl">
+      <div className="group w-[12rem] sm:w-[17rem] relative overflow-hidden rounded-lg transition-all hover:shadow-xl mb-4">
         <div className="overflow-hidden" onClick={() => router.push(`/product-page/${product?._id}`)}>
           <Image
             src={product?.productImages?.[0] || '/placeholder-image.png'}
             alt={product?.name || 'Product image'}
             width={500}
             height={500}
-            className="w-full h-[12rem] sm:h-[14rem] object-cover  transition-transform duration-300 group-hover:scale-110"
+            className="w-full h-[12rem] sm:h-[14rem] rounded-[10px] sm:rounded-0 object-cover  transition-transform duration-300 group-hover:scale-110"
           />
           {product?.size?.[0]?.offPercentage > 0 && (
             <span className="absolute left-2 top-2 bg-white text-black px-2 py-1 rounded text-xs font-semibold">
@@ -72,7 +72,7 @@ const Card = ({ product }) => {
           </div>
           <button
             onClick={handleAddToCart}
-            className="w-full py-2 text-xs font-semibold text-white bg-[#d4a72c] rounded hover:bg-white hover:text-[#d4a72c] hover:shadow-lg transition-colors"
+            className="w-full py-3 text-[13px] sm:text-xs font-semibold border-1 border-neutral-700 hover:border-none text-black rounded-[8px] hover:bg-[#d4a72c] hover:text-white hover:shadow-lg transition-colors"
           >
             Add to Cart
           </button>

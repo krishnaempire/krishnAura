@@ -131,7 +131,7 @@ export default function Page() {
   const imagesToShow = screenWidth >= 768 ? Img : Img1;
 
   return (
-    <div className="w-full mt-[7rem] grid place-items-center">
+    <div className="w-full mt-[5rem] sm:mt-[7rem] grid place-items-center">
       {screenWidth !== null && (
         <Carousel
           opts={{
@@ -157,12 +157,12 @@ export default function Page() {
           <p className="sm:text-[1.5rem] font-medium opacity-30">Celebrate your Laddu Gopal with our exclusive, handcrafted dresses, each designed to bring out the divine charm and grace.</p>
         </div>
       </div>
+      <p className="text-[1.6rem] mb-[2rem]">Bestsellers</p>
       <div id="dress" className="flex flex-wrap md:gap-[6rem] gap-[2rem] w-full justify-center">
-
         <InfiniteScroll
           dataLength={products.length}
           next={fetchMoreProduct}
-          className={`grid grid-cols-2 ${screenWidth >= 1024 ? "sm:grid-cols-3 gap-[4rem]" : "md:grid-cols-2 gap-[2rem]"} w-full place-items-center`}
+          className={`grid grid-cols-2 gap-[8px] ${screenWidth >= 1024 ? "sm:grid-cols-4" : "md:grid-cols-2"} w-full place-items-center`}
           hasMore={hasMore}
           loader={
             <>
@@ -173,6 +173,7 @@ export default function Page() {
             </>
           } // Improve loading UI
         >
+
           {products.map((product, index) => (
             <Card product={product} key={index} />
           ))}
