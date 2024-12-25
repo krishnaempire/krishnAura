@@ -113,8 +113,9 @@ export default function Page() {
     const recentProducts = products.filter((product) => {
       const productDate = new Date(product.createdAt); // Parse the ISO date
       const diffInTime = currentDate - productDate;
-      const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert time difference to days
-      return diffInDays <= 14; // Include products from the last 14 days
+      const diffInDays = diffInTime / (1000 * 3600 * 24);
+      return diffInDays <= 25;
+
     });
 
     setRecentProduct((prev) => {
