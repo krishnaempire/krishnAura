@@ -78,7 +78,7 @@ export default function NavBar() {
         <NavbarContent justify="start">
           <NavbarBrand className="relative md:left-[1rem]">
             <Link href="/" className="font-bold Link-inherit">
-              <Image src={KA} alt="" className="md:w-[10rem] md:h-[4rem] w-[9rem] h-[4rem]" />
+            <Image src={KA} alt="" width={200} height={200} className="md:w-[11rem] md:h-[8rem] w-[12rem] h-[9rem]" />
             </Link>
           </NavbarBrand>
         </NavbarContent>
@@ -86,7 +86,7 @@ export default function NavBar() {
           <NavbarItem>
             <Dropdown backdrop="blur">
               <DropdownTrigger>
-                <Button className="pointer bg-transparent font-semibold">SHOP</Button>
+                <Button className="pointer bg-transparent font-semibold">Shop</Button>
               </DropdownTrigger>
               <DropdownMenu variant="faded" aria-label="Shop Categories">
                 <DropdownItem key="new">

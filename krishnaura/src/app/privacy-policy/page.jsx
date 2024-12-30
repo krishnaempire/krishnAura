@@ -1,26 +1,33 @@
-import React from 'react'
+import React from 'react';
+import { Cinzel } from '@next/font/google';
 
-const ProvacyPolicy = () => {
+// Import the Cinzel font
+const cinzel = Cinzel({
+    subsets: ['latin'],
+    weight: ['400', '700'], // Specify font weights
+});
+
+const PrivacyPolicy = () => {
     return (
         <>
-            <div className=' mt-[9rem] w-full'>
-                <div className='w-[75%] m-auto' >
+            <div className={`${cinzel.className} mt-[9rem] w-full`}>
+                <div className='w-[90%] m-auto'>
 
-                    <p className='font-bold text-[2rem]'>Privacy Policy</p>
-                    <div className='text-[1rem] flex flex-col gap-6 mt-[4rem] font-medium'>
+                    {/* Applying Cinzel font to "Privacy Policy" */}
+                    <p className={`${cinzel.className} font-bold text-[2rem]`}>Privacy Policy</p>
+                    <div className='text-[1rem] flex flex-col gap-5 mt-[4rem] font-medium'>
                         <p>
                             Krishna Aura is committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, disclose, and protect the information we collect from you when you use our website and engage with our services. By accessing our website and providing us with your personal information, you consent to the practices described in this Privacy Policy.
-
                         </p>
                         <div>
-                            <p className='font-semibold'> Information We Collect</p>
+                            {/* Applying Cinzel font to "Information We Collect" */}
+                            <p className={`${cinzel.className} font-bold`}> Information We Collect</p>
                             <p>When you register an account, place an order, or interact with our website, we may collect personal information such as your name, email address, shipping address, and payment information.
                             </p>
                         </div>
                         <div>
                             <p className='font-semibold'>How We Use Your Information</p>
-                            <p>We may use the information we collect from you for the following purposes:
-                            </p>
+                            <p>We may use the information we collect from you for the following purposes:</p>
                             <span>Processing and fulfilling orders</span>
                             <span>Communicating with you about your orders and account</span>
                             <span>Providing customer support and resolving disputes</span>
@@ -37,14 +44,12 @@ const ProvacyPolicy = () => {
                             <p className='font-semibold'>Third-Party Links</p>
                             <p>
                             Our website may contain links to third-party websites, products, and services. We are not responsible for the privacy practices or content of these third parties. We encourage you to review the privacy policies of these third parties before providing any personal information.
-
                             </p>
                         </div>
                         <div>
                             <p className='font-semibold'>Your Rights</p>
                             <p>
                             You have the right to access, update, correct, and delete your personal information. You may also opt-out of receiving marketing communications from us at any time by following the instructions provided in the communication or by contacting us directly.
-
                             </p>
                         </div>
                         <div className='flex flex-col gap-3'>
@@ -65,7 +70,6 @@ const ProvacyPolicy = () => {
                             <p className='font-semibold'>GENERAL TERMS</p>
                             <p>
                             If any part of this Terms of Use agreement is held or found to be invalid or unenforceable, that portion of the agreement will be construed as to be consistent with applicable law while the remaining portions of the agreement will remain in full force and effect. Any failure on our part to enforce any provision of this agreement will not be considered a waiver of our right to enforce such provision. Our rights under this agreement survive any transfer or termination of this agreement.
-
                             </p>
                             <span>YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS OF USE, UNDERSTAND THE TERMS OF USE, AND WILL BE BOUND BY THESE TERMS AND CONDITIONS. YOU FURTHER ACKNOWLEDGE THAT THESE TERMS OF USE TOGETHER WITH THE PRIVACY POLICY  REPRESENT THE COMPLETE AND EXCLUSIVE STATEMENT OF THE AGREEMENT BETWEEN US AND THAT IT SUPERSEDES ANY PROPOSAL OR PRIOR AGREEMENT ORAL OR WRITTEN, AND ANY OTHER COMMUNICATIONS BETWEEN US RELATING TO THE SUBJECT MATTER OF THIS AGREEMENT.</span>
                         </div>
@@ -76,7 +80,7 @@ const ProvacyPolicy = () => {
 
             </div>
         </>
-    )
-}
+    );
+};
 
-export default ProvacyPolicy
+export default PrivacyPolicy;

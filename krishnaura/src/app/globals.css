@@ -71,7 +71,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#f5ede0];
+    @apply bg-[#ffffff];
   }
 }
 

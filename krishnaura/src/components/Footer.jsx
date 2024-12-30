@@ -12,7 +12,7 @@ export default function Footer() {
         {/* Top section content */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
-            <p className="font-semibold">Krishnaura</p>
+          <Image src={KA} alt="" width={200} height={200} className="md:w-[12rem] md:h-[10rem] w-[12rem] h-[9rem]" />
             {/* <p>Showcase Your Brand</p> */}
             {/* <p>Tech Sphere</p> */}
           </div>
@@ -27,7 +27,7 @@ export default function Footer() {
     </div>
     <div className="bg-[#e9cfa3] text-white py-4 pt-[4rem] z-0 absolute inset-x-0 bottom-0">
       <div className="container text-[.9rem] sm:text-[1rem] mx-auto px-4 text-center">
-        <p className="mb-2">&copy; 2024 Kirshnaura. All rights reserved.</p>
+        <p className="mb-2 text-black" >&copy; 2025 Kirshnaura. All rights reserved.</p>
       </div>
     </div>
   </div>

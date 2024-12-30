@@ -61,7 +61,7 @@ export default function BulkOrderPage() {
 
   return (
     <div className="container relative top-[6rem] sm:top-[8rem] xl:top-0 mx-auto w-[24rem] sm:w-[40rem] px-4 py-8 mt-[7rem]">
-      <h1 className="text-3xl font-bold mb-6">Bulk Order</h1>
+      <h1 className="text-3xl font-bold mb-6">Bulk Order/Any Enquiry</h1>
       <form onSubmit={handleSubmit} className='flex flex-col items-end justify-center w-full'>
         <div className="mb-6 p-4 rounded-lg w-full">
           <div className="space-y-4">

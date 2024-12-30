@@ -50,43 +50,57 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(1);
   const { getAllProduct } = useProductApi();
   const [products, setProducts] = useState([]);
-  const [recentProduct, setRecentProduct] = useState([])
+  const [jewellery, setJewellery] = useState([]);
+  const [recentProduct, setRecentProduct] = useState([]);
   const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
   const [fetching, setFetching] = useState(false);
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(true);
   const [screenWidth, setScreenWidth] = useState(null);
-
+  
   const updateScreenWidth = () => {
     setScreenWidth(window.innerWidth);
   };
-
+  
   useEffect(() => {
     setScreenWidth(window.innerWidth);
     window.addEventListener("resize", updateScreenWidth);
     return () => window.removeEventListener("resize", updateScreenWidth);
   }, []);
-
-
+  
+  // Function to extract Jewellery products
+  const extractJewellery = (products) => {
+    const jewelleryProducts = products.filter((product) => product.type === "Jewellery");
+    setJewellery((prev) => {
+      const uniqueJewellery = jewelleryProducts.filter(
+        (newProduct) => !prev.some((existingProduct) => existingProduct._id === newProduct._id)
+      );
+      return [...prev, ...uniqueJewellery];
+    });
+  };
+  
   const fetchMoreData = async () => {
     if (!hasMore || fetching) return;
     setFetching(true);
-
+  
     try {
       const data = await getAllProduct(currentPage);
       if (data.products.length === 0) {
         setHasMore(false);
-        return
+        return;
       }
-
+  
       setProducts((prevProducts) => {
         const newProducts = data.products.filter(newProduct =>
           !prevProducts.some(prevProduct => prevProduct._id === newProduct._id)
         );
         return [...prevProducts, ...newProducts];
       });
+  
+      // Extract recent products
       extractRecentProducts(data.products);
-
-
+      // Extract jewellery products
+      extractJewellery(data.products);
+  
       setCurrentPage((prev) => prev + 1); // Increment page after successful fetch
     } catch (error) {
       console.error("Error fetching product data:", error);
@@ -94,38 +108,38 @@ export default function Page() {
       setFetching(false);
     }
   };
-
-  console.log(hasMore)
-
+  
+  console.log(hasMore);
+  
   const fetchMoreProduct = () => {
     if (!hasMore || fetching) return;
-    setCurrentPage(prev => prev + 1)
-  }
-
+    setCurrentPage(prev => prev + 1);
+  };
+  
   useEffect(() => {
-    fetchMoreData()
-  }, [currentPage])
-
-
+    fetchMoreData();
+  }, [currentPage]);
+  
+  // Function to extract recent products
   const extractRecentProducts = (products) => {
     const currentDate = new Date();
-
+  
     const recentProducts = products.filter((product) => {
       const productDate = new Date(product.createdAt); // Parse the ISO date
       const diffInTime = currentDate - productDate;
       const diffInDays = diffInTime / (1000 * 3600 * 24);
       return diffInDays <= 25;
-
     });
-
+  
     setRecentProduct((prev) => {
       const uniqueProducts = recentProducts.filter(
         (newProduct) => !prev.some((existingProduct) => existingProduct._id === newProduct._id)
       );
-
+  
       return [...prev, ...uniqueProducts];
     });
   };
+  
 
 
   const imagesToShow = screenWidth >= 768 ? Img : Img1;
@@ -152,9 +166,8 @@ export default function Page() {
       )}
       <div className="my-[4rem] font-bold flex justify-center">
         <div className="lg:w-[60rem] sm:w-[40rem] w-[25rem] text-wrap text-center ">
-          <p className="font-bold sm:text-[2rem]   text-[1.5rem]">Not to Use for now</p>
-          <p className="font-bold sm:text-[2rem] opacity-30 text-[1.5rem]">Welcome to the World of Divine Beauty</p>
-          <p className="sm:text-[1.5rem] font-medium opacity-30">Celebrate your Laddu Gopal with our exclusive, handcrafted dresses, each designed to bring out the divine charm and grace.</p>
+          <p className="font-bold sm:text-[2rem] text-[1.5rem]">Welcome to Divine Beauty, Inspired by Krishna Ji's love.</p>
+          {/* <p className="sm:text-[1.5rem] font-medium font-cinzel opacity-90">Celebrate your Laddu Gopal with our exclusive, handcrafted dresses, each designed to bring out the divine charm and grace.</p> */}
         </div>
       </div>
       <p className="text-[1.6rem] mb-[2rem]">Bestsellers</p>
@@ -175,6 +188,9 @@ export default function Page() {
         >
 
           {products.map((product, index) => (
+            <Card product={product} key={index} />
+          ))}
+          {jewellery.map((product, index) => (
             <Card product={product} key={index} />
           ))}
         </InfiniteScroll>
