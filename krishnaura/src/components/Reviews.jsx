@@ -5,7 +5,6 @@ import React from "react";
 
 export default function Review() {
   const screenWidth = useScreenWidth()
-  console.log(screenWidth)
   return (
     <div className="gap-4 rounded-md flex flex-col relative overflow-hidden">
       <div className='text-center mb-[5rem] w-[20rem] m-auto sm:w-full sm:text-[4rem] text-[2rem]'>
