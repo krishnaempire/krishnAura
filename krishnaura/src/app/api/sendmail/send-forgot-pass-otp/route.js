@@ -12,7 +12,7 @@ export const POST = async (req) => {
 
     try {
         await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: 'krishnaura@krishnaaura.com',
             to: email,
             subject: 'Krishna Aura Password reset',
             react: ForgotPassEmail({otp: verifyCode }),
