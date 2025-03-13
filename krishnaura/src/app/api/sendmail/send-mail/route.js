@@ -15,7 +15,7 @@ export const POST = async (req) => {
             from: 'krishnaura@krishnaaura.com',
             to: email,
             subject: "OTP for signup",
-            html: VerificationEmail({otp: verifyCode })
+            react: VerificationEmail({otp: verifyCode })
         })
         return NextResponse.json({message: "OTP sent", verifyCode}, {status: 200})
 

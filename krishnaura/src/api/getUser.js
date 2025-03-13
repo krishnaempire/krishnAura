@@ -19,10 +19,13 @@ const useGetUser = () => { // Renamed function to useGetUser and added 'use' pre
 
       if (data.error) {
         localStorage.setItem("user", "");
-        throw new Error("Re login required");
       }
 
-      let user = await getUser(data?._id)
+      let user;
+
+      if(data?._id){
+        user = await getUser(data?._id)
+      }
 
       if (user?._id) {
         dispatch(setUser(data));

@@ -20,10 +20,7 @@ export const GET = async (req) => {
     const decoded = jwt.verify(jwtToken, process.env.TOKEN_SECRET);
     
     const user = await User.findById(decoded?._id).select("-password")
-    if (!user) {
-        return NextResponse.json(
-            {error: `no user found by id ${decoded?._id}`})
-    }
+    
     return NextResponse.json(user)
     
   } catch (error) {
