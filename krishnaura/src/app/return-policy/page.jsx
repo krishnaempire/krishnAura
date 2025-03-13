@@ -5,10 +5,10 @@ const ReturnPolicy = () => {
         <>
             <div className='mt-[9rem] w-full'>
                 <div className='w-[75%] m-auto'>
-                    <p className='font-bold text-[2rem]'>Return Policy</p>
+                    <p className='font-bold text-[2rem]'>Return & Refund Policy</p>
                     <div className='text-[1rem] flex flex-col gap-6 mt-[4rem] font-medium'>
                         <p>
-                            At Krishna Aura, we strive to ensure that every customer is delighted with their purchase of our Laddoo Gopal dresses and divine products. However, if you are not completely satisfied with your purchase, we are here to help.
+                        We value your trust and strive to provide the best quality products. If you are not satisfied, please review our return and refund policy below.
                         </p>
                         <div>
                             <p className='font-semibold'>Eligibility for Returns</p>
